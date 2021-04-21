@@ -48,7 +48,7 @@ This can be encountered when:
 
 Overrides: Error.constructor
 
-Defined in: [src/semaphoreError.ts:8](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphoreError.ts#L8)
+Defined in: [src/semaphoreError.ts:8](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphoreError.ts#L8)
 
 ## Properties
 

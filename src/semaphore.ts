@@ -1,5 +1,6 @@
 import { RawSemaphore } from './rawSemaphore';
 import { SemaphoreError } from './semaphoreError';
+import { SemaphoreLock } from './semaphoreLock';
 
 /**
  * Defines the arguments to expect in a callback function passed to {@link Semaphore} methods.
@@ -9,35 +10,6 @@ import { SemaphoreError } from './semaphoreError';
  */
 export interface SafeSemaphoreCallback {
     (error: SemaphoreError | undefined, lock: SemaphoreLock): void;
-}
-
-/**
- * Represents acquisition of a semaphore.
- */
-export class SemaphoreLock {
-    /**
-     *
-     * @param semaphore - The semaphore being locked
-     * @param isEnabled - Whether or not the semaphore is acquired
-     */
-    constructor(protected semaphore: RawSemaphore, protected isEnabled: boolean = true) {}
-
-    /**
-     * Check if the {@link semaphore} is locked
-     */
-    isLocked(): boolean {
-        return this.isEnabled;
-    }
-
-    /**
-     * If locked, release the {@link semaphore} and increment its {@link Semaphore.value | value}
-     */
-    unlock() {
-        if (this.isEnabled) {
-            this.isEnabled = false;
-            this.semaphore.post();
-        }
-    }
 }
 
 export class Semaphore {

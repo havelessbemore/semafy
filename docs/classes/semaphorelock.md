@@ -4,6 +4,10 @@
 
 Represents acquisition of a semaphore.
 
+Usage imposes the following restrictions:
+1. Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)
+1. If acquired, a call can release the semaphore once at most
+
 ## Table of contents
 
 ### Constructors
@@ -35,7 +39,7 @@ Represents acquisition of a semaphore.
 
 **Returns:** [*SemaphoreLock*](semaphorelock.md)
 
-Defined in: [src/semaphore.ts:17](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L17)
+Defined in: src/semaphoreLock.ts:10
 
 ## Properties
 
@@ -59,7 +63,7 @@ Check if the [semaphore](semaphorelock.md#semaphore) is locked
 
 **Returns:** *boolean*
 
-Defined in: [src/semaphore.ts:28](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L28)
+Defined in: src/semaphoreLock.ts:21
 
 ___
 
@@ -71,4 +75,4 @@ If locked, release the [semaphore](semaphorelock.md#semaphore) and increment its
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:35](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L35)
+Defined in: src/semaphoreLock.ts:28

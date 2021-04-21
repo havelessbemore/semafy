@@ -2,7 +2,7 @@
 
 # Class: Mutex
 
-A convenience class for defining a binary `Semaphore` (aka `new Semaphore(1);`).
+A convenience class for defining a binary [Semaphore](semaphore.md) (aka `new Semaphore(1);`).
 
 Has the same methods as [Semaphore](semaphore.md)
 
@@ -43,7 +43,7 @@ Has the same methods as [Semaphore](semaphore.md)
 
 Overrides: [Semaphore](semaphore.md)
 
-Defined in: [src/mutex.ts:8](https://github.com/havelessbemore/semafy/blob/47ff01d/src/mutex.ts#L8)
+Defined in: [src/mutex.ts:8](https://github.com/havelessbemore/semafy/blob/03d6228/src/mutex.ts#L8)
 
 ## Properties
 
@@ -55,7 +55,7 @@ The underlying raw semaphore
 
 Inherited from: [Semaphore](semaphore.md).[semaphore](semaphore.md#semaphore)
 
-Defined in: [src/semaphore.ts:47](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L47)
+Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L19)
 
 ## Accessors
 
@@ -67,7 +67,7 @@ The number of calls allowed to acquire the semaphore concurrently
 
 **Returns:** *number*
 
-Defined in: [src/semaphore.ts:91](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L91)
+Defined in: [src/semaphore.ts:63](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L63)
 
 ## Methods
 
@@ -81,7 +81,7 @@ Rejects all calls waiting for the semaphore. Rejected calls receive a [Semaphore
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:72](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L72)
+Defined in: [src/semaphore.ts:44](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L44)
 
 ___
 
@@ -98,7 +98,7 @@ Otherwise, returns `undefined`
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:82](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L82)
+Defined in: [src/semaphore.ts:54](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L54)
 
 ___
 
@@ -122,7 +122,7 @@ can be acquired or the call is rejected.
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:102](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L102)
+Defined in: [src/semaphore.ts:74](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L74)
 
 ▸ **wait**(`callback`: [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md)): *void*
 
@@ -142,7 +142,7 @@ can be acquired or the call is rejected.
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:112](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L112)
+Defined in: [src/semaphore.ts:84](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L84)
 
 ___
 
@@ -167,7 +167,7 @@ acquired, then the call is rejected.
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:136](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L136)
+Defined in: [src/semaphore.ts:108](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L108)
 
 ▸ **waitFor**(`ms`: *undefined* \| ``null`` \| *number*, `callback`: [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md)): *void*
 
@@ -188,4 +188,4 @@ acquired, then the call is rejected.
 
 Inherited from: [Semaphore](semaphore.md)
 
-Defined in: [src/semaphore.ts:147](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L147)
+Defined in: [src/semaphore.ts:119](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L119)

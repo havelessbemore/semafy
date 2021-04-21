@@ -19,4 +19,4 @@ Defines the arguments to expect in a callback function passed to [Semaphore](../
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:10](https://github.com/havelessbemore/semafy/blob/47ff01d/src/semaphore.ts#L10)
+Defined in: [src/semaphore.ts:11](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L11)

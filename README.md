@@ -10,20 +10,33 @@ Semaphore & Mutex implementation for node
 npm install semafy
 ```
 
-## Contribute
+## API
 
-There are many ways to contribute:
-* [Submit bugs](https://github.com/havelessbemore/semafy/issues) and help verify fixes.
-* Review [source code changes](https://github.com/havelessbemore/semafy/pulls).
-* Contribute bug fixes.
+See [documentation](https://github.com/havelessbemore/semafy/wiki/modules) for details. 
+
+**TLDR;** This library provides:
+1. [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore)  
+Acquisition returns a [SemaphoreLock](https://github.com/havelessbemore/semafy/wiki/semaphorelock). This ensures that: 
+   <ol type="a">
+      <li>Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)</li>
+      <li>A call can release the semaphore once at most</li>
+   </ol>
+
+1. [Mutex](https://github.com/havelessbemore/semafy/wiki/mutex)  
+A convenience class for defining a binary [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
+
+1. [RawSemaphore](https://github.com/havelessbemore/semafy/wiki/rawsemaphore)  
+Similar to a [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore) but without using [SemaphoreLocks](https://github.com/havelessbemore/semafy/wiki/semaphorelock), so it does not have the same restrictions. Anything with a reference to the semaphore can:
+   <ol type="a">
+      <li>Increment it via <a href="https://github.com/havelessbemore/semafy/wiki/rawsemaphore#post">post()</a>, regardless of if the semaphore was first acquired</li>
+      <li>Increment it multiple times</li>
+      <li> Increment it above the initial value the semaphore was created with
+   </ol>
+   Acquisition returns a self-reference to the semaphore.
 
 ## Usage
 
 ### Semaphore
-
-Acquring a [Semaphore](./docs/classes/semaphore.md) returns a [SemaphoreLock](./docs/classes/semaphorelock.md) to make sure that:  
-1. Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)
-1. A call can release the semaphore once at most
 
 #### With Promises
 
@@ -126,8 +139,6 @@ function nowOrNever(callback) {
 
 ### Raw Semaphore
 
-While usage is very similar to a [Semaphore](./docs/classes/semaphore.md), it does not use [SemaphoreLocks]() and so does not have the same restrictions; Anything with a reference to the semaphore can increment its value multiple times via the [post()](./docs/classes/rawsemaphore.md#post) method. Acquiring a [RawSemaphore](./docs/classes/rawsemaphore.md) also returns the semaphore itself.
-
 #### With Promises
 
 ```js
@@ -186,6 +197,9 @@ function nowOrNever(callback) {
 }
 ```
 
-## API
+## Contribute
 
-See [documentation](https://github.com/havelessbemore/semafy/wiki/modules)
+There are many ways to contribute:
+* [Submit bugs](https://github.com/havelessbemore/semafy/issues) and help verify fixes.
+* Review [source code changes](https://github.com/havelessbemore/semafy/pulls).
+* Contribute bug fixes.

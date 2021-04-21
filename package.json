@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "doc": "rm -rf ./docs && typedoc",
+    "doc": "rm -rf ./docs && typedoc && mv docs/README.md docs/home.md",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run lint && npm run build",
