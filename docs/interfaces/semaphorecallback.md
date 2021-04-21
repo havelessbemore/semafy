@@ -1,12 +1,12 @@
-[semafy - v1.0.1](../README.md) / [Exports](../modules.md) / SafeSemaphoreCallback
+[semafy - v1.0.1](../README.md) / [Exports](../modules.md) / SemaphoreCallback
 
-# Interface: SafeSemaphoreCallback
+# Interface: SemaphoreCallback
 
 Defines the arguments to expect in a callback function passed to [Semaphore](../classes/semaphore.md) methods.
 
 ## Callable
 
-▸ **SafeSemaphoreCallback**(`error`: *undefined* \| [*SemaphoreError*](../classes/semaphoreerror.md), `lock`: [*SemaphoreLock*](../classes/semaphorelock.md)): *void*
+▸ **SemaphoreCallback**(`error`: *undefined* \| [*SemaphoreError*](../classes/semaphoreerror.md), `lock`: [*SemaphoreLock*](../classes/semaphorelock.md)): *void*
 
 Defines the arguments to expect in a callback function passed to [Semaphore](../classes/semaphore.md) methods.
 
@@ -19,4 +19,4 @@ Defines the arguments to expect in a callback function passed to [Semaphore](../
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:11](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L11)
+Defined in: [src/semaphore.ts:11](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L11)

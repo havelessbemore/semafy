@@ -8,7 +8,7 @@ import { SemaphoreLock } from './semaphoreLock';
  * @param error - A {@link SemaphoreError} if the semaphore could not be acquired. Otherwise, this is `undefined`
  * @param lock - A {@link SemaphoreLock} to the {@link Semaphore} being acquired. If acquired, the lock will be locked. Otherwise, the lock will be unlocked.
  */
-export interface SafeSemaphoreCallback {
+export interface SemaphoreCallback {
     (error: SemaphoreError | undefined, lock: SemaphoreLock): void;
 }
 
@@ -81,8 +81,8 @@ export class Semaphore {
      *
      * @param callback - A function to call once acquisition is successful or rejected
      */
-    wait(callback: SafeSemaphoreCallback): void;
-    wait(callback?: SafeSemaphoreCallback | null): void | Promise<SemaphoreLock> {
+    wait(callback: SemaphoreCallback): void;
+    wait(callback?: SemaphoreCallback | null): void | Promise<SemaphoreLock> {
         // Sanitize inputs
         if (callback == null) {
             return new Promise((resolve, reject) => {
@@ -116,8 +116,8 @@ export class Semaphore {
      * @param ms - The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0
      * @param callback - A function to call once acquisition is successful or rejected
      */
-    waitFor(ms: number | null | undefined, callback: SafeSemaphoreCallback): void;
-    waitFor(ms?: number | null, callback?: SafeSemaphoreCallback | null): void | Promise<SemaphoreLock> {
+    waitFor(ms: number | null | undefined, callback: SemaphoreCallback): void;
+    waitFor(ms?: number | null, callback?: SemaphoreCallback | null): void | Promise<SemaphoreLock> {
         // Sanitize inputs
         if (callback == null) {
             return new Promise((resolve, reject) => {

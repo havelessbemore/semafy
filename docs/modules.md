@@ -16,4 +16,4 @@
 
 - [Queue](interfaces/queue.md)
 - [RawSemaphoreCallback](interfaces/rawsemaphorecallback.md)
-- [SafeSemaphoreCallback](interfaces/safesemaphorecallback.md)
+- [SemaphoreCallback](interfaces/semaphorecallback.md)

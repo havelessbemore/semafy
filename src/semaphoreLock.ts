@@ -1,33 +1,47 @@
+import { SemaphoreCallback } from './semaphore';
 import { RawSemaphore } from './rawSemaphore';
 
 /**
- * Represents acquisition of a semaphore.
+ * Represents a lock (acquisition) on a semaphore.
  *
  * Usage imposes the following restrictions:
- * 1. Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)
- * 1. If acquired, a call can release the semaphore once at most
+ * 1. A semaphore must first be acquired (locked) before it can be released (unlocked)
+ * 1. If locked, the lock can be unlocked once at most
+ * 1. Once unlocked, the lock is exhausted. If needed, a new lock must be acquired via the semaphore
  */
 export class SemaphoreLock {
     /**
-     *
-     * @param semaphore - The semaphore being locked
-     * @param isEnabled - Whether or not the semaphore is acquired
+     * Whether or not the semaphore is acquired
      */
-    constructor(protected semaphore: RawSemaphore, protected isEnabled: boolean = true) {}
+    protected isAcquired: boolean;
+    /**
+     * The semaphore being locked
+     */
+    protected semaphore: RawSemaphore;
 
     /**
-     * Check if the {@link semaphore} is locked
+     *
+     * @param semaphore - The semaphore being locked
+     * @param isAcquired - Whether or not the semaphore is acquired
      */
-    isLocked(): boolean {
-        return this.isEnabled;
+    constructor(semaphore: RawSemaphore, isAcquired = true) {
+        this.semaphore = semaphore;
+        this.isAcquired = isAcquired;
     }
 
     /**
-     * If locked, release the {@link semaphore} and increment its {@link Semaphore.value | value}
+     * Check if locked
      */
-    unlock() {
-        if (this.isEnabled) {
-            this.isEnabled = false;
+    isLocked(): boolean {
+        return this.isAcquired;
+    }
+
+    /**
+     * If locked, then unlock
+     */
+    unlock(): void {
+        if (this.isAcquired) {
+            this.isAcquired = false;
             this.semaphore.post();
         }
     }

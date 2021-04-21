@@ -45,7 +45,7 @@ Creates a semaphore object
 
 **Returns:** [*Semaphore*](semaphore.md)
 
-Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L19)
+Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L19)
 
 \+ **new Semaphore**(`semaphore`: [*RawSemaphore*](rawsemaphore.md)): [*Semaphore*](semaphore.md)
 
@@ -59,7 +59,7 @@ Creates a semaphore object
 
 **Returns:** [*Semaphore*](semaphore.md)
 
-Defined in: [src/semaphore.ts:26](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L26)
+Defined in: [src/semaphore.ts:26](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L26)
 
 ## Properties
 
@@ -69,7 +69,7 @@ Defined in: [src/semaphore.ts:26](https://github.com/havelessbemore/semafy/blob/
 
 The underlying raw semaphore
 
-Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L19)
+Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L19)
 
 ## Accessors
 
@@ -81,7 +81,7 @@ The number of calls allowed to acquire the semaphore concurrently
 
 **Returns:** *number*
 
-Defined in: [src/semaphore.ts:63](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L63)
+Defined in: [src/semaphore.ts:63](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L63)
 
 ## Methods
 
@@ -93,7 +93,7 @@ Rejects all calls waiting for the semaphore. Rejected calls receive a [Semaphore
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:44](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L44)
+Defined in: [src/semaphore.ts:44](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L44)
 
 ___
 
@@ -108,7 +108,7 @@ Try to acquire the semaphore if immediately available.
 [SemaphoreLock](semaphorelock.md) and decrements the semaphore's [value](semaphore.md#value) if the semaphore could be acquired.
 Otherwise, returns `undefined`
 
-Defined in: [src/semaphore.ts:54](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L54)
+Defined in: [src/semaphore.ts:54](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L54)
 
 ___
 
@@ -130,9 +130,9 @@ can be acquired or the call is rejected.
 
 **Returns:** *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
 
-Defined in: [src/semaphore.ts:74](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L74)
+Defined in: [src/semaphore.ts:74](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L74)
 
-▸ **wait**(`callback`: [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md)): *void*
+▸ **wait**(`callback`: [*SemaphoreCallback*](../interfaces/semaphorecallback.md)): *void*
 
 Acquire (lock) the semaphore.
 
@@ -144,11 +144,11 @@ can be acquired or the call is rejected.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md) | A function to call once acquisition is successful or rejected |
+| `callback` | [*SemaphoreCallback*](../interfaces/semaphorecallback.md) | A function to call once acquisition is successful or rejected |
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:84](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L84)
+Defined in: [src/semaphore.ts:84](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L84)
 
 ___
 
@@ -171,9 +171,9 @@ acquired, then the call is rejected.
 
 **Returns:** *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
 
-Defined in: [src/semaphore.ts:108](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L108)
+Defined in: [src/semaphore.ts:108](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L108)
 
-▸ **waitFor**(`ms`: *undefined* \| ``null`` \| *number*, `callback`: [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md)): *void*
+▸ **waitFor**(`ms`: *undefined* \| ``null`` \| *number*, `callback`: [*SemaphoreCallback*](../interfaces/semaphorecallback.md)): *void*
 
 Acquire (lock) the semaphore within a time limit.
 
@@ -186,8 +186,8 @@ acquired, then the call is rejected.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ms` | *undefined* \| ``null`` \| *number* | The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0 |
-| `callback` | [*SafeSemaphoreCallback*](../interfaces/safesemaphorecallback.md) | A function to call once acquisition is successful or rejected |
+| `callback` | [*SemaphoreCallback*](../interfaces/semaphorecallback.md) | A function to call once acquisition is successful or rejected |
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:119](https://github.com/havelessbemore/semafy/blob/03d6228/src/semaphore.ts#L119)
+Defined in: [src/semaphore.ts:119](https://github.com/havelessbemore/semafy/blob/33d1ef9/src/semaphore.ts#L119)
