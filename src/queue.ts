@@ -1,16 +1,45 @@
+/**
+ * @ignore
+ */
 export interface LinkedNode<T> {
     next?: LinkedNode<T>;
     value: T;
 }
 
 export interface Queue<T> extends Iterable<T> {
+    /**
+     * Removes all elements from this queue
+     */
     clear(): void;
+    /**
+     * Retrieves and removes the head of this queue
+     *
+     * @returns The value at the head of the queue or `null` if this queue is empty.
+     */
     dequeue(): T | null;
-    enqueue(val: T): boolean;
+    /**
+     * Inserts the specified value into this queue
+     *
+     * @param value - The element to be inserted
+     *
+     * @returns `true` upon success, otherwise `false`
+     */
+    enqueue(value: T): boolean;
+    /**
+     * Retrieves, but does not remove, the head of this queue
+     *
+     * @returns The value at the head of the queue or `null` if this queue is empty.
+     */
     peek(): T | null;
+    /**
+     * The number of elements in this queue
+     */
     readonly size: number;
 }
 
+/**
+ * @ignore
+ */
 export class ArrayQueue<T> implements Queue<T> {
     constructor(protected array: Array<T> = []) {}
 
@@ -42,6 +71,9 @@ export class ArrayQueue<T> implements Queue<T> {
     }
 }
 
+/**
+ * @ignore
+ */
 export class LinkedQueue<T> implements Queue<T> {
     protected length: number;
     protected head?: LinkedNode<T>;

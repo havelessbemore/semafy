@@ -1,6 +1,6 @@
-# Semafy
+semafy - v1.0.1 / [Exports](modules.md)
 
-[![npm](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
+# Semafy
 
 Semaphore & Mutex implementation for node
 
@@ -188,4 +188,4 @@ function nowOrNever(callback) {
 
 ## API
 
-See [documentation](https://github.com/havelessbemore/semafy/wiki/modules)
+See [documentation](./docs/modules.md)

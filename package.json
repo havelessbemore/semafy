@@ -1,6 +1,6 @@
 {
   "name": "semafy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Semaphore & Mutex implementation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,8 +12,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "build": "tsc",
+    "doc": "rm -rf ./docs && typedoc",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run lint && npm run build",
     "prepare": "husky install"
@@ -39,6 +40,8 @@
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
+    "typedoc": "^0.20.35",
+    "typedoc-github-wiki-theme": "^0.2.0",
     "typescript": "^4.2.4"
   },
   "lint-staged": {
