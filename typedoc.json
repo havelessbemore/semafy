@@ -1,5 +1,8 @@
 {
+    "disableOutputCheck": true,
     "entryPoints": ["src/index.ts"],
     "includeVersion": true,
-    "out": "docs"
+    "out": "docs",
+    "plugin": "typedoc-plugin-markdown",
+    "theme": "./node_modules/typedoc-github-wiki-theme/dist"
 }

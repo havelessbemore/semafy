@@ -12,23 +12,23 @@ npm install semafy
 
 ## API
 
-See [documentation](https://github.com/havelessbemore/semafy/wiki/modules) for details. 
+See [documentation](https://github.com/havelessbemore/semafy/wiki/Modules) for details. 
 
 **TLDR;** This library provides:
-1. [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore)  
-Acquisition returns a [SemaphoreLock](https://github.com/havelessbemore/semafy/wiki/semaphorelock). This ensures that: 
+1. [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore)  
+Acquisition returns a [SemaphoreLock](https://github.com/havelessbemore/semafy/wiki/Class:%20SemaphoreLock). This ensures that: 
    <ol type="a">
       <li>Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)</li>
       <li>A call can release the semaphore once at most</li>
    </ol>
 
-1. [Mutex](https://github.com/havelessbemore/semafy/wiki/mutex)  
-A convenience class for defining a binary [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
+1. [Mutex](https://github.com/havelessbemore/semafy/wiki/Class:%20Mutex)  
+A convenience class for defining a binary [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
 
-1. [RawSemaphore](https://github.com/havelessbemore/semafy/wiki/rawsemaphore)  
-Similar to a [Semaphore](https://github.com/havelessbemore/semafy/wiki/semaphore) but without using [SemaphoreLocks](https://github.com/havelessbemore/semafy/wiki/semaphorelock), so it does not have the same restrictions. Anything with a reference to the semaphore can:
+1. [RawSemaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20RawSemaphore)  
+Similar to a [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore) but without using [SemaphoreLocks](https://github.com/havelessbemore/semafy/wiki/Class:%20SemaphoreLock), so it does not have the same restrictions. Anything with a reference to the semaphore can:
    <ol type="a">
-      <li>Increment it via <a href="https://github.com/havelessbemore/semafy/wiki/rawsemaphore#post">post()</a>, regardless of if the semaphore was first acquired</li>
+      <li>Increment it via <a href="https://github.com/havelessbemore/semafy/wiki/Class:%20RawSemaphore#post">post()</a>, regardless of if the semaphore was first acquired</li>
       <li>Increment it multiple times</li>
       <li> Increment it above the initial value the semaphore was created with
    </ol>
