@@ -4,6 +4,10 @@
   "description": "Semaphore & Mutex implementation",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/havelessbemore/semafy.git"
+  },
   "directories": {
     "lib": "lib"
   },
