@@ -12,23 +12,23 @@ npm install semafy
 
 ## API
 
-See [documentation](https://github.com/havelessbemore/semafy/wiki/Modules) for details. 
+See [docs/](./docs/modules.md) for details (or [wiki](https://github.com/havelessbemore/semafy/wiki/Modules) for the latest documentation)
 
 **TLDR;** This library provides:
-1. [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore)  
-Acquisition returns a [SemaphoreLock](https://github.com/havelessbemore/semafy/wiki/Class:%20SemaphoreLock). This ensures that: 
+1. [Semaphore](./docs/classes/semaphore.md)  
+Acquisition returns a [SemaphoreLock](./docs/classes/semaphorelock.md). This ensures that: 
    <ol type="a">
       <li>Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)</li>
       <li>A call can release the semaphore once at most</li>
    </ol>
 
-1. [Mutex](https://github.com/havelessbemore/semafy/wiki/Class:%20Mutex)  
-A convenience class for defining a binary [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
+1. [Mutex](./docs/classes/mutex.md)  
+A convenience class for defining a binary [Semaphore](./docs/classes/semaphore.md). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
 
-1. [RawSemaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20RawSemaphore)  
-Similar to a [Semaphore](https://github.com/havelessbemore/semafy/wiki/Class:%20Semaphore) but without using [SemaphoreLocks](https://github.com/havelessbemore/semafy/wiki/Class:%20SemaphoreLock), so it does not have the same restrictions. Anything with a reference to the semaphore can:
+1. [RawSemaphore](./docs/classes/rawsemaphore.md)  
+Similar to a [Semaphore](./docs/classes/semaphore.md) but without using [SemaphoreLocks](./docs/classes/semaphorelock.md), so it does not have the same restrictions. Anything with a reference to the semaphore can:
    <ol type="a">
-      <li>Increment it via <a href="https://github.com/havelessbemore/semafy/wiki/Class:%20RawSemaphore#post">post()</a>, regardless of if the semaphore was first acquired</li>
+      <li>Increment it via <a href="./docs/classes/rawsemaphore.md#post">post()</a>, regardless of if the semaphore was first acquired</li>
       <li>Increment it multiple times</li>
       <li> Increment it above the initial value the semaphore was created with
    </ol>
