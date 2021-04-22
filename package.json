@@ -21,7 +21,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run lint && npm run build",
     "prepare": "husky install",
-    "wiki": "rm -rf ./wiki/* && typedoc --options typedoc.wiki.json && sed -r -i'' -e 's/\\.\\/docs\\//\\.\\.\\/wiki\\//g' -e 's/(\\.\\.\\/wiki\\/)classes\\//\\1Class:%20/g' -e 's/\\.md//g' ./wiki/Home.md"
+    "wiki": "rm -rf ./wiki/* && typedoc --options typedoc.wiki.json"
   },
   "keywords": [
     "async",

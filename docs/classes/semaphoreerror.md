@@ -1,4 +1,4 @@
-[semafy - v1.0.4](../README.md) / [Exports](../modules.md) / SemaphoreError
+[semafy - v1.0.4](../README.md) / SemaphoreError
 
 # Class: SemaphoreError
 
@@ -48,7 +48,7 @@ This can be encountered when:
 
 Overrides: Error.constructor
 
-Defined in: [src/semaphoreError.ts:8](https://github.com/havelessbemore/semafy/blob/1695d55/src/semaphoreError.ts#L8)
+Defined in: [src/semaphoreError.ts:8](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreError.ts#L8)
 
 ## Properties
 

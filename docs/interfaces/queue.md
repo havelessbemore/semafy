@@ -1,4 +1,4 @@
-[semafy - v1.0.4](../README.md) / [Exports](../modules.md) / Queue
+[semafy - v1.0.4](../README.md) / Queue
 
 # Interface: Queue<T\>
 
@@ -36,7 +36,7 @@
 
 The number of elements in this queue
 
-Defined in: [src/queue.ts:37](https://github.com/havelessbemore/semafy/blob/1695d55/src/queue.ts#L37)
+Defined in: [src/queue.ts:37](https://github.com/havelessbemore/semafy/blob/c0263a3/src/queue.ts#L37)
 
 ## Methods
 
@@ -60,7 +60,7 @@ Removes all elements from this queue
 
 **Returns:** *void*
 
-Defined in: [src/queue.ts:13](https://github.com/havelessbemore/semafy/blob/1695d55/src/queue.ts#L13)
+Defined in: [src/queue.ts:13](https://github.com/havelessbemore/semafy/blob/c0263a3/src/queue.ts#L13)
 
 ___
 
@@ -74,7 +74,7 @@ Retrieves and removes the head of this queue
 
 The value at the head of the queue or `null` if this queue is empty.
 
-Defined in: [src/queue.ts:19](https://github.com/havelessbemore/semafy/blob/1695d55/src/queue.ts#L19)
+Defined in: [src/queue.ts:19](https://github.com/havelessbemore/semafy/blob/c0263a3/src/queue.ts#L19)
 
 ___
 
@@ -94,7 +94,7 @@ Inserts the specified value into this queue
 
 `true` upon success, otherwise `false`
 
-Defined in: [src/queue.ts:27](https://github.com/havelessbemore/semafy/blob/1695d55/src/queue.ts#L27)
+Defined in: [src/queue.ts:27](https://github.com/havelessbemore/semafy/blob/c0263a3/src/queue.ts#L27)
 
 ___
 
@@ -108,4 +108,4 @@ Retrieves, but does not remove, the head of this queue
 
 The value at the head of the queue or `null` if this queue is empty.
 
-Defined in: [src/queue.ts:33](https://github.com/havelessbemore/semafy/blob/1695d55/src/queue.ts#L33)
+Defined in: [src/queue.ts:33](https://github.com/havelessbemore/semafy/blob/c0263a3/src/queue.ts#L33)

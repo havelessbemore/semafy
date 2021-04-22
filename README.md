@@ -12,7 +12,7 @@ npm install semafy
 
 ## API
 
-See [docs/](./docs/modules.md) for details (or [wiki](https://github.com/havelessbemore/semafy/wiki/Modules) for the latest documentation)
+See [docs/](./docs/README.md) for details (or [wiki](https://github.com/havelessbemore/semafy/wiki) for the latest documentation)
 
 **TLDR;** This library provides:
 1. [Semaphore](./docs/classes/semaphore.md)  
