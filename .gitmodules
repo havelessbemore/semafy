@@ -1,4 +1,0 @@
-[submodule "docs"]
-	path = docs
-	url = https://github.com/havelessbemore/semafy.wiki.git
-	branch = master

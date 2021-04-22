@@ -40,3 +40,6 @@ Thumbs.db
 
 # Ignore yarn.lock
 yarn.lock
+
+# Ignore wiki staging directory
+/wiki

@@ -16,11 +16,12 @@
   ],
   "scripts": {
     "build": "tsc",
-    "docs": "rm -rf ./docs/* && typedoc",
+    "docs": "rm -rf ./docs/* && typedoc --options typedoc.docs.json",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run lint && npm run build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "wiki": "rm -rf ./wiki/* && typedoc --options typedoc.wiki.json"
   },
   "keywords": [
     "async",
