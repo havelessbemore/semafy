@@ -1,6 +1,7 @@
 # Semafy
 
 [![npm](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
+[![types](https://img.shields.io/npm/types/semafy)](https://www.npmjs.com/package/semafy)
 
 Semaphore & Mutex implementation for node
 
