@@ -16,20 +16,20 @@ export interface RawSemaphoreCallback {
  */
 export class RawSemaphore {
     /**
-     * The underlying queue to keep track of pending calls
-     */
-    public queue: Queue<RawSemaphoreCallback>;
-    /**
      * The number of calls allowed to acquire the semaphore concurrently
      */
-    public value: number;
+    protected count: number;
+    /**
+     * The underlying queue to keep track of pending calls
+     */
+    protected queue: Queue<RawSemaphoreCallback>;
 
     /**
      * @param value - The initial number of calls allowed to acquire the semaphore concurrently
      * @param queue - The underlying queue to keep track of pending calls
      */
     constructor(value: number, queue: Queue<RawSemaphoreCallback> = new LinkedQueue()) {
-        this.value = value;
+        this.count = value;
         this.queue = queue;
     }
 
@@ -46,7 +46,7 @@ export class RawSemaphore {
      * Increment the semaphore's {@link value} by 1
      */
     post(): void {
-        ++this.value;
+        ++this.count;
         this.update();
     }
 
@@ -58,11 +58,18 @@ export class RawSemaphore {
      * Otherwise, returns `false`
      */
     tryWait(): boolean {
-        if (this.value < 1) {
+        if (this.count < 1) {
             return false;
         }
-        --this.value;
+        --this.count;
         return true;
+    }
+
+    /**
+     * The number of calls allowed to acquire the semaphore concurrently
+     */
+    get value(): number {
+        return this.count;
     }
 
     /**
@@ -143,11 +150,12 @@ export class RawSemaphore {
     }
 
     /**
-     * @ignore
+     * If the semaphore's value is above 0 and there
+     * are calls waiting, remove and unblock the head.
      */
     protected update(): void {
-        if (this.value > 0 && this.queue.size > 0) {
-            --this.value;
+        if (this.count > 0 && this.queue.size > 0) {
+            --this.count;
             this.queue.dequeue()!(undefined, this);
         }
     }

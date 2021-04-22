@@ -16,7 +16,7 @@ export class Semaphore {
     /**
      * The underlying raw semaphore
      */
-    public semaphore: RawSemaphore;
+    protected semaphore: RawSemaphore;
 
     /**
      * Creates a semaphore object
