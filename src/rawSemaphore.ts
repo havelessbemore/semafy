@@ -38,7 +38,7 @@ export class RawSemaphore {
      */
     clear(): void {
         for (const callback of this.queue) {
-            callback(new SemaphoreError(), this);
+            setImmediate(callback, new SemaphoreError(), this);
         }
     }
 
@@ -156,7 +156,8 @@ export class RawSemaphore {
     protected update(): void {
         if (this.count > 0 && this.queue.size > 0) {
             --this.count;
-            this.queue.dequeue()!(undefined, this);
+            const callback = this.queue.dequeue()!;
+            setImmediate(callback, undefined, this);
         }
     }
 }

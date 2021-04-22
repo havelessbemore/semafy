@@ -40,6 +40,3 @@ Thumbs.db
 
 # Ignore yarn.lock
 yarn.lock
-
-# Ignore docs (Github Wiki) submodule
-/docs
