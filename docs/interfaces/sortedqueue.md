@@ -1,6 +1,6 @@
-[semafy - v1.0.6](../README.md) / Queue
+[semafy - v1.0.6](../README.md) / SortedQueue
 
-# Interface: Queue<T\>
+# Interface: SortedQueue<T\>
 
 ## Type parameters
 
@@ -10,25 +10,26 @@
 
 ## Hierarchy
 
-* *Iterable*<T\>
+* [*Queue*](queue.md)<T\>
 
-  ↳ **Queue**
+* *Sorted*<T\>
 
-  ↳↳ [*SortedQueue*](sortedqueue.md)
+  ↳ **SortedQueue**
 
 ## Table of contents
 
 ### Properties
 
-- [size](queue.md#size)
+- [size](sortedqueue.md#size)
 
 ### Methods
 
-- [[Symbol.iterator]](queue.md#[symbol.iterator])
-- [clear](queue.md#clear)
-- [dequeue](queue.md#dequeue)
-- [enqueue](queue.md#enqueue)
-- [peek](queue.md#peek)
+- [[Symbol.iterator]](sortedqueue.md#[symbol.iterator])
+- [clear](sortedqueue.md#clear)
+- [comparator](sortedqueue.md#comparator)
+- [dequeue](sortedqueue.md#dequeue)
+- [enqueue](sortedqueue.md#enqueue)
+- [peek](sortedqueue.md#peek)
 
 ## Properties
 
@@ -37,6 +38,8 @@
 • `Readonly` **size**: *number*
 
 The number of elements in this queue
+
+Inherited from: [Queue](queue.md).[size](queue.md#size)
 
 Defined in: [src/structures/queue.ts:40](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/queue.ts#L40)
 
@@ -48,7 +51,7 @@ Defined in: [src/structures/queue.ts:40](https://github.com/havelessbemore/semaf
 
 **Returns:** *Iterator*<T, any, undefined\>
 
-Inherited from: Iterable.__@iterator
+Inherited from: [Queue](queue.md)
 
 Defined in: node_modules/typescript/lib/lib.es2015.iterable.d.ts:51
 
@@ -62,7 +65,21 @@ Removes all elements from this queue
 
 **Returns:** *void*
 
+Inherited from: [Queue](queue.md)
+
 Defined in: [src/structures/queue.ts:16](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/queue.ts#L16)
+
+___
+
+### comparator
+
+▸ **comparator**(): *Comparator*<T\>
+
+**Returns:** *Comparator*<T\>
+
+Inherited from: Sorted.comparator
+
+Defined in: [src/structures/compare.ts:34](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/compare.ts#L34)
 
 ___
 
@@ -75,6 +92,8 @@ Retrieves and removes the head of this queue
 **Returns:** ``null`` \| T
 
 The value at the head of the queue or `null` if this queue is empty.
+
+Inherited from: [Queue](queue.md)
 
 Defined in: [src/structures/queue.ts:22](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/queue.ts#L22)
 
@@ -96,6 +115,8 @@ Inserts the specified value into this queue
 
 `true` upon success, otherwise `false`
 
+Inherited from: [Queue](queue.md)
+
 Defined in: [src/structures/queue.ts:30](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/queue.ts#L30)
 
 ___
@@ -109,5 +130,7 @@ Retrieves, but does not remove, the head of this queue
 **Returns:** ``null`` \| T
 
 The value at the head of the queue or `null` if this queue is empty.
+
+Inherited from: [Queue](queue.md)
 
 Defined in: [src/structures/queue.ts:36](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/structures/queue.ts#L36)

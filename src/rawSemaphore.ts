@@ -1,4 +1,4 @@
-import { LinkedQueue, Queue } from './queue';
+import { LinkedQueue, Queue } from './structures';
 import { SemaphoreError } from './semaphoreError';
 
 /**

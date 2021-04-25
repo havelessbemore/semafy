@@ -1,4 +1,4 @@
-[semafy - v1.0.5](../README.md) / RawSemaphore
+[semafy - v1.0.6](../README.md) / RawSemaphore
 
 # Class: RawSemaphore
 
@@ -43,7 +43,7 @@ Related to an [unnamed POSIX semaphore](https://man7.org/linux/man-pages/man7/se
 
 **Returns:** [*RawSemaphore*](rawsemaphore.md)
 
-Defined in: [src/rawSemaphore.ts:25](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L25)
+Defined in: [src/rawSemaphore.ts:25](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L25)
 
 ## Properties
 
@@ -53,7 +53,7 @@ Defined in: [src/rawSemaphore.ts:25](https://github.com/havelessbemore/semafy/bl
 
 The number of calls allowed to acquire the semaphore concurrently
 
-Defined in: [src/rawSemaphore.ts:21](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L21)
+Defined in: [src/rawSemaphore.ts:21](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L21)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 The underlying queue to keep track of pending calls
 
-Defined in: [src/rawSemaphore.ts:25](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L25)
+Defined in: [src/rawSemaphore.ts:25](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L25)
 
 ## Accessors
 
@@ -75,7 +75,7 @@ The number of calls allowed to acquire the semaphore concurrently
 
 **Returns:** *number*
 
-Defined in: [src/rawSemaphore.ts:71](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L71)
+Defined in: [src/rawSemaphore.ts:71](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L71)
 
 ## Methods
 
@@ -87,7 +87,7 @@ Rejects all calls waiting for the semaphore. Rejected calls receive a [Semaphore
 
 **Returns:** *void*
 
-Defined in: [src/rawSemaphore.ts:39](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L39)
+Defined in: [src/rawSemaphore.ts:39](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L39)
 
 ___
 
@@ -99,7 +99,7 @@ Increment the semaphore's [value](rawsemaphore.md#value) by 1
 
 **Returns:** *void*
 
-Defined in: [src/rawSemaphore.ts:48](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L48)
+Defined in: [src/rawSemaphore.ts:48](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L48)
 
 ___
 
@@ -115,7 +115,7 @@ Try to acquire the semaphore if immediately available.
 
 Otherwise, returns `false`
 
-Defined in: [src/rawSemaphore.ts:60](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L60)
+Defined in: [src/rawSemaphore.ts:60](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L60)
 
 ___
 
@@ -128,7 +128,7 @@ are calls waiting, remove and unblock the head.
 
 **Returns:** *void*
 
-Defined in: [src/rawSemaphore.ts:156](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L156)
+Defined in: [src/rawSemaphore.ts:156](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L156)
 
 ___
 
@@ -150,7 +150,7 @@ can be acquired or the call is rejected.
 
 **Returns:** *Promise*<[*RawSemaphore*](rawsemaphore.md)\>
 
-Defined in: [src/rawSemaphore.ts:82](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L82)
+Defined in: [src/rawSemaphore.ts:82](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L82)
 
 ▸ **wait**(`callback`: [*RawSemaphoreCallback*](../interfaces/rawsemaphorecallback.md)): *void*
 
@@ -168,7 +168,7 @@ can be acquired or the call is rejected.
 
 **Returns:** *void*
 
-Defined in: [src/rawSemaphore.ts:92](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L92)
+Defined in: [src/rawSemaphore.ts:92](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L92)
 
 ___
 
@@ -191,7 +191,7 @@ acquired, then the call is rejected.
 
 **Returns:** *Promise*<[*RawSemaphore*](rawsemaphore.md)\>
 
-Defined in: [src/rawSemaphore.ts:115](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L115)
+Defined in: [src/rawSemaphore.ts:115](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L115)
 
 ▸ **waitFor**(`ms`: *undefined* \| ``null`` \| *number*, `callback`: [*RawSemaphoreCallback*](../interfaces/rawsemaphorecallback.md)): *void*
 
@@ -210,4 +210,4 @@ acquired, then the call is rejected.
 
 **Returns:** *void*
 
-Defined in: [src/rawSemaphore.ts:126](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/rawSemaphore.ts#L126)
+Defined in: [src/rawSemaphore.ts:126](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/rawSemaphore.ts#L126)

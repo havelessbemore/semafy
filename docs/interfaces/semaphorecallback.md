@@ -1,4 +1,4 @@
-[semafy - v1.0.5](../README.md) / SemaphoreCallback
+[semafy - v1.0.6](../README.md) / SemaphoreCallback
 
 # Interface: SemaphoreCallback
 
@@ -19,4 +19,4 @@ Defines the arguments to expect in a callback function passed to [Semaphore](../
 
 **Returns:** *void*
 
-Defined in: [src/semaphore.ts:11](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphore.ts#L11)
+Defined in: [src/semaphore.ts:11](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L11)

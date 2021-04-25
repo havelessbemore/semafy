@@ -1,6 +1,6 @@
-semafy - v1.0.5
+semafy - v1.0.6
 
-# semafy - v1.0.5
+# semafy - v1.0.6
 
 ## Table of contents
 
@@ -17,3 +17,4 @@ semafy - v1.0.5
 - [Queue](interfaces/queue.md)
 - [RawSemaphoreCallback](interfaces/rawsemaphorecallback.md)
 - [SemaphoreCallback](interfaces/semaphorecallback.md)
+- [SortedQueue](interfaces/sortedqueue.md)
