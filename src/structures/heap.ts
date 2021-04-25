@@ -135,7 +135,10 @@ export class BinaryMinHeap<T> implements Heap<T> {
 
             // Decide which child to compare with
             let child = this.array[childIndex];
-            if (childIndex + 1 < n && this._comparator.compare(this.array[childIndex + 1]!, child) <= 0) {
+            if (
+                childIndex + 1 < n &&
+                this._comparator.compare(this.array[childIndex + 1]!, child) <= 0
+            ) {
                 child = this.array[++childIndex]!;
             }
 
@@ -154,7 +157,9 @@ export class BinaryMinHeap<T> implements Heap<T> {
     [Symbol.iterator](): Iterator<T> {
         return {
             next: () => {
-                return this.size < 1 ? { done: true, value: null } : { done: false, value: this.pop()! };
+                return this.size < 1
+                    ? { done: true, value: null }
+                    : { done: false, value: this.pop()! };
             },
         };
     }

@@ -117,7 +117,10 @@ export class Semaphore {
      * @param callback - A function to call once acquisition is successful or rejected
      */
     waitFor(ms: number | null | undefined, callback: SemaphoreCallback): void;
-    waitFor(ms?: number | null, callback?: SemaphoreCallback | null): void | Promise<SemaphoreLock> {
+    waitFor(
+        ms?: number | null,
+        callback?: SemaphoreCallback | null,
+    ): void | Promise<SemaphoreLock> {
         // Sanitize inputs
         if (callback == null) {
             return new Promise((resolve, reject) => {

@@ -124,7 +124,10 @@ export class RawSemaphore {
      * @param callback - A function to call once acquisition is successful or rejected
      */
     waitFor(ms: number | null | undefined, callback: RawSemaphoreCallback): void;
-    waitFor(ms?: number | null, callback?: RawSemaphoreCallback | null): void | Promise<RawSemaphore> {
+    waitFor(
+        ms?: number | null,
+        callback?: RawSemaphoreCallback | null,
+    ): void | Promise<RawSemaphore> {
         // Sanitize inputs
         if (callback == null) {
             return new Promise((resolve, reject) => {

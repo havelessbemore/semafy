@@ -17,6 +17,7 @@ tmp
 public/css/main.css
 
 # Coverage reports
+.nyc_output
 coverage
 
 # API keys and secrets
