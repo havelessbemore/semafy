@@ -9,7 +9,15 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                use: 'ts-loader',
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            ['@babel/preset-env', { targets: "defaults" }],
+                            ["@babel/preset-typescript"]
+                        ]
+                    }
+                }
             }
         ],
     },
@@ -25,4 +33,7 @@ module.exports = {
         filename: 'semafy.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    stats: {
+        orphanModules: true
+    }
 };
