@@ -1,4 +1,3 @@
-import { SemaphoreCallback } from './semaphore';
 import { RawSemaphore } from './rawSemaphore';
 
 /**

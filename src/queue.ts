@@ -86,7 +86,9 @@ export class ArrayQueue<T> implements Queue<T> {
 
     [Symbol.iterator](): Iterator<T> {
         return {
-            next: () => (this.size < 1 ? { done: false, value: this.dequeue()! } : { done: true, value: null }),
+            next: () => {
+                return this.size < 1 ? { done: true, value: null } : { done: false, value: this.dequeue()! };
+            },
         };
     }
 }
@@ -268,7 +270,9 @@ export class LinkedQueue<T> implements Queue<T> {
 
     [Symbol.iterator](): Iterator<T> {
         return {
-            next: () => (this.size < 1 ? { done: false, value: this.dequeue()! } : { done: true, value: null }),
+            next: () => {
+                return this.size < 1 ? { done: true, value: null } : { done: false, value: this.dequeue()! };
+            },
         };
     }
 }
@@ -302,7 +306,9 @@ export class PriorityQueue<T> implements Queue<T> {
 
     [Symbol.iterator](): Iterator<T> {
         return {
-            next: () => (this.size < 1 ? { done: false, value: this.dequeue()! } : { done: true, value: null }),
+            next: () => {
+                return this.size < 1 ? { done: true, value: null } : { done: false, value: this.dequeue()! };
+            },
         };
     }
 }
