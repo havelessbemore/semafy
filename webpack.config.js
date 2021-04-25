@@ -32,8 +32,5 @@ module.exports = {
         },
         filename: 'semafy.min.js',
         path: path.resolve(__dirname, 'dist'),
-    },
-    stats: {
-        orphanModules: true
     }
 };

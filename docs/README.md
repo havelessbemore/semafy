@@ -1,6 +1,6 @@
-semafy - v1.0.4
+semafy - v1.0.5
 
-# semafy - v1.0.4
+# semafy - v1.0.5
 
 ## Table of contents
 

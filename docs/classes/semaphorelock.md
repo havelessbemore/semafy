@@ -1,4 +1,4 @@
-[semafy - v1.0.4](../README.md) / SemaphoreLock
+[semafy - v1.0.5](../README.md) / SemaphoreLock
 
 # Class: SemaphoreLock
 
@@ -40,7 +40,7 @@ Usage imposes the following restrictions:
 
 **Returns:** [*SemaphoreLock*](semaphorelock.md)
 
-Defined in: [src/semaphoreLock.ts:20](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreLock.ts#L20)
+Defined in: [src/semaphoreLock.ts:19](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphoreLock.ts#L19)
 
 ## Properties
 
@@ -50,7 +50,7 @@ Defined in: [src/semaphoreLock.ts:20](https://github.com/havelessbemore/semafy/b
 
 Whether or not the semaphore is acquired
 
-Defined in: [src/semaphoreLock.ts:16](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreLock.ts#L16)
+Defined in: [src/semaphoreLock.ts:15](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphoreLock.ts#L15)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 The semaphore being locked
 
-Defined in: [src/semaphoreLock.ts:20](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreLock.ts#L20)
+Defined in: [src/semaphoreLock.ts:19](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphoreLock.ts#L19)
 
 ## Methods
 
@@ -72,7 +72,7 @@ Check if locked
 
 **Returns:** *boolean*
 
-Defined in: [src/semaphoreLock.ts:35](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreLock.ts#L35)
+Defined in: [src/semaphoreLock.ts:34](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphoreLock.ts#L34)
 
 ___
 
@@ -84,4 +84,4 @@ If locked, then unlock
 
 **Returns:** *void*
 
-Defined in: [src/semaphoreLock.ts:42](https://github.com/havelessbemore/semafy/blob/c0263a3/src/semaphoreLock.ts#L42)
+Defined in: [src/semaphoreLock.ts:41](https://github.com/havelessbemore/semafy/blob/0d52aa3/src/semaphoreLock.ts#L41)
