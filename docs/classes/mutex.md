@@ -1,191 +1,131 @@
-[semafy - v1.0.6](../README.md) / Mutex
+[**semafy**](../README.md) • **Docs**
+
+***
+
+[semafy](../globals.md) / Mutex
 
 # Class: Mutex
 
-A convenience class for defining a binary [Semaphore](semaphore.md) (aka `new Semaphore(1);`).
-
-Has the same methods as [Semaphore](semaphore.md)
-
-## Hierarchy
-
-* [*Semaphore*](semaphore.md)
-
-  ↳ **Mutex**
-
-## Table of contents
-
-### Constructors
-
-- [constructor](mutex.md#constructor)
-
-### Properties
-
-- [semaphore](mutex.md#semaphore)
-
-### Accessors
-
-- [value](mutex.md#value)
-
-### Methods
-
-- [clear](mutex.md#clear)
-- [tryWait](mutex.md#trywait)
-- [wait](mutex.md#wait)
-- [waitFor](mutex.md#waitfor)
-
 ## Constructors
 
-### constructor
+### new Mutex()
 
-\+ **new Mutex**(): [*Mutex*](mutex.md)
+> **new Mutex**(`sharedBuffer`, `byteOffset`?): [`Mutex`](Mutex.md)
 
-**Returns:** [*Mutex*](mutex.md)
+#### Parameters
 
-Overrides: [Semaphore](semaphore.md)
+• **sharedBuffer**: `SharedArrayBuffer`
 
-Defined in: [src/mutex.ts:8](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/mutex.ts#L8)
+• **byteOffset?**: `number`
+
+#### Returns
+
+[`Mutex`](Mutex.md)
+
+#### Source
+
+[src/mutex.ts:12](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L12)
 
 ## Properties
 
-### semaphore
+### \_hasLock
 
-• `Protected` **semaphore**: [*RawSemaphore*](rawsemaphore.md)
+> `private` **\_hasLock**: `boolean`
 
-The underlying raw semaphore
+#### Source
 
-Inherited from: [Semaphore](semaphore.md).[semaphore](semaphore.md#semaphore)
+[src/mutex.ts:9](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L9)
 
-Defined in: [src/semaphore.ts:19](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L19)
+***
+
+### \_lock
+
+> `private` **\_lock**: `Int32Array`
+
+#### Source
+
+[src/mutex.ts:10](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L10)
 
 ## Accessors
 
-### value
+### hasLock
 
-• get **value**(): *number*
+> `get` **hasLock**(): `boolean`
 
-The number of calls allowed to acquire the semaphore concurrently
+#### Returns
 
-**Returns:** *number*
+`boolean`
 
-Defined in: [src/semaphore.ts:63](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L63)
+#### Source
+
+[src/mutex.ts:17](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L17)
 
 ## Methods
 
-### clear
+### lock()
 
-▸ **clear**(): *void*
+> **lock**(`timeout`?): `Promise`\<`void`\>
 
-Rejects all calls waiting for the semaphore. Rejected calls receive a [SemaphoreError](semaphoreerror.md)
+#### Parameters
 
-**Returns:** *void*
+• **timeout?**: `number`
 
-Inherited from: [Semaphore](semaphore.md)
+#### Returns
 
-Defined in: [src/semaphore.ts:44](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L44)
+`Promise`\<`void`\>
 
-___
+#### Source
 
-### tryWait
+[src/mutex.ts:21](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L21)
 
-▸ **tryWait**(): *undefined* \| [*SemaphoreLock*](semaphorelock.md)
+***
 
-Try to acquire the semaphore if immediately available.
+### request()
 
-**Returns:** *undefined* \| [*SemaphoreLock*](semaphorelock.md)
+> **request**\<`T`\>(`callbackfn`, `timeout`?): `Promise`\<`T`\>
 
-[SemaphoreLock](semaphorelock.md) and decrements the semaphore's [value](mutex.md#value) if the semaphore could be acquired.
-Otherwise, returns `undefined`
+#### Type parameters
 
-Inherited from: [Semaphore](semaphore.md)
+• **T**
 
-Defined in: [src/semaphore.ts:54](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L54)
+#### Parameters
 
-___
+• **callbackfn**
 
-### wait
+• **timeout?**: `number`
 
-▸ **wait**(`callback?`: ``null``): *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
+#### Returns
 
-Acquire (lock) the semaphore.
+`Promise`\<`T`\>
 
-If the semaphore's [value](mutex.md#value) is greater than zero, then the semaphore is acquired
-and its [value](mutex.md#value) is decremented. Otherwise, the call blocks until the semaphore
-can be acquired or the call is rejected.
+#### Source
 
-#### Parameters:
+[src/mutex.ts:31](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L31)
 
-| Name | Type |
-| :------ | :------ |
-| `callback?` | ``null`` |
+***
 
-**Returns:** *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
+### tryLock()
 
-Inherited from: [Semaphore](semaphore.md)
+> **tryLock**(): `boolean`
 
-Defined in: [src/semaphore.ts:74](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L74)
+#### Returns
 
-▸ **wait**(`callback`: [*SemaphoreCallback*](../interfaces/semaphorecallback.md)): *void*
+`boolean`
 
-Acquire (lock) the semaphore.
+#### Source
 
-If the semaphore's [value](mutex.md#value) is greater than zero, then the semaphore is acquired
-and its [value](mutex.md#value) is decremented. Otherwise, the call blocks until the semaphore
-can be acquired or the call is rejected.
+[src/mutex.ts:43](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L43)
 
-#### Parameters:
+***
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `callback` | [*SemaphoreCallback*](../interfaces/semaphorecallback.md) | A function to call once acquisition is successful or rejected |
+### unlock()
 
-**Returns:** *void*
+> **unlock**(): `void`
 
-Inherited from: [Semaphore](semaphore.md)
+#### Returns
 
-Defined in: [src/semaphore.ts:84](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L84)
+`void`
 
-___
+#### Source
 
-### waitFor
-
-▸ **waitFor**(`ms?`: ``null`` \| *number*, `callback?`: ``null``): *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
-
-Acquire (lock) the semaphore within a time limit.
-
-It's the same as [wait()](mutex.md#wait) except that there's a limit on the amount of time a call
-can block to acquire the semaphore. If the timeout expires before the semaphore is
-acquired, then the call is rejected.
-
-#### Parameters:
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `ms?` | ``null`` \| *number* | The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0 |
-| `callback?` | ``null`` | - |
-
-**Returns:** *Promise*<[*SemaphoreLock*](semaphorelock.md)\>
-
-Inherited from: [Semaphore](semaphore.md)
-
-Defined in: [src/semaphore.ts:108](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L108)
-
-▸ **waitFor**(`ms`: *undefined* \| ``null`` \| *number*, `callback`: [*SemaphoreCallback*](../interfaces/semaphorecallback.md)): *void*
-
-Acquire (lock) the semaphore within a time limit.
-
-It's the same as [wait()](mutex.md#wait) except that there's a limit on the amount of time a call
-can block to acquire the semaphore. If the timeout expires before the semaphore is
-acquired, then the call is rejected.
-
-#### Parameters:
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `ms` | *undefined* \| ``null`` \| *number* | The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0 |
-| `callback` | [*SemaphoreCallback*](../interfaces/semaphorecallback.md) | A function to call once acquisition is successful or rejected |
-
-**Returns:** *void*
-
-Inherited from: [Semaphore](semaphore.md)
-
-Defined in: [src/semaphore.ts:119](https://github.com/havelessbemore/semafy/blob/9e5af2a/src/semaphore.ts#L119)
+[src/mutex.ts:48](https://github.com/havelessbemore/semafy/blob/2e79073fa99d72a42ce4afc051af2c5b130abe97/src/mutex.ts#L48)
