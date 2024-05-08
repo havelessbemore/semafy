@@ -11,7 +11,9 @@ const ERR_MUTEX_NOT_OWNED = "Mutex must be locked by caller";
  * A condition variable manages an atomic wait/block mechanism that
  * is tightly coupled with a mutex for safe cross-agent synchronization.
  *
- * @see {@link https://en.cppreference.com/w/cpp/thread/condition_variable | C++ Condition Variable}
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/condition_variable | C++ std::condition_variable}
+ * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 export class ConditionVariable {
   /**

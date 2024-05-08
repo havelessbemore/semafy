@@ -28,6 +28,9 @@ const UNLOCKED = 0;
  * - Timeout precision for time-based methods may vary due to system load
  * and inherent limitations of JavaScript timing. Developers should
  * consider this possible variability in their applications.
+ *
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
  */
 export class Mutex {
   /**
