@@ -150,7 +150,14 @@ export class Mutex {
     callbackfn: () => T | Promise<T>,
     timeout: number,
   ): Promise<T> {
-    return this.requestUntil(callbackfn, performance.now() + timeout);
+    if (!(await this.tryLockFor(timeout))) {
+      throw new TimeoutError(ERR_MUTEX_TIMEOUT, timeout);
+    }
+    try {
+      return await callbackfn();
+    } finally {
+      this.unlock();
+    }
   }
 
   /**
@@ -170,7 +177,7 @@ export class Mutex {
     timestamp: number,
   ): Promise<T> {
     if (!(await this.tryLockUntil(timestamp))) {
-      throw new TimeoutError(ERR_MUTEX_TIMEOUT);
+      throw new TimeoutError(ERR_MUTEX_TIMEOUT, undefined, timestamp);
     }
     try {
       return await callbackfn();
