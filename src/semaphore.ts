@@ -1,136 +1,153 @@
-import { RawSemaphore } from './rawSemaphore';
-import { SemaphoreError } from './semaphoreError';
-import { SemaphoreLock } from './semaphoreLock';
+import { CV_TIMED_OUT } from "./types/cvStatus";
+
+import { ConditionVariable } from "./conditionVariable";
+import { Mutex } from "./mutex";
+import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "./errors/constants";
 
 /**
- * Defines the arguments to expect in a callback function passed to {@link Semaphore} methods.
+ * A counting semaphore based on shared memory and atomics, allowing for
+ * cross-agent synchronization.
  *
- * @param error - A {@link SemaphoreError} if the semaphore could not be acquired. Otherwise, this is `undefined`
- * @param lock - A {@link SemaphoreLock} to the {@link Semaphore} being acquired. If acquired, the lock will be locked. Otherwise, the lock will be unlocked.
+ * @see {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
  */
-export interface SemaphoreCallback {
-    (error: SemaphoreError | undefined, lock: SemaphoreLock): void;
-}
-
 export class Semaphore {
-    /**
-     * The underlying raw semaphore
-     */
-    protected semaphore: RawSemaphore;
+  private _gate: ConditionVariable;
+  private _mem: Int32Array;
+  private _mutex: Mutex;
 
-    /**
-     * Creates a semaphore object
-     *
-     * @param value - The max number of calls allowed to acquire the semaphore concurrently
-     */
-    constructor(value: number);
-    /**
-     * Creates a semaphore object
-     *
-     * @param semaphore - The underlying {@link RawSemaphore}
-     */
-    constructor(semaphore: RawSemaphore);
-    constructor(input: number | RawSemaphore) {
-        if (typeof input === 'number') {
-            this.semaphore = new RawSemaphore(input);
-        } else {
-            this.semaphore = input;
+  /**
+   * The maximum possible value of the internal counter
+   */
+  static readonly MAX = ~(1 << 31);
+
+  /**
+   * Creates a new instance of a Semaphore.
+   *
+   * @param sharedBuffer The shared buffer that backs the semaphore.
+   * @param byteOffset The byte offset within the shared buffer.
+   */
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
+    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    sharedBuffer ??= new SharedArrayBuffer(bInt32);
+    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
+    byteOffset += bInt32;
+    this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+  }
+
+  /**
+   * Acquires the semaphore, blocking until it is available.
+   *
+   * @returns A promise that resolves when acquisition is successful.
+   */
+  acquire(): Promise<void> {
+    // Acquire the internal mutex within scope
+    return this._mutex.request(async () => {
+      // Wait until internal counter has capacity
+      while (Atomics.load(this._mem, 0) <= 0) {
+        await this._gate.wait(this._mutex);
+      }
+      // Decrement internal counter
+      Atomics.sub(this._mem, 0, 1);
+    });
+  }
+
+  /**
+   * Attempts to acquire the semaphore.
+   *
+   * @returns A promise resolving to `true` if successful, otherwise `false`.
+   */
+  tryAcquire(): Promise<boolean> {
+    // Acquire the internal mutex within scope
+    return this._mutex.request(() => {
+      // Check internal counter
+      if (Atomics.load(this._mem, 0) <= 0) {
+        return false;
+      }
+      // Decrement internal counter
+      Atomics.sub(this._mem, 0, 1);
+      // Return success
+      return true;
+    });
+  }
+
+  /**
+   * Attempts to acquire the semaphore, blocking until either
+   * success or the specified timeout elapses.
+   *
+   * @param timeout The maximum duration in milliseconds to wait.
+   *
+   * @returns A promise resolving to `true` if successful, otherwise `false`.
+   */
+  tryAcquireFor(timeout: number): Promise<boolean> {
+    return this.tryAcquireUntil(performance.now() + timeout);
+  }
+
+  /**
+   * Attempts to acquire the lock, blocking until either
+   * the lock is acquired or the specified point in time is reached.
+   *
+   * @param timestamp The absolute time in milliseconds to wait until.
+   *
+   * @returns A promise resolved to `true` if succesful, otherwise `false`.
+   */
+  async tryAcquireUntil(timestamp: number): Promise<boolean> {
+    // Acquire the internal mutex within scope
+    if (!(await this._mutex.tryLockUntil(timestamp))) {
+      return false;
+    }
+
+    try {
+      // Wait until internal counter has capacity
+      while (Atomics.load(this._mem, 0) <= 0) {
+        const status = await this._gate.waitUntil(this._mutex, timestamp);
+
+        // Stop if timed out
+        if (status === CV_TIMED_OUT) {
+          return false;
         }
+      }
+
+      // Decrement internal counter
+      Atomics.sub(this._mem, 0, 1);
+
+      // Return success
+      return true;
+    } finally {
+      // Release internal mutex
+      this._mutex.unlock();
+    }
+  }
+
+  /**
+   * Releases a specified number of units back to the semaphore.
+   *
+   * @param count The number of units to release. Defaults to 1.
+   *
+   * @throws {RangeError} If `count` is negative or would cause the semaphore to overflow.
+   */
+  release(count = 1): Promise<void> {
+    // Sanitize input
+    if (count < 0) {
+      throw new RangeError(ERR_SEM_NEG_COUNT);
     }
 
-    /**
-     * Rejects all calls waiting for the semaphore. Rejected calls receive a {@link SemaphoreError}
-     */
-    clear(): void {
-        this.semaphore.clear();
-    }
+    // Acquire internal mutex within scope
+    return this._mutex.request(() => {
+      // Get the internal counter
+      const state = Atomics.load(this._mem, 0);
 
-    /**
-     * Try to acquire the semaphore if immediately available.
-     *
-     * @returns {@link SemaphoreLock} and decrements the semaphore's {@link value} if the semaphore could be acquired.
-     * Otherwise, returns `undefined`
-     */
-    tryWait(): SemaphoreLock | undefined {
-        if (this.semaphore.tryWait()) {
-            return new SemaphoreLock(this.semaphore);
-        }
-    }
+      // Check for overflow
+      if (count > Semaphore.MAX - state) {
+        throw new RangeError(ERR_SEM_OVERFLOW);
+      }
 
-    /**
-     * The number of calls allowed to acquire the semaphore concurrently
-     */
-    get value(): number {
-        return this.semaphore.value;
-    }
+      // Increment the internal counter
+      Atomics.add(this._mem, 0, count);
 
-    /**
-     * Acquire (lock) the semaphore.
-     *
-     * If the semaphore's {@link value} is greater than zero, then the semaphore is acquired
-     * and its {@link value} is decremented. Otherwise, the call blocks until the semaphore
-     * can be acquired or the call is rejected.
-     */
-    wait(callback?: null): Promise<SemaphoreLock>;
-    /**
-     * Acquire (lock) the semaphore.
-     *
-     * If the semaphore's {@link value} is greater than zero, then the semaphore is acquired
-     * and its {@link value} is decremented. Otherwise, the call blocks until the semaphore
-     * can be acquired or the call is rejected.
-     *
-     * @param callback - A function to call once acquisition is successful or rejected
-     */
-    wait(callback: SemaphoreCallback): void;
-    wait(callback?: SemaphoreCallback | null): void | Promise<SemaphoreLock> {
-        // Sanitize inputs
-        if (callback == null) {
-            return new Promise((resolve, reject) => {
-                this.wait((err, lock) => (err ? reject(err) : resolve(lock!)));
-            });
-        }
-
-        // Add to semaphore
-        this.semaphore.wait((error, sem) => {
-            callback(error, new SemaphoreLock(sem, error == null));
-        });
-    }
-
-    /**
-     * Acquire (lock) the semaphore within a time limit.
-     *
-     * It's the same as {@link wait | wait()} except that there's a limit on the amount of time a call
-     * can block to acquire the semaphore. If the timeout expires before the semaphore is
-     * acquired, then the call is rejected.
-     *
-     * @param ms - The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0
-     */
-    waitFor(ms?: number | null, callback?: null): Promise<SemaphoreLock>;
-    /**
-     * Acquire (lock) the semaphore within a time limit.
-     *
-     * It's the same as {@link wait | wait()} except that there's a limit on the amount of time a call
-     * can block to acquire the semaphore. If the timeout expires before the semaphore is
-     * acquired, then the call is rejected.
-     *
-     * @param ms - The maximum time (in milliseconds) to wait to acquire the semaphore. Defaults to 0
-     * @param callback - A function to call once acquisition is successful or rejected
-     */
-    waitFor(ms: number | null | undefined, callback: SemaphoreCallback): void;
-    waitFor(
-        ms?: number | null,
-        callback?: SemaphoreCallback | null,
-    ): void | Promise<SemaphoreLock> {
-        // Sanitize inputs
-        if (callback == null) {
-            return new Promise((resolve, reject) => {
-                this.waitFor(ms, (err, lock) => (err ? reject(err) : resolve(lock!)));
-            });
-        }
-
-        // Add to semaphore
-        this.semaphore.waitFor(ms, (error, sem) => {
-            callback(error, new SemaphoreLock(sem, error == null));
-        });
-    }
+      // Notify blocked agents
+      this._gate.notifyAll();
+    });
+  }
 }

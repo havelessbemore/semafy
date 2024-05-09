@@ -1,0 +1,27 @@
+name: Coverage Workflow
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+          node-version: 20
+      - name: Clean install
+        run: npm ci
+      - name: Run tests and collect coverage
+        run: npm run test:coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: havelessbemore/semafy
