@@ -1,12 +1,26 @@
 import { ConditionVariable } from "./conditionVariable";
+import { MutexOwnershipError } from "./errors/mutexOwnershipError";
+import { MutexRelockError } from "./errors/mutexRelockError";
 import { Mutex } from "./mutex";
 
 const WRITE_BIT = 1 << 31;
 const READ_BITS = ~WRITE_BIT;
 
 /**
+ * Provides synchronization across agents (main thread and workers)
+ * to allow exclusive and shared access to resources / blocks of code.
+ *
+ * If one agent has acquired an exclusive lock, no other agents can acquire
+ * the mutex. If one agent has acquired a shared lock, other agents can still
+ * acquire the shared lock, but cannot acquire an exclusive lock. Within one
+ * agent, only one lock (shared or exclusive) can be acquired at the same time.
+ *
+ * Shared mutexes are useful when shared data can be safely read by any number
+ * of agents simultaneously, but should be written to by only one agent at a
+ * time, and not readable by other agents during writing.
+ *
  * @privateRemarks
- * Citations:
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/shared_mutex | C++ std::shared_mutex}
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 export class SharedMutex {
@@ -30,12 +44,17 @@ export class SharedMutex {
     this._isWriter = false;
   }
 
-  // Writer
+  // Exclusive
 
+  /**
+   * Acquires the mutex, blocking until the lock is available.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   */
   async lock(): Promise<void> {
-    // If already has write lock
-    if (this._isWriter) {
-      return;
+    // If already has lock
+    if (this._isWriter || this._isReader) {
+      throw new MutexRelockError();
     }
 
     // Acquire internal lock
@@ -47,12 +66,6 @@ export class SharedMutex {
       }
       this._isWriter = true;
 
-      // Release read lock
-      if (this._isReader) {
-        Atomics.sub(this._state, 0, 1);
-        this._isReader = false;
-      }
-
       // Wait until no readers
       while (Atomics.load(this._state, 0) & READ_BITS) {
         await this._gate2.wait(this._mutex);
@@ -63,6 +76,16 @@ export class SharedMutex {
     }
   }
 
+  /**
+   * Acquires the mutex and executes the provided callback, automatically
+   * unlocking afterwards. Blocks until the lock is available.
+   *
+   * @param callbackfn The callback function.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   *
+   * @returns A promise resolved to the return value of `callbackfn`.
+   */
   async request<T>(callbackfn: () => T | Promise<T>): Promise<T> {
     // Acquire write lock
     await this.lock();
@@ -75,10 +98,17 @@ export class SharedMutex {
     }
   }
 
+  /**
+   * Attempts to acquire the mutex without blocking.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   *
+   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
+   */
   async tryLock(): Promise<boolean> {
-    // If already has write lock
-    if (this._isWriter) {
-      return true;
+    // If already has lock
+    if (this._isWriter || this._isReader) {
+      throw new MutexRelockError();
     }
 
     // Acquire internal lock
@@ -86,29 +116,23 @@ export class SharedMutex {
 
     try {
       // Try to acquire write lock
-      const exp = +this._isReader;
-      const act = Atomics.compareExchange(this._state, 0, exp, WRITE_BIT);
-
-      // Check if write lock acquired
-      if (act !== exp) {
-        return false;
-      }
-
-      // Update state
-      this._isWriter = true;
-      this._isReader = false;
+      return (this._isWriter =
+        Atomics.compareExchange(this._state, 0, 0, WRITE_BIT) === 0);
     } finally {
       // Release internal lock
       this._mutex.unlock();
     }
-
-    return true;
   }
 
-  async unlock(): Promise<boolean> {
-    // Check if owns write lock
+  /**
+   * Releases the mutex if currently owned by the caller.
+   *
+   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+   */
+  async unlock(): Promise<void> {
+    // Check if write lock owned
     if (!this._isWriter) {
-      return false;
+      throw new MutexOwnershipError();
     }
 
     // Acquire internal lock
@@ -123,29 +147,34 @@ export class SharedMutex {
       await this._mutex.unlock();
     }
 
-    // Notify agents waiting for write lock
+    // Notify agents waiting on mutex
     this._gate1.notifyAll();
-
-    return true;
   }
 
-  // Reader
+  // Shared
 
+  /**
+   * Acquires the mutex for shared ownership, blocking until a lock is available.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   */
   async lockShared(): Promise<void> {
-    // If already has read lock
-    if (this._isReader) {
-      return;
+    // If already has lock
+    if (this._isReader || this._isWriter) {
+      throw new MutexRelockError();
     }
 
     // Acquire internal lock
     await this._mutex.lock();
 
     try {
+      // Wait until there's no writer and there's read capacity
       let state = Atomics.load(this._state, 0);
       while (state & WRITE_BIT || state === READ_BITS) {
         await this._gate1.wait(this._mutex);
         state = Atomics.load(this._state, 0);
       }
+      // Acquire a read lock
       Atomics.add(this._state, 0, 1);
       this._isReader = true;
     } finally {
@@ -154,6 +183,17 @@ export class SharedMutex {
     }
   }
 
+  /**
+   * Acquires the mutex for shared ownership and executes the provided
+   * callback, automatically unlocking afterwards. Blocks until a lock
+   * is available.
+   *
+   * @param callbackfn The callback function.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   *
+   * @returns A promise resolved to the return value of `callbackfn`.
+   */
   async requestShared<T>(callbackfn: () => T | Promise<T>): Promise<T> {
     // Acquire read lock
     await this.lockShared();
@@ -166,45 +206,74 @@ export class SharedMutex {
     }
   }
 
+  /**
+   * Attempts to acquire the mutex for shared ownership without blocking.
+   *
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   *
+   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
+   */
   async tryLockShared(): Promise<boolean> {
-    if (this._isReader) {
-      return true;
+    // If already has lock
+    if (this._isReader || this._isWriter) {
+      throw new MutexRelockError();
     }
-    /*
+
+    // Acquire internal lock
+    await this._mutex.lock();
+
     try {
-      await this._mutex.lock();
-      let state = Atomics.load(this._state, 0);
+      // Check for active / blocked writers and read capacity
+      const state = Atomics.load(this._state, 0);
       if (state & WRITE_BIT || state === READ_BITS) {
         return false;
       }
+      // Acquire a read lock
       Atomics.add(this._state, 0, 1);
+      this._isReader = true;
+      // Return success
+      return true;
     } finally {
+      // Release internal lock
       await this._mutex.unlock();
     }
-    */
-    return true;
   }
 
-  async unlockShared(): Promise<boolean> {
+  /**
+   * Releases the mutex if currently owned by the caller.
+   *
+   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+   */
+  async unlockShared(): Promise<void> {
+    // Check if read lock owned
     if (!this._isReader) {
-      return false;
+      throw new MutexOwnershipError();
     }
-    /*
+
+    // Acquire internal lock
     await this._mutex.lock();
+
     try {
+      // Release read lock
       const state = Atomics.sub(this._state, 0, 1);
       this._isReader = false;
+
+      // If there are blocked writers
       if (state & WRITE_BIT) {
+        // And no more readers
         if ((state & READ_BITS) === 1) {
+          // Notify blocked writers
           this._gate2.notifyAll();
         }
       } else if (state === READ_BITS) {
+        // If there are no writers
+        // and readers no longer at capacity,
+        // then notify blocked agents
         this._gate1.notifyAll();
       }
     } finally {
+      // Release internal lock
       await this._mutex.unlock();
     }
-    */
-    return true;
   }
 }
