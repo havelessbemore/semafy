@@ -83,6 +83,10 @@ declare class TimeoutError extends Error {
  * `tryLock` methods). When unlocked, any blocked agent will have
  * the chance to acquire owernship.
  *
+ * A locked mutex should not be relocked by the owner. Attempts
+ * for additional locks will throw an error, and calls to `tryLock`
+ * methods will return `false`.
+ *
  * - Behavior is undefined if:
  *    - The mutex is destroyed while being owned
  *    - The agent is terminated while owning the mutex
@@ -111,26 +115,21 @@ declare class Mutex {
     /**
      * Creates a new instance of Mutex.
      *
-     * @param handle The shared memory location that backs the mutex.
-     *
-     * Note: The shared memory location should not be modified outside
-     * of this mutex. Doing so may cause unexpected behavior.
-     */
-    constructor(handle: Int32Array);
-    /**
-     * Creates a new instance of Mutex.
-     *
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
-     * @param byteOffset The byte offset within `sharedBuffer`.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
      *
      * Note: The shared memory location should not be modified outside
      * of this mutex. Doing so may cause unexpected behavior.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     /**
-     * Gets the underlying atomic handle.
+     * Gets the underlying shared buffer.
      */
-    get handle(): Int32Array;
+    get buffer(): SharedArrayBuffer;
+    /**
+     * Gets the byte offset in the underlying shared buffer.
+     */
+    get byteOffset(): number;
     /**
      * Indicates whether the current agent owns the lock.
      */
@@ -181,8 +180,6 @@ declare class Mutex {
     /**
      * Attempts to acquire the mutex without blocking.
      *
-     * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-     *
      * @returns `true` if the lock was successful, otherwise `false`.
      */
     tryLock(): boolean;
@@ -192,8 +189,6 @@ declare class Mutex {
      *
      * @param timeout The timeout in milliseconds.
      *
-     * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-     *
      * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
      */
     tryLockFor(timeout: number): Promise<boolean>;
@@ -202,8 +197,6 @@ declare class Mutex {
      * the lock is acquired or the specified point in time is reached.
      *
      * @param timestamp The absolute time in milliseconds.
-     *
-     * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
      *
      * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
      */
@@ -238,26 +231,21 @@ declare class ConditionVariable {
     /**
      * Creates a new instance of ConditionVariable.
      *
-     * @param handle The shared memory location that backs the condition variable.
-     *
-     * Note: The shared memory location should not be modified outside
-     * of this condition variable. Doing so may cause errors.
-     */
-    constructor(handle: Int32Array);
-    /**
-     * Creates a new instance of ConditionVariable.
-     *
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the condition variable.
-     * @param byteOffset The byte offset within `sharedBuffer`.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
      *
      * Note: The shared memory location should not be modified outside
      * of this condition variable. Doing so may cause errors.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     /**
-     * Gets the underlying shared memory location.
+     * Gets the underlying shared buffer.
      */
-    get handle(): Int32Array;
+    get buffer(): SharedArrayBuffer;
+    /**
+     * Gets the byte offset in the underlying shared buffer.
+     */
+    get byteOffset(): number;
     /**
      * Notify waiting workers that are blocked on this condition variable.
      *
@@ -320,6 +308,149 @@ declare class ConditionVariable {
 }
 
 /**
+ * Provides synchronization across agents (main thread and workers)
+ * to allow exclusive recursive access to shared resources / blocks of code.
+ *
+ * A mutex is owned once an agent successfully locks it.
+ * During ownership, the agent may acquire additional locks from the
+ * mutex. Ownership ends when the agent releases all aquired locks.
+ *
+ * While owned, any other agents attempting to lock the mutex will
+ * block (or receive `false` from `tryLock` methods). When unlocked,
+ * any blocked agent will have the chance to acquire owernship.
+ *
+ * The maximum number of times a mutex can be locked recursively
+ * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * for additional locks will throw an error, and calls to `tryLock` methods
+ * will return `false`.
+ *
+ * - Behavior is undefined if:
+ *    - The mutex is destroyed while being owned
+ *    - The agent is terminated while owning the mutex
+ *    - The value at the mutex's shared memory location is unexpected.
+ *
+ * - Timeout precision for time-based methods may vary due to system load
+ * and inherent limitations of JavaScript timing. Developers should
+ * consider this possible variability in their applications.
+ *
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
+ */
+declare class RecursiveMutex {
+    /**
+     * The number of locks acquired by the agent.
+     */
+    private _depth;
+    /**
+     * The shared atomic memory for the mutex.
+     */
+    private _mem;
+    /**
+     * The maximum levels of recursive ownership.
+     */
+    static readonly MAX: number;
+    /**
+     * Creates a new instance of Mutex.
+     */
+    constructor();
+    /**
+     * Creates a new instance of Mutex.
+     *
+     * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * Note: The shared memory location should not be modified outside
+     * of this mutex. Doing so may cause unexpected behavior.
+     */
+    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    /**
+     * Gets the underlying shared buffer.
+     */
+    get buffer(): SharedArrayBuffer;
+    /**
+     * Gets the byte offset in the underlying shared buffer.
+     */
+    get byteOffset(): number;
+    /**
+     * Indicates whether the current agent owns the lock.
+     */
+    get ownsLock(): boolean;
+    /**
+     * Acquires the mutex, blocking until the lock is available.
+     *
+     * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+     */
+    lock(): Promise<void>;
+    /**
+     * Acquires the mutex and executes the provided callback,
+     * automatically unlocking afterwards. Blocks until the lock is available.
+     *
+     * @param callbackfn The callback function.
+     *
+     * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+     *
+     * @returns A promise resolved to the return value of `callbackfn`.
+     */
+    request<T>(callbackfn: () => T | Promise<T>): Promise<T>;
+    /**
+     * Attempts to acquire the mutex and execute the provided
+     * callback, automatically unlocking afterwards. Blocks
+     * until either the lock is available or the specified timeout elapses.
+     *
+     * @param timeout The timeout in milliseconds.
+     *
+     * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+     * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
+     *
+     * @returns A promise with the return value from `callbackfn`.
+     */
+    requestFor<T>(callbackfn: () => T | Promise<T>, timeout: number): Promise<T>;
+    /**
+     * Attempts to acquire the mutex and execute the provided
+     * callback, automatically unlocking afterwards. Blocks
+     * until either the lock is available or the specified time elapses.
+     *
+     * @param timestamp The absolute time in milliseconds.
+     *
+     * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+     * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
+     *
+     * @returns A promise with the return value from `callbackfn`.
+     */
+    requestUntil<T>(callbackfn: () => T | Promise<T>, timestamp: number): Promise<T>;
+    /**
+     * Attempts to acquire the mutex without blocking.
+     *
+     * @returns `true` if the lock was successful, otherwise `false`.
+     */
+    tryLock(): boolean;
+    /**
+     * Attempts to acquire the lock, blocking until either
+     * the lock is acquired or the specified timeout elapses.
+     *
+     * @param timeout The timeout in milliseconds.
+     *
+     * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
+     */
+    tryLockFor(timeout: number): Promise<boolean>;
+    /**
+     * Attempts to acquire the lock, blocking until either
+     * the lock is acquired or the specified point in time is reached.
+     *
+     * @param timestamp The absolute time in milliseconds.
+     *
+     * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
+     */
+    tryLockUntil(timestamp: number): Promise<boolean>;
+    /**
+     * Releases the mutex if currently owned by the caller.
+     *
+     * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+     */
+    unlock(): void;
+}
+
+/**
  * A counting semaphore based on shared memory and atomics, allowing for
  * cross-agent synchronization.
  *
@@ -335,11 +466,23 @@ declare class Semaphore {
     static readonly MAX: number;
     /**
      * Creates a new instance of a Semaphore.
+     */
+    constructor();
+    /**
+     * Creates a new instance of a Semaphore.
      *
      * @param sharedBuffer The shared buffer that backs the semaphore.
-     * @param byteOffset The byte offset within the shared buffer.
+     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
      */
-    constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number);
+    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    /**
+     * Gets the underlying shared buffer.
+     */
+    get buffer(): SharedArrayBuffer;
+    /**
+     * Gets the byte offset in the underlying shared buffer.
+     */
+    get byteOffset(): number;
     /**
      * Acquires the semaphore, blocking until it is available.
      *
@@ -402,9 +545,31 @@ declare class SharedMutex {
     private _gate2;
     private _isReader;
     private _isWriter;
+    private _mem;
     private _mutex;
-    private _state;
+    /**
+     * Creates a new instance of a SharedMutex.
+     */
+    constructor();
+    /**
+     * Creates a new instance of a SharedMutex.
+     *
+     * @param sharedBuffer The shared buffer that backs the mutex.
+     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+     */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    /**
+     * Gets the underlying shared buffer.
+     */
+    get buffer(): SharedArrayBuffer;
+    /**
+     * Gets the byte offset in the underlying shared buffer.
+     */
+    get byteOffset(): number;
+    /**
+     * Indicates whether the current agent owns the lock.
+     */
+    get ownsLock(): boolean;
     /**
      * Acquires the mutex, blocking until the lock is available.
      *
@@ -425,8 +590,6 @@ declare class SharedMutex {
     /**
      * Attempts to acquire the mutex without blocking.
      *
-     * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-     *
      * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
      */
     tryLock(): Promise<boolean>;
@@ -436,6 +599,10 @@ declare class SharedMutex {
      * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
      */
     unlock(): Promise<void>;
+    /**
+     * Indicates whether the current agent owns a shared lock.
+     */
+    get ownsSharedLock(): boolean;
     /**
      * Acquires the mutex for shared ownership, blocking until a lock is available.
      *
@@ -457,8 +624,6 @@ declare class SharedMutex {
     /**
      * Attempts to acquire the mutex for shared ownership without blocking.
      *
-     * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-     *
      * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
      */
     tryLockShared(): Promise<boolean>;
@@ -470,4 +635,4 @@ declare class SharedMutex {
     unlockShared(): Promise<void>;
 }
 
-export { type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, Mutex, MutexError, MutexOwnershipError, MutexRelockError, Semaphore, SharedMutex, TimeoutError };
+export { type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, Mutex, MutexError, MutexOwnershipError, MutexRelockError, RecursiveMutex, Semaphore, SharedMutex, TimeoutError };

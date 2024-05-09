@@ -1,7 +1,6 @@
 import { ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
 
-import { ERR_MUTEX_TIMEOUT } from "./errors/constants";
-import { MutexRelockError } from "./errors/mutexRelockError";
+import { ERR_MUTEX_TIMEOUT, ERR_REC_MUTEX_OVERFLOW } from "./errors/constants";
 import { MutexOwnershipError } from "./errors/mutexOwnershipError";
 import { TimeoutError } from "./errors/timeoutError";
 
@@ -12,17 +11,20 @@ const LOCK_BIT = 1;
 
 /**
  * Provides synchronization across agents (main thread and workers)
- * to allow exclusive access to shared resources / blocks of code.
+ * to allow exclusive recursive access to shared resources / blocks of code.
  *
- * A mutex is owned from the time an agent successfully locks it
- * and until the agent unlocks it. During ownership, any other agents
- * attempting to lock the mutex will block (or receive `false` from
- * `tryLock` methods). When unlocked, any blocked agent will have
- * the chance to acquire owernship.
+ * A mutex is owned once an agent successfully locks it.
+ * During ownership, the agent may acquire additional locks from the
+ * mutex. Ownership ends when the agent releases all aquired locks.
  *
- * A locked mutex should not be relocked by the owner. Attempts
- * for additional locks will throw an error, and calls to `tryLock`
- * methods will return `false`.
+ * While owned, any other agents attempting to lock the mutex will
+ * block (or receive `false` from `tryLock` methods). When unlocked,
+ * any blocked agent will have the chance to acquire owernship.
+ *
+ * The maximum number of times a mutex can be locked recursively
+ * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * for additional locks will throw an error, and calls to `tryLock` methods
+ * will return `false`.
  *
  * - Behavior is undefined if:
  *    - The mutex is destroyed while being owned
@@ -34,18 +36,23 @@ const LOCK_BIT = 1;
  * consider this possible variability in their applications.
  *
  * @privateRemarks
- * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
  */
-export class Mutex {
+export class RecursiveMutex {
   /**
-   * Indicates whether the current agent owns the lock.
+   * The number of locks acquired by the agent.
    */
-  private _isOwner: boolean;
+  private _depth: number;
 
   /**
    * The shared atomic memory for the mutex.
    */
   private _mem: Int32Array;
+
+  /**
+   * The maximum levels of recursive ownership.
+   */
+  static readonly MAX = Number.MAX_SAFE_INTEGER;
 
   /**
    * Creates a new instance of Mutex.
@@ -66,7 +73,7 @@ export class Mutex {
     sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
 
     // Initialize properties
-    this._isOwner = false;
+    this._depth = 0;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
 
     // Initialize shared memory location
@@ -91,34 +98,38 @@ export class Mutex {
    * Indicates whether the current agent owns the lock.
    */
   get ownsLock(): boolean {
-    return this._isOwner;
+    return this._depth > 0;
   }
 
   /**
    * Acquires the mutex, blocking until the lock is available.
    *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    */
   async lock(): Promise<void> {
-    // If already has lock
-    if (this._isOwner) {
-      throw new MutexRelockError();
+    // If at capacity
+    if (this._depth === RecursiveMutex.MAX) {
+      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
     }
 
-    // Acquire lock
-    while (Atomics.or(this._mem, 0, LOCK_BIT)) {
-      await Atomics.waitAsync(this._mem, 0, LOCK_BIT).value;
+    // Acquire lock if not owned
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        await Atomics.waitAsync(this._mem, 0, LOCK_BIT).value;
+      }
     }
-    this._isOwner = true;
+
+    // Increment ownership
+    ++this._depth;
   }
 
   /**
-   * Acquires the mutex and executes the provided callback, automatically
-   * unlocking afterwards. Blocks until the lock is available.
+   * Acquires the mutex and executes the provided callback,
+   * automatically unlocking afterwards. Blocks until the lock is available.
    *
    * @param callbackfn The callback function.
    *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    *
    * @returns A promise resolved to the return value of `callbackfn`.
    */
@@ -141,7 +152,7 @@ export class Mutex {
    *
    * @param timeout The timeout in milliseconds.
    *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
    *
    * @returns A promise with the return value from `callbackfn`.
@@ -150,9 +161,9 @@ export class Mutex {
     callbackfn: () => T | Promise<T>,
     timeout: number,
   ): Promise<T> {
-    // If already has lock
-    if (this._isOwner) {
-      throw new MutexRelockError();
+    // If at capacity
+    if (this._depth === RecursiveMutex.MAX) {
+      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
     }
     // Try to acquire lock for a given amount of time
     if (!(await this.tryLockFor(timeout))) {
@@ -174,7 +185,7 @@ export class Mutex {
    *
    * @param timestamp The absolute time in milliseconds.
    *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
    *
    * @returns A promise with the return value from `callbackfn`.
@@ -183,9 +194,9 @@ export class Mutex {
     callbackfn: () => T | Promise<T>,
     timestamp: number,
   ): Promise<T> {
-    // If already has lock
-    if (this._isOwner) {
-      throw new MutexRelockError();
+    // If at capacity
+    if (this._depth === RecursiveMutex.MAX) {
+      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
     }
     // Try to acquire lock for a given amount of time
     if (!(await this.tryLockUntil(timestamp))) {
@@ -206,12 +217,19 @@ export class Mutex {
    * @returns `true` if the lock was successful, otherwise `false`.
    */
   tryLock(): boolean {
-    // If already has lock
-    if (this._isOwner) {
+    // If at capacity
+    if (this._depth === RecursiveMutex.MAX) {
       return false;
     }
-    // Try to acquire lock
-    return (this._isOwner = Atomics.or(this._mem, 0, LOCK_BIT) === 0);
+
+    // Try to acquire lock if not owned
+    if (this._depth === 0 && Atomics.or(this._mem, 0, LOCK_BIT)) {
+      return false;
+    }
+
+    // Increment ownership
+    ++this._depth;
+    return true;
   }
 
   /**
@@ -235,21 +253,27 @@ export class Mutex {
    * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
    */
   async tryLockUntil(timestamp: number): Promise<boolean> {
-    // If already has lock
-    if (this._isOwner) {
+    // If at capacity
+    if (this._depth === RecursiveMutex.MAX) {
       return false;
     }
-    // Try to acquire lock for a given amount of time
-    while (Atomics.or(this._mem, 0, LOCK_BIT)) {
-      const timeout = timestamp - performance.now();
-      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT, timeout);
-      const value = res.async ? await res.value : res.value;
-      // If time expired
-      if (value === ATOMICS_TIMED_OUT) {
-        return false;
+
+    // If not owned, try to acquire lock for a given amount of time
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        const timeout = timestamp - performance.now();
+        const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT, timeout);
+        const value = res.async ? await res.value : res.value;
+        // If time expired
+        if (value === ATOMICS_TIMED_OUT) {
+          return false;
+        }
       }
     }
-    return (this._isOwner = true);
+
+    // Increment ownership
+    ++this._depth;
+    return true;
   }
 
   /**
@@ -259,12 +283,20 @@ export class Mutex {
    */
   unlock(): void {
     // Check if lock owned
-    if (!this._isOwner) {
+    if (this._depth <= 0) {
       throw new MutexOwnershipError();
     }
+
+    // Check if lock owned recursively
+    if (this._depth > 1) {
+      --this._depth;
+      return;
+    }
+
     // Release lock
     Atomics.store(this._mem, 0, 0);
-    this._isOwner = false;
+    this._depth = 0;
+
     // Notify blocked agents
     Atomics.notify(this._mem, 0);
   }

@@ -11,9 +11,10 @@ Semafy provides synchronization primitives based on concepts from C++ standard t
 ## Features
 
 - **Mutex**: Provides exclusive locking to protect shared data from concurrent access.
-- **Condition Variable**: Allows agents (main thread, web workers) to wait for certain conditions to occur.
+- **ConditionVariable**: Allows agents (main thread, web workers) to wait for certain conditions to occur.
+- **RecursiveMutex**: Provides exclusive, recursive locking to protect shared data from concurrent access.
 - **Semaphore**: Implements a semaphore to control access to a finite number of resources.
-- **Shared Mutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
+- **SharedMutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
 - **Error Handling**: Includes specific error classes like `MutexError`, `MutexOwnershipError`, `MutexRelockError`, and `TimeoutError` to handle different synchronization scenarios.
 
 ## Installation

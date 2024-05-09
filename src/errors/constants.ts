@@ -1,7 +1,4 @@
 // Generic
-export const ERR_ARRAY_NOT_SHARED =
-  "Typed array is not backed by a shared array buffer.";
-
 export const ERR_TIMEOUT = "Operation timed out.";
 
 // Condition Variable
@@ -17,6 +14,11 @@ export const ERR_MUTEX_RELOCK =
   "Attempted relock of already acquired mutex. Deadlock would occur.";
 
 export const ERR_MUTEX_TIMEOUT = "Timed out acquiring mutex.";
+
+// Recursive Mutex
+
+export const ERR_REC_MUTEX_OVERFLOW =
+  "Operation not permitted. Additional lock would excee the RecursiveMutex's maximum levels of ownership.";
 
 // Semaphore
 export const ERR_SEM_NEG_COUNT =

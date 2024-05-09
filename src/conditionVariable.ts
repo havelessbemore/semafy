@@ -1,7 +1,7 @@
 import { ATOMICS_NOT_EQUAL, ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
 import { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
 
-import { ERR_ARRAY_NOT_SHARED, ERR_CV_VALUE } from "./errors/constants";
+import { ERR_CV_VALUE } from "./errors/constants";
 import { MutexOwnershipError } from "./errors/mutexOwnershipError";
 
 import { Mutex } from "./mutex";
@@ -29,45 +29,36 @@ export class ConditionVariable {
   /**
    * Creates a new instance of ConditionVariable.
    *
-   * @param handle The shared memory location that backs the condition variable.
-   *
-   * Note: The shared memory location should not be modified outside
-   * of this condition variable. Doing so may cause errors.
-   */
-  constructor(handle: Int32Array);
-  /**
-   * Creates a new instance of ConditionVariable.
-   *
    * @param sharedBuffer The {@link SharedArrayBuffer} that backs the condition variable.
-   * @param byteOffset The byte offset within `sharedBuffer`.
+   * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
    *
    * Note: The shared memory location should not be modified outside
    * of this condition variable. Doing so may cause errors.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
-  constructor(sb?: Int32Array | SharedArrayBuffer, byteOffset = 0) {
-    if (sb instanceof SharedArrayBuffer) {
-      this._mem = new Int32Array(sb, byteOffset ?? 0, 1);
-    } else if (sb instanceof Int32Array) {
-      if (sb.buffer instanceof SharedArrayBuffer) {
-        this._mem = sb;
-      } else {
-        throw new TypeError(ERR_ARRAY_NOT_SHARED);
-      }
-    } else {
-      sb = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
-      this._mem = new Int32Array(sb, 0, 1);
-    }
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
+    // Sanitize input
+    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+
+    // Initialize properties
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
 
     // Initialize shared memory location
     Atomics.store(this._mem, 0, 0);
   }
 
   /**
-   * Gets the underlying shared memory location.
+   * Gets the underlying shared buffer.
    */
-  get handle(): Int32Array {
-    return this._mem;
+  get buffer(): SharedArrayBuffer {
+    return this._mem.buffer as SharedArrayBuffer;
+  }
+
+  /**
+   * Gets the byte offset in the underlying shared buffer.
+   */
+  get byteOffset(): number {
+    return this._mem.byteOffset;
   }
 
   /**

@@ -10,5 +10,6 @@ export { TimeoutError } from "./errors/timeoutError";
 // Core
 export { ConditionVariable } from "./conditionVariable";
 export { Mutex } from "./mutex";
+export { RecursiveMutex } from "./recursiveMutex";
 export { Semaphore } from "./semaphore";
 export { SharedMutex } from "./sharedMutex";

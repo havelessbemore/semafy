@@ -22,18 +22,41 @@ export class Semaphore {
 
   /**
    * Creates a new instance of a Semaphore.
+   */
+  constructor();
+  /**
+   * Creates a new instance of a Semaphore.
    *
    * @param sharedBuffer The shared buffer that backs the semaphore.
-   * @param byteOffset The byte offset within the shared buffer.
+   * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
    */
+  constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
-    sharedBuffer ??= new SharedArrayBuffer(bInt32);
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
-    byteOffset += bInt32;
+
+    // Sanitize input
+    sharedBuffer ??= new SharedArrayBuffer(3 * bInt32);
+
+    // Initialize properties
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     byteOffset += bInt32;
+    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
     this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+  }
+
+  /**
+   * Gets the underlying shared buffer.
+   */
+  get buffer(): SharedArrayBuffer {
+    return this._mem.buffer as SharedArrayBuffer;
+  }
+
+  /**
+   * Gets the byte offset in the underlying shared buffer.
+   */
+  get byteOffset(): number {
+    return this._mem.byteOffset;
   }
 
   /**

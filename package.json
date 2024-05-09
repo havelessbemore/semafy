@@ -1,7 +1,7 @@
 {
   "name": "semafy",
-  "version": "2.0.0",
-  "description": "Semaphore & Mutex implementation",
+  "version": "2.0.1",
+  "description": "A robust cross-agent synchronization library.",
   "license": "MIT",
   "author": "Michael Rojas <dev.michael.rojas@gmail.com> (https://github.com/havelessbemore)",
   "homepage": "https://github.com/havelessbemore/semafy",
@@ -47,6 +47,7 @@
     "lock",
     "mutex",
     "parallel",
+    "recursive mutex",
     "semaphore",
     "shared mutex",
     "sync",
