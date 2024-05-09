@@ -1,3 +1,5 @@
+import { ERR_TIMEOUT } from "./constants";
+
 /**
  * Represents an error that occurs when a process exceeds a set timeout.
  */
@@ -21,12 +23,8 @@ export class TimeoutError extends Error {
    * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
    * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.
    */
-  constructor(
-    message = "Operation timed out",
-    timeout?: number,
-    deadline?: number,
-  ) {
-    super(message);
+  constructor(message?: string, timeout?: number, deadline?: number) {
+    super(message ?? ERR_TIMEOUT);
     this.deadline = deadline;
     this.timeout = timeout;
     this.name = TimeoutError.name;

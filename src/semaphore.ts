@@ -1,9 +1,8 @@
+import { CV_TIMED_OUT } from "./types/cvStatus";
+
 import { ConditionVariable } from "./conditionVariable";
 import { Mutex } from "./mutex";
-import { CV_TIMED_OUT } from "./types/conditionVariable";
-
-const ERR_NEG_COUNT = "Cannot release negative value.";
-const ERR_OVERFLOW = "Operation would cause overflow.";
+import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "./errors/constants";
 
 const MAX_VALUE = ~(1 << 31);
 
@@ -138,7 +137,7 @@ export class Semaphore {
   release(count = 1): Promise<void> {
     // Sanitize input
     if (count < 0) {
-      throw new RangeError(ERR_NEG_COUNT);
+      throw new RangeError(ERR_SEM_NEG_COUNT);
     }
 
     // Acquire internal mutex within scope
@@ -148,7 +147,7 @@ export class Semaphore {
 
       // Check for overflow
       if (count > MAX_VALUE - state) {
-        throw new RangeError(ERR_OVERFLOW);
+        throw new RangeError(ERR_SEM_OVERFLOW);
       }
 
       // Increment the internal counter

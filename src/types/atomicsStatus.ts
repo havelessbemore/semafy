@@ -1,5 +1,5 @@
 /**
- * Represents the possible status codes returned by atomic operations.
+ * Represents the possible status codes returned by {@link Atomics} operations.
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics| Atomics}
  */
@@ -16,14 +16,15 @@ export type AtomicsStatus =
 export const ATOMICS_NOT_EQUAL = "not-equal";
 
 /**
- * Indicates that the atomic operation completed successfully.
+ * Indicates the {@link Atomics} operation completed successfully.
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics | Atomics}
  */
 export const ATOMICS_OK = "ok";
 
 /**
- * Indicates that the atomic operation did not complete within the given time.
+ * Indicates the {@link Atomics} operation
+ * did not complete within the given time.
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics/waitAsync | Atomics}
  */

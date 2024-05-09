@@ -1,9 +1,11 @@
 // Types
-export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/conditionVariable";
+export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
 
 // Utility
-export { MutexError } from "./utils/mutexError";
-export { TimeoutError } from "./utils/timeoutError";
+export { MutexError } from "./errors/mutexError";
+export { MutexOwnershipError } from "./errors/mutexOwnershipError";
+export { MutexRelockError } from "./errors/mutexRelockError";
+export { TimeoutError } from "./errors/timeoutError";
 
 // Core
 export { ConditionVariable } from "./conditionVariable";

@@ -1,14 +1,18 @@
-import { ATOMICS_TIMED_OUT } from "./types/atomics";
+import { ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
 
-import { MutexError } from "./utils/mutexError";
-import { TimeoutError } from "./utils/timeoutError";
+import { ERR_ARRAY_NOT_SHARED, ERR_MUTEX_TIMEOUT } from "./errors/constants";
+import { MutexRelockError } from "./errors/mutexRelockError";
+import { MutexOwnershipError } from "./errors/mutexOwnershipError";
+import { TimeoutError } from "./errors/timeoutError";
 
-const ERR_RELOCK = "Attempted relock of owned mutex. Deadlock would occur.";
-const ERR_TIMEOUT = "Could not acquire mutex. Operation timed out.";
-const ERR_UNLOCK_UNOWNED =
-  "Attempted unlock of unowned mutex. Operation not permitted.";
-
+/**
+ * Represents the mutex lock state.
+ */
 const LOCKED = 1;
+
+/**
+ * Represents the mutex unlocked state.
+ */
 const UNLOCKED = 0;
 
 /**
@@ -46,17 +50,41 @@ export class Mutex {
 
   /**
    * Creates a new instance of Mutex.
-   *
-   * @param sharedBuffer The shared buffer that backs the mutex.
-   * @param byteOffset The byte offset within the shared buffer.
-   *
-   * Note: The value at the shared memory location should be
-   * initialized to zero, and should not be modified outside of this mutex.
    */
-  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number) {
-    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+  constructor();
+  /**
+   * Creates a new instance of Mutex.
+   *
+   * @param handle The shared memory location that backs the mutex.
+   *
+   * Note: The shared memory location should not be modified outside
+   * of this mutex. Doing so may cause unexpected behavior.
+   */
+  constructor(handle: Int32Array);
+  /**
+   * Creates a new instance of Mutex.
+   *
+   * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
+   * @param byteOffset The byte offset within `sharedBuffer`.
+   *
+   * Note: The shared memory location should not be modified outside
+   * of this mutex. Doing so may cause unexpected behavior.
+   */
+  constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+  constructor(sb?: Int32Array | SharedArrayBuffer, byteOffset = 0) {
     this._isOwner = false;
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
+    if (sb instanceof SharedArrayBuffer) {
+      this._mem = new Int32Array(sb, byteOffset ?? 0, 1);
+    } else if (sb instanceof Int32Array) {
+      if (sb.buffer instanceof SharedArrayBuffer) {
+        this._mem = sb;
+      } else {
+        throw new TypeError(ERR_ARRAY_NOT_SHARED);
+      }
+    } else {
+      sb = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+      this._mem = new Int32Array(sb, 0, 1);
+    }
   }
 
   /**
@@ -76,7 +104,7 @@ export class Mutex {
   /**
    * Acquires the mutex, blocking until the lock is available.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
    */
   async lock(): Promise<void> {
     while (!this.tryLock()) {
@@ -90,9 +118,9 @@ export class Mutex {
    *
    * @param callbackfn The callback function.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
    *
-   * @returns A promise with the return value from `callbackfn`.
+   * @returns A promise resolved to the return value of `callbackfn`.
    */
   async request<T>(callbackfn: () => T | Promise<T>): Promise<T> {
     await this.lock();
@@ -110,8 +138,8 @@ export class Mutex {
    *
    * @param timeout The timeout in milliseconds.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
-   * @throws {TimeoutError} If the mutex could not be acquired within the specified time.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
    *
    * @returns A promise with the return value from `callbackfn`.
    */
@@ -129,8 +157,8 @@ export class Mutex {
    *
    * @param timestamp The absolute time in milliseconds.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
-   * @throws {TimeoutError} If the mutex could not be acquired within the specified time.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
    *
    * @returns A promise with the return value from `callbackfn`.
    */
@@ -139,7 +167,7 @@ export class Mutex {
     timestamp: number,
   ): Promise<T> {
     if (!(await this.tryLockUntil(timestamp))) {
-      throw new TimeoutError(ERR_TIMEOUT);
+      throw new TimeoutError(ERR_MUTEX_TIMEOUT);
     }
     try {
       return await callbackfn();
@@ -151,13 +179,13 @@ export class Mutex {
   /**
    * Attempts to acquire the mutex without blocking.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
    *
    * @returns `true` if the lock was successful, otherwise `false`.
    */
   tryLock(): boolean {
     if (this._isOwner) {
-      throw new MutexError(ERR_RELOCK);
+      throw new MutexRelockError();
     }
     return (this._isOwner =
       Atomics.compareExchange(this._mem, 0, UNLOCKED, LOCKED) === UNLOCKED);
@@ -169,9 +197,9 @@ export class Mutex {
    *
    * @param timeout The timeout in milliseconds.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
    *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`
+   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
    */
   async tryLockFor(timeout: number): Promise<boolean> {
     return this.tryLockUntil(performance.now() + timeout);
@@ -183,9 +211,9 @@ export class Mutex {
    *
    * @param timestamp The absolute time in milliseconds.
    *
-   * @throws {MutexError} If the mutex is already owned by the caller.
+   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
    *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`
+   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
    */
   async tryLockUntil(timestamp: number): Promise<boolean> {
     while (!this.tryLock()) {
@@ -202,11 +230,11 @@ export class Mutex {
   /**
    * Releases the mutex if currently owned by the caller.
    *
-   * @throws {MutexError} If the mutex is not owned by the caller.
+   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
    */
   unlock(): void {
     if (!this._isOwner) {
-      throw new MutexError(ERR_UNLOCK_UNOWNED);
+      throw new MutexOwnershipError();
     }
     Atomics.store(this._mem, 0, UNLOCKED);
     this._isOwner = false;
