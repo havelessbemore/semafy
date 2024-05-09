@@ -1,5 +1,7 @@
+import { ATOMICS_NOT_EQUAL, ATOMICS_TIMED_OUT } from "./types/atomics";
+import { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/conditionVariable";
+
 import { Mutex } from "./mutex";
-import { ATOMICS_NOT_EQUAL } from "./utils/constants";
 import { MutexError } from "./utils/mutexError";
 
 const ERR_MEM_VALUE = "Unexpected value in atomic memory";
@@ -66,12 +68,26 @@ export class ConditionVariable {
    * released before blocking and re-acquired after waking up.
    *
    * @param mutex The mutex that must be locked by the current thread.
+   *
+   * @throws {MutexError} If the mutex is not owned by the caller.
+   * @throws {RangeError} If the condition variable's shared memory value is not expected.
+   */
+  async wait(mutex: Mutex): Promise<void> {
+    await this.waitFor(mutex, Infinity);
+  }
+
+  /**
+   * Blocks the current worker until this condition variable is notified,
+   * or an optional timeout expires. The associated mutex is atomically
+   * released before blocking and re-acquired after waking up.
+   *
+   * @param mutex The mutex that must be locked by the current thread.
    * @param timeout An optional timeout in milliseconds after which the wait is aborted.
    *
    * @throws {MutexError} If the mutex is not owned by the caller.
    * @throws {RangeError} If the condition variable's shared memory value is not expected.
    */
-  async wait(mutex: Mutex, timeout?: number): Promise<void> {
+  async waitFor(mutex: Mutex, timeout: number): Promise<CVStatus> {
     if (!mutex.ownsLock) {
       throw new MutexError(ERR_MUTEX_NOT_OWNED);
     }
@@ -82,6 +98,7 @@ export class ConditionVariable {
       if (value === ATOMICS_NOT_EQUAL) {
         throw new RangeError(ERR_MEM_VALUE);
       }
+      return value === ATOMICS_TIMED_OUT ? CV_TIMED_OUT : CV_OK;
     } finally {
       await mutex.lock();
     }
@@ -98,7 +115,7 @@ export class ConditionVariable {
    * @throws {MutexError} If the mutex is not owned by the caller.
    * @throws {RangeError} If the condition variable's shared memory value is not expected.
    */
-  async waitUntil(mutex: Mutex, timestamp: number): Promise<void> {
-    return this.wait(mutex, timestamp - performance.now());
+  async waitUntil(mutex: Mutex, timestamp: number): Promise<CVStatus> {
+    return this.waitFor(mutex, timestamp - performance.now());
   }
 }

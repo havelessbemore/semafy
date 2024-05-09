@@ -1,4 +1,5 @@
-import { ATOMICS_TIMED_OUT } from "./utils/constants";
+import { ATOMICS_TIMED_OUT } from "./types/atomics";
+
 import { MutexError } from "./utils/mutexError";
 import { TimeoutError } from "./utils/timeoutError";
 
@@ -117,14 +118,7 @@ export class Mutex {
     callbackfn: () => T | Promise<T>,
     timeout: number,
   ): Promise<T> {
-    if (!(await this.tryLockFor(timeout))) {
-      throw new TimeoutError(ERR_TIMEOUT, timeout);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
+    return this.requestUntil(callbackfn, performance.now() + timeout);
   }
 
   /**

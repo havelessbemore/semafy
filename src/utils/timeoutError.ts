@@ -3,28 +3,32 @@
  */
 export class TimeoutError extends Error {
   /**
-   * Duration in milliseconds after which the timeout error was thrown.
-   * Can be `undefined` if not specified.
-   */
-  public timeout?: number;
-
-  /**
    * Absolute time in milliseconds after which the timeout error was thrown.
    * Can be `undefined` if not specified.
    */
-  public timestamp?: number;
+  deadline?: number;
+
+  /**
+   * Duration in milliseconds after which the timeout error was thrown.
+   * Can be `undefined` if not specified.
+   */
+  timeout?: number;
 
   /**
    * Create a new `TimeoutError`.
    *
    * @param message - A custom error message. Defaults to `undefined`.
    * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
-   * @param timeout - The absolute time in milliseconds. Defaults to `undefined`.
+   * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.
    */
-  constructor(message?: string, timeout?: number, timestamp?: number) {
+  constructor(
+    message = "Operation timed out",
+    timeout?: number,
+    deadline?: number,
+  ) {
     super(message);
+    this.deadline = deadline;
     this.timeout = timeout;
-    this.timestamp = timestamp;
     this.name = TimeoutError.name;
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, TimeoutError);
