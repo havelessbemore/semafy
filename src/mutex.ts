@@ -85,6 +85,9 @@ export class Mutex {
       sb = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
       this._mem = new Int32Array(sb, 0, 1);
     }
+
+    // Initialize shared memory location
+    Atomics.and(this._mem, 0, 1);
   }
 
   /**

@@ -1,7 +1,7 @@
 // Types
 export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
 
-// Utility
+// Errors
 export { MutexError } from "./errors/mutexError";
 export { MutexOwnershipError } from "./errors/mutexOwnershipError";
 export { MutexRelockError } from "./errors/mutexRelockError";

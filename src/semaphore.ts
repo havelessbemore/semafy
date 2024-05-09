@@ -4,8 +4,6 @@ import { ConditionVariable } from "./conditionVariable";
 import { Mutex } from "./mutex";
 import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "./errors/constants";
 
-const MAX_VALUE = ~(1 << 31);
-
 /**
  * A counting semaphore based on shared memory and atomics, allowing for
  * cross-agent synchronization.
@@ -16,6 +14,11 @@ export class Semaphore {
   private _gate: ConditionVariable;
   private _mem: Int32Array;
   private _mutex: Mutex;
+
+  /**
+   * The maximum possible value of the internal counter
+   */
+  static readonly MAX = ~(1 << 31);
 
   /**
    * Creates a new instance of a Semaphore.
@@ -34,13 +37,6 @@ export class Semaphore {
   }
 
   /**
-   * Gets the underlying atomic handle.
-   */
-  get handle(): Int32Array {
-    return this._mem;
-  }
-
-  /**
    * Acquires the semaphore, blocking until it is available.
    *
    * @returns A promise that resolves when acquisition is successful.
@@ -52,7 +48,6 @@ export class Semaphore {
       while (Atomics.load(this._mem, 0) <= 0) {
         await this._gate.wait(this._mutex);
       }
-
       // Decrement internal counter
       Atomics.sub(this._mem, 0, 1);
     });
@@ -70,10 +65,8 @@ export class Semaphore {
       if (Atomics.load(this._mem, 0) <= 0) {
         return false;
       }
-
       // Decrement internal counter
       Atomics.sub(this._mem, 0, 1);
-
       // Return success
       return true;
     });
@@ -146,7 +139,7 @@ export class Semaphore {
       const state = Atomics.load(this._mem, 0);
 
       // Check for overflow
-      if (count > MAX_VALUE - state) {
+      if (count > Semaphore.MAX - state) {
         throw new RangeError(ERR_SEM_OVERFLOW);
       }
 
