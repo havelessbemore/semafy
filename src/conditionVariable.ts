@@ -32,7 +32,8 @@ export class ConditionVariable {
    * Note: The value at the shared memory location should not be
    * modified outside of this condition variable.
    */
-  constructor(sharedBuffer: SharedArrayBuffer, byteOffset = 0) {
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
+    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.store(this._mem, 0, 0);
   }

@@ -1,4 +1,56 @@
 /**
+ * Represents the possible status codes
+ * returned by Condition Variable operations.
+ */
+type CVStatus = typeof CV_OK | typeof CV_TIMED_OUT;
+/**
+ * Indicates that the condition variable
+ * was awakened via notifyAll or notifyOne.
+ */
+declare const CV_OK = "ok";
+/**
+ * Indicates the condition wariable
+ * was awakened due to time expiration.
+ */
+declare const CV_TIMED_OUT = "timed-out";
+
+/**
+ * Represents an error originating from a mutex.
+ */
+declare class MutexError extends Error {
+    /**
+     * Creates a new `MutexError`.
+     *
+     * @param message - A custom error message. Defaults to `undefined`.
+     */
+    constructor(message?: string);
+}
+
+/**
+ * Represents an error that occurs when a process exceeds a set timeout.
+ */
+declare class TimeoutError extends Error {
+    /**
+     * Absolute time in milliseconds after which the timeout error was thrown.
+     * Can be `undefined` if not specified.
+     */
+    deadline?: number;
+    /**
+     * Duration in milliseconds after which the timeout error was thrown.
+     * Can be `undefined` if not specified.
+     */
+    timeout?: number;
+    /**
+     * Create a new `TimeoutError`.
+     *
+     * @param message - A custom error message. Defaults to `undefined`.
+     * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
+     * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.
+     */
+    constructor(message?: string, timeout?: number, deadline?: number);
+}
+
+/**
  * Provides synchronization across agents (main thread and workers)
  * to allow exclusive access to shared resources / blocks of code.
  *
@@ -16,6 +68,9 @@
  * - Timeout precision for time-based methods may vary due to system load
  * and inherent limitations of JavaScript timing. Developers should
  * consider this possible variability in their applications.
+ *
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
  */
 declare class Mutex {
     /**
@@ -35,7 +90,7 @@ declare class Mutex {
      * Note: The value at the shared memory location should be
      * initialized to zero, and should not be modified outside of this mutex.
      */
-    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number);
     /**
      * Gets the underlying atomic handle.
      */
@@ -131,7 +186,9 @@ declare class Mutex {
  * A condition variable manages an atomic wait/block mechanism that
  * is tightly coupled with a mutex for safe cross-agent synchronization.
  *
- * @see {@link https://en.cppreference.com/w/cpp/thread/condition_variable | C++ Condition Variable}
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/condition_variable | C++ std::condition_variable}
+ * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 declare class ConditionVariable {
     /**
@@ -147,7 +204,7 @@ declare class ConditionVariable {
      * Note: The value at the shared memory location should not be
      * modified outside of this condition variable.
      */
-    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number);
     /**
      * Gets the underlying atomic handle.
      */
@@ -170,12 +227,23 @@ declare class ConditionVariable {
      * released before blocking and re-acquired after waking up.
      *
      * @param mutex The mutex that must be locked by the current thread.
+     *
+     * @throws {MutexError} If the mutex is not owned by the caller.
+     * @throws {RangeError} If the condition variable's shared memory value is not expected.
+     */
+    wait(mutex: Mutex): Promise<void>;
+    /**
+     * Blocks the current worker until this condition variable is notified,
+     * or an optional timeout expires. The associated mutex is atomically
+     * released before blocking and re-acquired after waking up.
+     *
+     * @param mutex The mutex that must be locked by the current thread.
      * @param timeout An optional timeout in milliseconds after which the wait is aborted.
      *
      * @throws {MutexError} If the mutex is not owned by the caller.
      * @throws {RangeError} If the condition variable's shared memory value is not expected.
      */
-    wait(mutex: Mutex, timeout?: number): Promise<void>;
+    waitFor(mutex: Mutex, timeout: number): Promise<CVStatus>;
     /**
      * Blocks the current thread until this condition variable is notified,
      * or until a specified point in time is reached. This is a convenience
@@ -187,12 +255,85 @@ declare class ConditionVariable {
      * @throws {MutexError} If the mutex is not owned by the caller.
      * @throws {RangeError} If the condition variable's shared memory value is not expected.
      */
-    waitUntil(mutex: Mutex, timestamp: number): Promise<void>;
+    waitUntil(mutex: Mutex, timestamp: number): Promise<CVStatus>;
 }
 
 /**
+ * A counting semaphore based on shared memory and atomics, allowing for
+ * cross-agent synchronization.
+ *
+ * @see {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
+ */
+declare class Semaphore {
+    private _gate;
+    private _mem;
+    private _mutex;
+    /**
+     * Creates a new instance of a Semaphore.
+     *
+     * @param sharedBuffer The shared buffer that backs the semaphore.
+     * @param byteOffset The byte offset within the shared buffer.
+     */
+    constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number);
+    /**
+     * Gets the underlying atomic handle.
+     */
+    get handle(): Int32Array;
+    /**
+     * Acquires the semaphore, blocking until it is available.
+     *
+     * @returns A promise that resolves when acquisition is successful.
+     */
+    acquire(): Promise<void>;
+    /**
+     * Attempts to acquire the semaphore.
+     *
+     * @returns A promise resolving to `true` if successful, otherwise `false`.
+     */
+    tryAcquire(): Promise<boolean>;
+    /**
+     * Attempts to acquire the semaphore, blocking until either
+     * success or the specified timeout elapses.
+     *
+     * @param timeout The maximum duration in milliseconds to wait.
+     *
+     * @returns A promise resolving to `true` if successful, otherwise `false`.
+     */
+    tryAcquireFor(timeout: number): Promise<boolean>;
+    /**
+     * Attempts to acquire the lock, blocking until either
+     * the lock is acquired or the specified point in time is reached.
+     *
+     * @param timestamp The absolute time in milliseconds to wait until.
+     *
+     * @returns A promise resolved to `true` if succesful, otherwise `false`.
+     */
+    tryAcquireUntil(timestamp: number): Promise<boolean>;
+    /**
+     * Releases a specified number of units back to the semaphore.
+     *
+     * @param count The number of units to release. Defaults to 1.
+     *
+     * @throws {RangeError} If `count` is negative or would cause the semaphore to overflow.
+     */
+    release(count?: number): Promise<void>;
+}
+
+/**
+ * Provides synchronization across agents (main thread and workers)
+ * to allow exclusive and shared access to resources / blocks of code.
+ *
+ * If one agent has acquired an exclusive lock, no other agents can acquire
+ * the mutex. If one agent has acquired a shared lock, other agents can still
+ * acquire the shared lock, but cannot acquire an exclusive lock. Within one
+ * agent, only one lock (shared or exclusive) can be acquired at the same time.
+ *
+ * Shared mutexes are useful when shared data can be safely read by any number
+ * of agents simultaneously, but should be written to by only one agent at a
+ * time, and not readable by other agents during writing.
+ *
  * @privateRemarks
- * Citations:
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/shared_mutex | C++ std::shared_mutex}
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 declare class SharedMutex {
@@ -213,28 +354,4 @@ declare class SharedMutex {
     unlockShared(): Promise<boolean>;
 }
 
-/**
- * Represents an error that occurs when a process exceeds a set timeout.
- */
-declare class TimeoutError extends Error {
-    /**
-     * Duration in milliseconds after which the timeout error was thrown.
-     * Can be `undefined` if not specified.
-     */
-    timeout?: number;
-    /**
-     * Absolute time in milliseconds after which the timeout error was thrown.
-     * Can be `undefined` if not specified.
-     */
-    timestamp?: number;
-    /**
-     * Create a new `TimeoutError`.
-     *
-     * @param message - A custom error message. Defaults to `undefined`.
-     * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
-     * @param timeout - The absolute time in milliseconds. Defaults to `undefined`.
-     */
-    constructor(message?: string, timeout?: number, timestamp?: number);
-}
-
-export { ConditionVariable, Mutex, SharedMutex, TimeoutError };
+export { type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, Mutex, MutexError, Semaphore, SharedMutex, TimeoutError };

@@ -53,7 +53,8 @@ export class Mutex {
    * Note: The value at the shared memory location should be
    * initialized to zero, and should not be modified outside of this mutex.
    */
-  constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number) {
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset?: number) {
+    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
   }

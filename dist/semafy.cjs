@@ -27,8 +27,8 @@
 
 'use strict';
 
-const ATOMICS_NOT_EQUAL = "not-equal";
-const ATOMICS_TIMED_OUT = "timed-out";
+const CV_OK = "ok";
+const CV_TIMED_OUT = "timed-out";
 
 class MutexError extends Error {
   /**
@@ -44,6 +44,41 @@ class MutexError extends Error {
     }
   }
 }
+
+var __defProp$4 = Object.defineProperty;
+var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, typeof key !== "symbol" ? key + "" : key, value);
+class TimeoutError extends Error {
+  /**
+   * Create a new `TimeoutError`.
+   *
+   * @param message - A custom error message. Defaults to `undefined`.
+   * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
+   * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.
+   */
+  constructor(message = "Operation timed out", timeout, deadline) {
+    super(message);
+    /**
+     * Absolute time in milliseconds after which the timeout error was thrown.
+     * Can be `undefined` if not specified.
+     */
+    __publicField$4(this, "deadline");
+    /**
+     * Duration in milliseconds after which the timeout error was thrown.
+     * Can be `undefined` if not specified.
+     */
+    __publicField$4(this, "timeout");
+    this.deadline = deadline;
+    this.timeout = timeout;
+    this.name = TimeoutError.name;
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, TimeoutError);
+    }
+  }
+}
+
+const ATOMICS_NOT_EQUAL = "not-equal";
+const ATOMICS_TIMED_OUT = "timed-out";
 
 var __defProp$3 = Object.defineProperty;
 var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -65,6 +100,7 @@ class ConditionVariable {
      * The shared atomic memory where the condition variable stores its state.
      */
     __publicField$3(this, "_mem");
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.store(this._mem, 0, 0);
   }
@@ -96,12 +132,25 @@ class ConditionVariable {
    * released before blocking and re-acquired after waking up.
    *
    * @param mutex The mutex that must be locked by the current thread.
+   *
+   * @throws {MutexError} If the mutex is not owned by the caller.
+   * @throws {RangeError} If the condition variable's shared memory value is not expected.
+   */
+  async wait(mutex) {
+    await this.waitFor(mutex, Infinity);
+  }
+  /**
+   * Blocks the current worker until this condition variable is notified,
+   * or an optional timeout expires. The associated mutex is atomically
+   * released before blocking and re-acquired after waking up.
+   *
+   * @param mutex The mutex that must be locked by the current thread.
    * @param timeout An optional timeout in milliseconds after which the wait is aborted.
    *
    * @throws {MutexError} If the mutex is not owned by the caller.
    * @throws {RangeError} If the condition variable's shared memory value is not expected.
    */
-  async wait(mutex, timeout) {
+  async waitFor(mutex, timeout) {
     if (!mutex.ownsLock) {
       throw new MutexError(ERR_MUTEX_NOT_OWNED);
     }
@@ -112,6 +161,7 @@ class ConditionVariable {
       if (value === ATOMICS_NOT_EQUAL) {
         throw new RangeError(ERR_MEM_VALUE);
       }
+      return value === ATOMICS_TIMED_OUT ? CV_TIMED_OUT : CV_OK;
     } finally {
       await mutex.lock();
     }
@@ -128,45 +178,13 @@ class ConditionVariable {
    * @throws {RangeError} If the condition variable's shared memory value is not expected.
    */
   async waitUntil(mutex, timestamp) {
-    return this.wait(mutex, timestamp - performance.now());
+    return this.waitFor(mutex, timestamp - performance.now());
   }
 }
 
 var __defProp$2 = Object.defineProperty;
 var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
-class TimeoutError extends Error {
-  /**
-   * Create a new `TimeoutError`.
-   *
-   * @param message - A custom error message. Defaults to `undefined`.
-   * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
-   * @param timeout - The absolute time in milliseconds. Defaults to `undefined`.
-   */
-  constructor(message, timeout, timestamp) {
-    super(message);
-    /**
-     * Duration in milliseconds after which the timeout error was thrown.
-     * Can be `undefined` if not specified.
-     */
-    __publicField$2(this, "timeout");
-    /**
-     * Absolute time in milliseconds after which the timeout error was thrown.
-     * Can be `undefined` if not specified.
-     */
-    __publicField$2(this, "timestamp");
-    this.timeout = timeout;
-    this.timestamp = timestamp;
-    this.name = TimeoutError.name;
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, TimeoutError);
-    }
-  }
-}
-
-var __defProp$1 = Object.defineProperty;
-var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
 const ERR_RELOCK = "Attempted relock of owned mutex. Deadlock would occur.";
 const ERR_TIMEOUT = "Could not acquire mutex. Operation timed out.";
 const ERR_UNLOCK_UNOWNED = "Attempted unlock of unowned mutex. Operation not permitted.";
@@ -186,11 +204,12 @@ class Mutex {
     /**
      * Indicates whether the current agent owns the lock.
      */
-    __publicField$1(this, "_isOwner");
+    __publicField$2(this, "_isOwner");
     /**
      * The shared atomic memory for the mutex.
      */
-    __publicField$1(this, "_mem");
+    __publicField$2(this, "_mem");
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
   }
@@ -247,14 +266,7 @@ class Mutex {
    * @returns A promise with the return value from `callbackfn`.
    */
   async requestFor(callbackfn, timeout) {
-    if (!await this.tryLockFor(timeout)) {
-      throw new TimeoutError(ERR_TIMEOUT, timeout);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
+    return this.requestUntil(callbackfn, performance.now() + timeout);
   }
   /**
    * Attempts to acquire the mutex and execute the provided
@@ -337,6 +349,122 @@ class Mutex {
     Atomics.store(this._mem, 0, UNLOCKED);
     this._isOwner = false;
     Atomics.notify(this._mem, 0);
+  }
+}
+
+var __defProp$1 = Object.defineProperty;
+var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
+const ERR_NEG_COUNT = "Cannot release negative value.";
+const ERR_OVERFLOW = "Operation would cause overflow.";
+const MAX_VALUE = ~(1 << 31);
+class Semaphore {
+  /**
+   * Creates a new instance of a Semaphore.
+   *
+   * @param sharedBuffer The shared buffer that backs the semaphore.
+   * @param byteOffset The byte offset within the shared buffer.
+   */
+  constructor(sharedBuffer, byteOffset = 0) {
+    __publicField$1(this, "_gate");
+    __publicField$1(this, "_mem");
+    __publicField$1(this, "_mutex");
+    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(bInt32));
+    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
+    byteOffset += bInt32;
+    this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+  }
+  /**
+   * Gets the underlying atomic handle.
+   */
+  get handle() {
+    return this._mem;
+  }
+  /**
+   * Acquires the semaphore, blocking until it is available.
+   *
+   * @returns A promise that resolves when acquisition is successful.
+   */
+  acquire() {
+    return this._mutex.request(async () => {
+      while (Atomics.load(this._mem, 0) <= 0) {
+        await this._gate.wait(this._mutex);
+      }
+      Atomics.sub(this._mem, 0, 1);
+    });
+  }
+  /**
+   * Attempts to acquire the semaphore.
+   *
+   * @returns A promise resolving to `true` if successful, otherwise `false`.
+   */
+  tryAcquire() {
+    return this._mutex.request(() => {
+      if (Atomics.load(this._mem, 0) <= 0) {
+        return false;
+      }
+      Atomics.sub(this._mem, 0, 1);
+      return true;
+    });
+  }
+  /**
+   * Attempts to acquire the semaphore, blocking until either
+   * success or the specified timeout elapses.
+   *
+   * @param timeout The maximum duration in milliseconds to wait.
+   *
+   * @returns A promise resolving to `true` if successful, otherwise `false`.
+   */
+  tryAcquireFor(timeout) {
+    return this.tryAcquireUntil(performance.now() + timeout);
+  }
+  /**
+   * Attempts to acquire the lock, blocking until either
+   * the lock is acquired or the specified point in time is reached.
+   *
+   * @param timestamp The absolute time in milliseconds to wait until.
+   *
+   * @returns A promise resolved to `true` if succesful, otherwise `false`.
+   */
+  async tryAcquireUntil(timestamp) {
+    if (!await this._mutex.tryLockUntil(timestamp)) {
+      return false;
+    }
+    try {
+      while (Atomics.load(this._mem, 0) <= 0) {
+        const status = await this._gate.waitUntil(this._mutex, timestamp);
+        if (status === CV_TIMED_OUT) {
+          return false;
+        }
+      }
+      Atomics.sub(this._mem, 0, 1);
+      return true;
+    } finally {
+      this._mutex.unlock();
+    }
+  }
+  /**
+   * Releases a specified number of units back to the semaphore.
+   *
+   * @param count The number of units to release. Defaults to 1.
+   *
+   * @throws {RangeError} If `count` is negative or would cause the semaphore to overflow.
+   */
+  release(count = 1) {
+    if (count < 0) {
+      throw new RangeError(ERR_NEG_COUNT);
+    }
+    return this._mutex.request(() => {
+      const state = Atomics.load(this._mem, 0);
+      if (count > MAX_VALUE - state) {
+        throw new RangeError(ERR_OVERFLOW);
+      }
+      Atomics.add(this._mem, 0, count);
+      this._gate.notifyAll();
+    });
   }
 }
 
@@ -466,8 +594,12 @@ class SharedMutex {
   }
 }
 
+exports.CV_OK = CV_OK;
+exports.CV_TIMED_OUT = CV_TIMED_OUT;
 exports.ConditionVariable = ConditionVariable;
 exports.Mutex = Mutex;
+exports.MutexError = MutexError;
+exports.Semaphore = Semaphore;
 exports.SharedMutex = SharedMutex;
 exports.TimeoutError = TimeoutError;
 //# sourceMappingURL=semafy.cjs.map

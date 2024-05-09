@@ -1,6 +1,6 @@
 import { ConditionVariable } from "./conditionVariable";
 import { Mutex } from "./mutex";
-import { TimeoutError } from "./utils/timeoutError";
+import { CV_TIMED_OUT } from "./types/conditionVariable";
 
 const ERR_NEG_COUNT = "Cannot release negative value.";
 const ERR_OVERFLOW = "Operation would cause overflow.";
@@ -24,8 +24,9 @@ export class Semaphore {
    * @param sharedBuffer The shared buffer that backs the semaphore.
    * @param byteOffset The byte offset within the shared buffer.
    */
-  constructor(sharedBuffer: SharedArrayBuffer, byteOffset = 0) {
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    sharedBuffer ??= new SharedArrayBuffer(bInt32);
     this._mutex = new Mutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -65,7 +66,7 @@ export class Semaphore {
    */
   tryAcquire(): Promise<boolean> {
     // Acquire the internal mutex within scope
-    return this._mutex.request(async () => {
+    return this._mutex.request(() => {
       // Check internal counter
       if (Atomics.load(this._mem, 0) <= 0) {
         return false;
@@ -73,6 +74,8 @@ export class Semaphore {
 
       // Decrement internal counter
       Atomics.sub(this._mem, 0, 1);
+
+      // Return success
       return true;
     });
   }
@@ -97,30 +100,32 @@ export class Semaphore {
    *
    * @returns A promise resolved to `true` if succesful, otherwise `false`.
    */
-  tryAcquireUntil(timestamp: number): Promise<boolean> {
+  async tryAcquireUntil(timestamp: number): Promise<boolean> {
     // Acquire the internal mutex within scope
-    return this._mutex
-      .requestUntil(async () => {
-        // Wait until internal counter has capacity
-        while (Atomics.load(this._mem, 0) <= 0) {
-          await this._gate.waitUntil(this._mutex, timestamp);
-        }
+    if (!(await this._mutex.tryLockUntil(timestamp))) {
+      return false;
+    }
 
-        // Decrement internal counter
-        Atomics.sub(this._mem, 0, 1);
+    try {
+      // Wait until internal counter has capacity
+      while (Atomics.load(this._mem, 0) <= 0) {
+        const status = await this._gate.waitUntil(this._mutex, timestamp);
 
-        // Return success
-        return true;
-      }, timestamp)
-      .catch((err) => {
-        // Ignore timeout errors
-        if (err instanceof TimeoutError) {
+        // Stop if timed out
+        if (status === CV_TIMED_OUT) {
           return false;
         }
+      }
 
-        // Throw other errors
-        throw err;
-      });
+      // Decrement internal counter
+      Atomics.sub(this._mem, 0, 1);
+
+      // Return success
+      return true;
+    } finally {
+      // Release internal mutex
+      this._mutex.unlock();
+    }
   }
 
   /**
