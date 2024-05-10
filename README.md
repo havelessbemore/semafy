@@ -1,6 +1,6 @@
 # Semafy
 
-Semafy provides synchronization primitives based on concepts from C++ standard threading and synchronization libraries. It includes support for mutexes, condition variables, semaphores, and shared mutexes to facilitate robust concurrent applications in environments supporting shared memory and atomic operations.
+**Semafy** provides synchronization and concurrency management across execution agents such as web workers and the main thread. It contains a robust set of tools modeled after C++ synchronization primitives, offering control and flexibility for managing shared resources and states.
 
 [![Version](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
 [![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/havelessbemore/semafy/graphs/commit-activity)
@@ -10,12 +10,11 @@ Semafy provides synchronization primitives based on concepts from C++ standard t
 
 ## Features
 
-- **Mutex**: Provides exclusive locking to protect shared data from concurrent access.
+- **Mutexes**: Exclusive and shared locking to protect data from concurrent access.
 - **ConditionVariable**: Allows agents (main thread, web workers) to wait for certain conditions to occur.
-- **RecursiveMutex**: Provides exclusive, recursive locking to protect shared data from concurrent access.
-- **Semaphore**: Implements a semaphore to control access to a finite number of resources.
-- **SharedMutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
-- **Error Handling**: Includes specific error classes like `MutexError`, `MutexOwnershipError`, `MutexRelockError`, and `TimeoutError` to handle different synchronization scenarios.
+- **Semaphores**: Control access to a finite number of resources.
+- **Error Handling**: Specific classes for various lock-related issues, enhancing debuggability and reliability.
+- **Platform Agnostic**: Works in both [browser](#browser-usage) and server-side applications, and generally any environment that supports `SharedArrayBuffer`.
 
 ## Installation
 
@@ -31,9 +30,44 @@ Yarn:
 yarn add semafy
 ```
 
+## API
+
+### Mutex
+
+- **Mutex**: Provides essential mutex operations including `lock`, `unlock`, and `tryLock`.
+
+- **TimedMutex**: A timed variant that supports timed operations including `tryLockFor` and `tryLockUntil`.
+
+- **RecursiveMutex**: Allows multiple locks from the same agent.
+
+- **RecursiveTimedMutex**: A timed variant that supports timed operations.
+
+- **SharedMutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
+
+### Mutex Management
+
+- **lockGuard()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.
+
+- **SharedLock**: Wraps a `SharedLockable` object (e.g. `SharedMutex`) to create a shared lock. Calls to `lock`, `unlock`, etc will acquire a shared lock instead of an exclusive lock.
+
+### Condition Variable
+
+- **ConditionVariable**: Allows agents to wait for specific conditions, tightly integrated with mutexes for state management.
+
+### Semaphore
+
+- **CountingSemaphore**: Manages access to a finite number of resources, allowing multiple entities to hold the semaphore concurrently up to a maximum count.
+
+### Errors
+
+- **LockError**: A generic error related to errors in lock acquisition, release and management.
+- **OwnershipError**: Occurs when attempting to unlock an unacquired mutex.
+- **RelockError**: Occurs when attempting to lock an already acquired mutex. Prevents deadlocks from occurring.
+- **TimeoutError**: Occurs when an operation exceeds a set time, such as when using `tryLockFor` or `tryLockUntil`.
+
 ## Browser Usage
 
-For security reasons, browsers have certain requirements for using shared memory. These requirements must be met to use this library in a browser. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
+For security reasons, browsers have certain requirements for using shared memory. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
 
 ## Contributing
 
