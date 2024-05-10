@@ -117,7 +117,7 @@ export class ConditionVariable implements SharedResource {
       // Start waiting BEFORE releasing mutex
       const res = Atomics.waitAsync(this._mem, 0, 0, timeout);
       // Release mutex
-      mutex.unlock();
+      await mutex.unlock();
       // Wait for notification
       const value = res.async ? await res.value : res.value;
       // Check for unexpected value at shared memory location

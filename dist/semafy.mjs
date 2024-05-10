@@ -263,6 +263,15 @@ class RecursiveTimedMutex extends RecursiveMutex {
   }
 }
 
+async function lockGuard(mutex, callbackfn) {
+  await mutex.lock();
+  try {
+    return await callbackfn();
+  } finally {
+    await mutex.unlock();
+  }
+}
+
 var __defProp$3 = Object.defineProperty;
 var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$3 = (obj, key, value) => __defNormalProp$3(obj, key + "" , value);
@@ -343,7 +352,7 @@ class ConditionVariable {
     }
     try {
       const res = Atomics.waitAsync(this._mem, 0, 0, timeout);
-      mutex.unlock();
+      await mutex.unlock();
       const value = res.async ? await res.value : res.value;
       if (value === ATOMICS_NOT_EQUAL) {
         throw new RangeError(ERR_CV_VALUE);
@@ -439,8 +448,7 @@ class SharedMutex {
     if (this._isWriter || this._isReader) {
       throw new RelockError();
     }
-    await this._mutex.lock();
-    try {
+    await lockGuard(this._mutex, async () => {
       while (Atomics.or(this._mem, 0, WRITE_BIT) & WRITE_BIT) {
         await this._gate1.wait(this._mutex);
       }
@@ -448,20 +456,15 @@ class SharedMutex {
       while (Atomics.load(this._mem, 0) & READ_BITS) {
         await this._gate2.wait(this._mutex);
       }
-    } finally {
-      this._mutex.unlock();
-    }
+    });
   }
   async tryLock() {
     if (this._isWriter || this._isReader) {
       return false;
     }
-    await this._mutex.lock();
-    try {
+    return lockGuard(this._mutex, () => {
       return this._isWriter = Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0;
-    } finally {
-      this._mutex.unlock();
-    }
+    });
   }
   /**
    * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
@@ -470,13 +473,10 @@ class SharedMutex {
     if (!this._isWriter) {
       throw new OwnershipError();
     }
-    await this._mutex.lock();
-    try {
+    await lockGuard(this._mutex, () => {
       Atomics.and(this._mem, 0, READ_BITS);
       this._isWriter = false;
-    } finally {
-      this._mutex.unlock();
-    }
+    });
     this._gate1.notifyAll();
   }
   // Shared
@@ -487,8 +487,7 @@ class SharedMutex {
     if (this._isReader || this._isWriter) {
       throw new RelockError();
     }
-    await this._mutex.lock();
-    try {
+    await lockGuard(this._mutex, async () => {
       let state = Atomics.load(this._mem, 0);
       while (state & WRITE_BIT || state === READ_BITS) {
         await this._gate1.wait(this._mutex);
@@ -496,16 +495,13 @@ class SharedMutex {
       }
       Atomics.add(this._mem, 0, 1);
       this._isReader = true;
-    } finally {
-      this._mutex.unlock();
-    }
+    });
   }
   async tryLockShared() {
     if (this._isReader || this._isWriter) {
       return false;
     }
-    await this._mutex.lock();
-    try {
+    return await lockGuard(this._mutex, () => {
       const state = Atomics.load(this._mem, 0);
       if (state & WRITE_BIT || state === READ_BITS) {
         return false;
@@ -513,9 +509,7 @@ class SharedMutex {
       Atomics.add(this._mem, 0, 1);
       this._isReader = true;
       return true;
-    } finally {
-      this._mutex.unlock();
-    }
+    });
   }
   /**
    * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
@@ -524,8 +518,7 @@ class SharedMutex {
     if (!this._isReader) {
       throw new OwnershipError();
     }
-    await this._mutex.lock();
-    try {
+    await lockGuard(this._mutex, () => {
       const state = Atomics.sub(this._mem, 0, 1);
       this._isReader = false;
       if (state & WRITE_BIT) {
@@ -535,9 +528,7 @@ class SharedMutex {
       } else if (state === READ_BITS) {
         this._gate1.notifyAll();
       }
-    } finally {
-      this._mutex.unlock();
-    }
+    });
   }
 }
 
@@ -572,7 +563,7 @@ class SharedTimedMutex extends SharedMutex {
       }
       return true;
     } finally {
-      this._mutex.unlock();
+      await this._mutex.unlock();
       if (notify) {
         this._gate1.notifyAll();
       }
@@ -601,17 +592,8 @@ class SharedTimedMutex extends SharedMutex {
       this._isReader = true;
       return true;
     } finally {
-      this._mutex.unlock();
+      await this._mutex.unlock();
     }
-  }
-}
-
-async function lockGuard(mutex, callbackfn) {
-  await mutex.lock();
-  try {
-    return await callbackfn();
-  } finally {
-    mutex.unlock();
   }
 }
 
@@ -740,7 +722,7 @@ const _CountingSemaphore = class _CountingSemaphore {
       Atomics.sub(this._mem, 0, 1);
       return true;
     } finally {
-      this._mutex.unlock();
+      await this._mutex.unlock();
     }
   }
   /**

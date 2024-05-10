@@ -80,7 +80,7 @@ export class SharedTimedMutex
       return true;
     } finally {
       // Release internal lock
-      this._mutex.unlock();
+      await this._mutex.unlock();
 
       // Notify agents waiting on mutex
       if (notify) {
@@ -126,7 +126,7 @@ export class SharedTimedMutex
       return true;
     } finally {
       // Release internal lock
-      this._mutex.unlock();
+      await this._mutex.unlock();
     }
   }
 }

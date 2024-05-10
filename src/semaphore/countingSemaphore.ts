@@ -137,7 +137,7 @@ export class CountingSemaphore implements SharedResource {
       return true;
     } finally {
       // Release internal mutex
-      this._mutex.unlock();
+      await this._mutex.unlock();
     }
   }
 

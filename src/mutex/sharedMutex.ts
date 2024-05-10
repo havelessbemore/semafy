@@ -4,6 +4,7 @@ import type { SharedLockable } from "../types/sharedLockable";
 
 import { OwnershipError } from "../errors/ownershipError";
 import { RelockError } from "../errors/relockError";
+import { lockGuard } from "../utils/lockGuard";
 
 import { ConditionVariable } from "../conditionVariable";
 import { TimedMutex } from "./timedMutex";
@@ -97,8 +98,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-    try {
+    await lockGuard(this._mutex, async () => {
       // Acquire write lock
       while (Atomics.or(this._mem, 0, WRITE_BIT) & WRITE_BIT) {
         await this._gate1.wait(this._mutex);
@@ -109,10 +109,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       while (Atomics.load(this._mem, 0) & READ_BITS) {
         await this._gate2.wait(this._mutex);
       }
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
   }
 
   async tryLock(): Promise<boolean> {
@@ -122,16 +119,11 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-
-    try {
+    return lockGuard(this._mutex, () => {
       // Try to acquire write lock
       return (this._isWriter =
         Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0);
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
   }
 
   /**
@@ -144,16 +136,11 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-
-    try {
+    await lockGuard(this._mutex, () => {
       // Release write lock
       Atomics.and(this._mem, 0, READ_BITS);
       this._isWriter = false;
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
 
     // Notify agents waiting on mutex
     this._gate1.notifyAll();
@@ -171,22 +158,18 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-
-    try {
+    await lockGuard(this._mutex, async () => {
       // Wait until there's no writer and there's read capacity
       let state = Atomics.load(this._mem, 0);
       while (state & WRITE_BIT || state === READ_BITS) {
         await this._gate1.wait(this._mutex);
         state = Atomics.load(this._mem, 0);
       }
+
       // Acquire a read lock
       Atomics.add(this._mem, 0, 1);
       this._isReader = true;
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
   }
 
   async tryLockShared(): Promise<boolean> {
@@ -196,23 +179,20 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-
-    try {
+    return await lockGuard(this._mutex, () => {
       // Check for active / blocked writers and read capacity
       const state = Atomics.load(this._mem, 0);
       if (state & WRITE_BIT || state === READ_BITS) {
         return false;
       }
+
       // Acquire a read lock
       Atomics.add(this._mem, 0, 1);
       this._isReader = true;
+
       // Return success
       return true;
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
   }
 
   /**
@@ -225,9 +205,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     }
 
     // Acquire internal lock
-    await this._mutex.lock();
-
-    try {
+    await lockGuard(this._mutex, () => {
       // Release read lock
       const state = Atomics.sub(this._mem, 0, 1);
       this._isReader = false;
@@ -245,9 +223,6 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
         // then notify blocked agents
         this._gate1.notifyAll();
       }
-    } finally {
-      // Release internal lock
-      this._mutex.unlock();
-    }
+    });
   }
 }

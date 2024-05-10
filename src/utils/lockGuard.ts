@@ -20,6 +20,6 @@ export async function lockGuard<T>(
     return await callbackfn();
   } finally {
     // Release lock
-    mutex.unlock();
+    await mutex.unlock();
   }
 }
