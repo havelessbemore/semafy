@@ -2,13 +2,31 @@ import type { SharedLockable } from "../types/sharedLockable";
 import type { SharedTimedLockable } from "../types/sharedTimedLockable";
 import type { TimedLockable } from "../types/timedLockable";
 
+/**
+ * A shared mutex wrapper.
+ *
+ * Locking a SharedLock locks the associated shared mutex in shared mode.
+ *
+ * If the shared mutex implements {@link SharedTimedLockable}, then SharedLock
+ * will also implement it. Otherwise, attempts to use timed methods
+ * (`tryLockFor`, `tryLockUntil`) will result in errors.
+ */
 export class SharedLock implements TimedLockable {
+  /**
+   * The associated mutex.
+   */
   protected _mutex: SharedLockable;
 
+  /**
+   * @param mutex - The shared mutex to associate.
+   */
   constructor(mutex: SharedLockable) {
     this._mutex = mutex;
   }
 
+  /**
+   * The associated mutex.
+   */
   get mutex(): SharedLockable {
     return this._mutex;
   }

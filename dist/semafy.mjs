@@ -554,10 +554,19 @@ var __defProp$1 = Object.defineProperty;
 var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, key + "" , value);
 class SharedLock {
+  /**
+   * @param mutex - The shared mutex to associate.
+   */
   constructor(mutex) {
+    /**
+     * The associated mutex.
+     */
     __publicField$1(this, "_mutex");
     this._mutex = mutex;
   }
+  /**
+   * The associated mutex.
+   */
   get mutex() {
     return this._mutex;
   }

@@ -516,9 +516,27 @@ declare class TimedMutex extends Mutex implements TimedLockable {
  */
 declare function lockGuard<T>(mutex: BasicLockable, callbackfn: () => T | Promise<T>): Promise<T>;
 
+/**
+ * A shared mutex wrapper.
+ *
+ * Locking a SharedLock locks the associated shared mutex in shared mode.
+ *
+ * If the shared mutex implements {@link SharedTimedLockable}, then SharedLock
+ * will also implement it. Otherwise, attempts to use timed methods
+ * (`tryLockFor`, `tryLockUntil`) will result in errors.
+ */
 declare class SharedLock implements TimedLockable {
+    /**
+     * The associated mutex.
+     */
     protected _mutex: SharedLockable;
+    /**
+     * @param mutex - The shared mutex to associate.
+     */
     constructor(mutex: SharedLockable);
+    /**
+     * The associated mutex.
+     */
     get mutex(): SharedLockable;
     get ownsLock(): boolean;
     lock(): Promise<void>;

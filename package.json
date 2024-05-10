@@ -1,6 +1,6 @@
 {
   "name": "semafy",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A robust cross-agent synchronization library.",
   "license": "MIT",
   "author": "Michael Rojas <dev.michael.rojas@gmail.com> (https://github.com/havelessbemore)",
