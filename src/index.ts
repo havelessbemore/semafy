@@ -2,6 +2,7 @@
 export { BasicLockable } from "./types/basicLockable";
 export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
 export { Lockable } from "./types/lockable";
+export { SharedLockable } from "./types/sharedLockable";
 export { TimedLockable } from "./types/timedLockable";
 
 // Errors

@@ -3,6 +3,7 @@ import { MutexOwnershipError } from "./errors/mutexOwnershipError";
 import { MutexRelockError } from "./errors/mutexRelockError";
 import { Mutex } from "./mutex";
 import { Lockable } from "./types/lockable";
+import { SharedLockable } from "./types/sharedLockable";
 
 const WRITE_BIT = 1 << 31;
 const READ_BITS = ~WRITE_BIT;
@@ -24,7 +25,7 @@ const READ_BITS = ~WRITE_BIT;
  * 1. {@link https://en.cppreference.com/w/cpp/thread/shared_mutex | C++ std::shared_mutex}
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
-export class SharedMutex implements Lockable {
+export class SharedMutex implements Lockable, SharedLockable {
   private _gate1: ConditionVariable;
   private _gate2: ConditionVariable;
   private _isReader: boolean;
