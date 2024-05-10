@@ -3,6 +3,11 @@
  */
 export interface SharedLockable {
   /**
+   * Indicates whether the current agent owns a shared lock.
+   */
+  ownsSharedLock: readonly boolean;
+
+  /**
    * Blocks until a shared lock can be acquired for the current
    * agent. If an exception is thrown, no lock is acquired.
    */

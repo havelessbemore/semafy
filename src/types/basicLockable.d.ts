@@ -4,7 +4,12 @@
  */
 export interface BasicLockable {
   /**
-   * Blocks until a lock can be acquired for the current agent.
+   * Indicates whether the current agent owns the lock.
+   */
+  ownsLock: readonly boolean;
+
+  /**
+   * Blocks until the lock can be acquired for the current agent.
    * If an exception is thrown, no lock is acquired.
    */
   lock(): Promise<void>;
