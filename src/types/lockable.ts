@@ -1,4 +1,4 @@
-import { BasicLockable } from "./basicLockable";
+import type { BasicLockable } from "./basicLockable";
 
 /**
  * Extends the {@link BasicLockable} interface to include attempted locking.

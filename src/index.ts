@@ -1,20 +1,31 @@
 // Types
-export { BasicLockable } from "./types/basicLockable";
+export type { BasicLockable } from "./types/basicLockable";
 export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
-export { Lockable } from "./types/lockable";
-export { SharedLockable } from "./types/sharedLockable";
-export { SharedTimedLockable } from "./types/sharedTimedLockable";
-export { TimedLockable } from "./types/timedLockable";
+export type { Lockable } from "./types/lockable";
+export type { SharedLockable } from "./types/sharedLockable";
+export type { SharedResource } from "./types/sharedResource";
+export type { SharedTimedLockable } from "./types/sharedTimedLockable";
+export type { TimedLockable } from "./types/timedLockable";
 
 // Errors
-export { MutexError } from "./errors/mutexError";
-export { MutexOwnershipError } from "./errors/mutexOwnershipError";
-export { MutexRelockError } from "./errors/mutexRelockError";
+export { LockError } from "./errors/lockError";
+export { OwnershipError } from "./errors/ownershipError";
+export { RelockError } from "./errors/relockError";
 export { TimeoutError } from "./errors/timeoutError";
 
-// Core
+// Mutex
+export { Mutex } from "./mutex/mutex";
+export { RecursiveMutex } from "./mutex/recursiveMutex";
+export { RecursiveTimedMutex } from "./mutex/recursiveTimedMutex";
+export { SharedMutex } from "./mutex/sharedMutex";
+export { TimedMutex } from "./mutex/timedMutex";
+
+// Mutex Management
+export { lockGuard } from "./utils/lockGuard";
+export { SharedLock } from "./utils/sharedLock";
+
+// Condition Variables
 export { ConditionVariable } from "./conditionVariable";
-export { Mutex } from "./mutex";
-export { RecursiveMutex } from "./recursiveMutex";
-export { Semaphore } from "./semaphore";
-export { SharedMutex } from "./sharedMutex";
+
+// Semaphores
+export { CountingSemaphore } from "./semaphore/countingSemaphore";

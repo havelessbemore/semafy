@@ -1,32 +1,32 @@
-import { CV_TIMED_OUT } from "./types/cvStatus";
+import { CV_TIMED_OUT } from "../types/cvStatus";
+import type { SharedResource } from "../types/sharedResource";
+import type { TimedLockable } from "../types/timedLockable";
 
-import { ConditionVariable } from "./conditionVariable";
-import { Mutex } from "./mutex";
-import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "./errors/constants";
+import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "../errors/constants";
+import { lockGuard } from "../utils/lockGuard";
+
+import { ConditionVariable } from "../conditionVariable";
+import { TimedMutex } from "../mutex/timedMutex";
 
 /**
  * A counting semaphore based on shared memory and atomics, allowing for
  * cross-agent synchronization.
  *
- * @see {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
  */
-export class Semaphore {
+export class CountingSemaphore implements SharedResource {
   private _gate: ConditionVariable;
   private _mem: Int32Array;
-  private _mutex: Mutex;
+  private _mutex: TimedLockable;
 
   /**
    * The maximum possible value of the internal counter
    */
   static readonly MAX = ~(1 << 31);
 
-  /**
-   * Creates a new instance of a Semaphore.
-   */
   constructor();
   /**
-   * Creates a new instance of a Semaphore.
-   *
    * @param sharedBuffer The shared buffer that backs the semaphore.
    * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
    */
@@ -38,23 +38,21 @@ export class Semaphore {
     sharedBuffer ??= new SharedArrayBuffer(3 * bInt32);
 
     // Initialize properties
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
     byteOffset += bInt32;
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    this._mutex = new TimedMutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._gate = new ConditionVariable(sharedBuffer, byteOffset);
   }
 
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer(): SharedArrayBuffer {
     return this._mem.buffer as SharedArrayBuffer;
   }
 
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
+  get byteLength(): number {
+    return this._mem.byteLength;
+  }
+
   get byteOffset(): number {
     return this._mem.byteOffset;
   }
@@ -66,7 +64,7 @@ export class Semaphore {
    */
   acquire(): Promise<void> {
     // Acquire the internal mutex within scope
-    return this._mutex.request(async () => {
+    return lockGuard(this._mutex, async () => {
       // Wait until internal counter has capacity
       while (Atomics.load(this._mem, 0) <= 0) {
         await this._gate.wait(this._mutex);
@@ -83,7 +81,7 @@ export class Semaphore {
    */
   tryAcquire(): Promise<boolean> {
     // Acquire the internal mutex within scope
-    return this._mutex.request(() => {
+    return lockGuard(this._mutex, () => {
       // Check internal counter
       if (Atomics.load(this._mem, 0) <= 0) {
         return false;
@@ -157,12 +155,12 @@ export class Semaphore {
     }
 
     // Acquire internal mutex within scope
-    return this._mutex.request(() => {
+    return lockGuard(this._mutex, () => {
       // Get the internal counter
       const state = Atomics.load(this._mem, 0);
 
       // Check for overflow
-      if (count > Semaphore.MAX - state) {
+      if (count > CountingSemaphore.MAX - state) {
         throw new RangeError(ERR_SEM_OVERFLOW);
       }
 

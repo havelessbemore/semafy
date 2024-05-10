@@ -32,22 +32,19 @@ const CV_TIMED_OUT = "timed-out";
 
 const ERR_TIMEOUT = "Operation timed out.";
 const ERR_CV_VALUE = "Unexpected value in shared memory location";
-const ERR_MUTEX = "Mutex has encountered an error.";
-const ERR_MUTEX_OWNERSHIP = "Operation not permitted. Mutex must be acquired first.";
-const ERR_MUTEX_RELOCK = "Attempted relock of already acquired mutex. Deadlock would occur.";
-const ERR_MUTEX_TIMEOUT = "Timed out acquiring mutex.";
+const ERR_LOCK = "A lock has encountered an error.";
+const ERR_LOCK_OWNERSHIP = "Operation not permitted. Lock must be acquired first.";
+const ERR_LOCK_RELOCK = "Attempted relock of already acquired lock. Deadlock would occur.";
 const ERR_REC_MUTEX_OVERFLOW = "Operation not permitted. Additional lock would excee the RecursiveMutex's maximum levels of ownership.";
 const ERR_SEM_NEG_COUNT = "Operation not permitted. Cannot release a negative amount from the semaphore.";
 const ERR_SEM_OVERFLOW = "Operation not permitted. Releasing the given amount from the semaphore would cause overflow.";
 
-class MutexError extends Error {
+class LockError extends Error {
   /**
-   * Creates a new `MutexError`.
-   *
    * @param message - An optional custom error message.
    */
   constructor(message) {
-    super(message ?? ERR_MUTEX);
+    super(message ?? ERR_LOCK);
     this.name = this.constructor.name;
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
@@ -55,35 +52,29 @@ class MutexError extends Error {
   }
 }
 
-class MutexOwnershipError extends MutexError {
+class OwnershipError extends LockError {
   /**
-   * Creates a new `MutexOwnershipError`.
-   *
    * @param message - An optional custom error message.
    */
   constructor(message) {
-    super(message ?? ERR_MUTEX_OWNERSHIP);
+    super(message ?? ERR_LOCK_OWNERSHIP);
   }
 }
 
-class MutexRelockError extends MutexError {
+class RelockError extends LockError {
   /**
-   * Creates a new `MutexRelockError`.
-   *
    * @param message - An optional custom error message.
    */
   constructor(message) {
-    super(message ?? ERR_MUTEX_RELOCK);
+    super(message ?? ERR_LOCK_RELOCK);
   }
 }
 
-var __defProp$5 = Object.defineProperty;
-var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$6 = Object.defineProperty;
+var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, typeof key !== "symbol" ? key + "" : key, value);
 class TimeoutError extends Error {
   /**
-   * Create a new `TimeoutError`.
-   *
    * @param message - A custom error message. Defaults to `undefined`.
    * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
    * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.
@@ -94,12 +85,12 @@ class TimeoutError extends Error {
      * Absolute time in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$5(this, "deadline");
+    __publicField$6(this, "deadline");
     /**
      * Duration in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$5(this, "timeout");
+    __publicField$6(this, "timeout");
     this.deadline = deadline;
     this.timeout = timeout;
     this.name = TimeoutError.name;
@@ -109,244 +100,49 @@ class TimeoutError extends Error {
   }
 }
 
-const ATOMICS_NOT_EQUAL = "not-equal";
-const ATOMICS_TIMED_OUT = "timed-out";
-
-var __defProp$4 = Object.defineProperty;
-var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, key + "" , value);
-class ConditionVariable {
-  constructor(sharedBuffer, byteOffset = 0) {
-    /**
-     * The shared atomic memory where the condition variable stores its state.
-     */
-    __publicField$4(this, "_mem");
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
-    Atomics.store(this._mem, 0, 0);
-  }
-  /**
-   * Gets the underlying shared buffer.
-   */
-  get buffer() {
-    return this._mem.buffer;
-  }
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
-  get byteOffset() {
-    return this._mem.byteOffset;
-  }
-  /**
-   * Notify waiting workers that are blocked on this condition variable.
-   *
-   * @param count - The number of workers to notify.
-   *
-   * @returns The number of workers that were woken up.
-   */
-  notify(count) {
-    return Atomics.notify(this._mem, 0, count);
-  }
-  /**
-   * Notify all waiting workers that are blocked on this condition variable.
-   *
-   * @returns The number of workers that were woken up.
-   */
-  notifyAll() {
-    return Atomics.notify(this._mem, 0);
-  }
-  /**
-   * Notify one waiting worker that is blocked on this condition variable.
-   *
-   * @returns The number of workers that were woken up.
-   */
-  notifyOne() {
-    return Atomics.notify(this._mem, 0, 1);
-  }
-  /**
-   * Blocks the current worker until this condition variable is notified,
-   * or an optional timeout expires. The associated mutex is atomically
-   * released before blocking and re-acquired after waking up.
-   *
-   * @param mutex The {@link Mutex} that must be locked by the current agent.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
-   */
-  async wait(mutex) {
-    await this.waitFor(mutex, Infinity);
-  }
-  /**
-   * Blocks the current worker until this condition variable is notified,
-   * or an optional timeout expires. The associated mutex is atomically
-   * released before blocking and re-acquired after waking up.
-   *
-   * @param mutex The mutex that must be locked by the current agent.
-   * @param timeout An optional timeout in milliseconds after which the wait is aborted.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
-   *
-   * @returns A {@link CVStatus} representing the result of the operation.
-   */
-  async waitFor(mutex, timeout) {
-    if (!mutex.ownsLock) {
-      throw new MutexOwnershipError();
-    }
-    try {
-      const res = Atomics.waitAsync(this._mem, 0, 0, timeout);
-      mutex.unlock();
-      const value = res.async ? await res.value : res.value;
-      if (value === ATOMICS_NOT_EQUAL) {
-        throw new RangeError(ERR_CV_VALUE);
-      }
-      return value === ATOMICS_TIMED_OUT ? CV_TIMED_OUT : CV_OK;
-    } finally {
-      await mutex.lock();
-    }
-  }
-  /**
-   * Blocks the current agent until this condition variable is notified,
-   * or until a specified point in time is reached. This is a convenience
-   * method for waiting within a deadline.
-   *
-   * @param mutex The {@link Mutex} that must be locked by the current agent.
-   * @param timestamp The absolute time (in milliseconds) at which to stop waiting.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
-   *
-   * @returns A {@link CVStatus} representing the result of the operation.
-   */
-  async waitUntil(mutex, timestamp) {
-    return this.waitFor(mutex, timestamp - performance.now());
-  }
-}
-
-var __defProp$3 = Object.defineProperty;
-var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$3 = (obj, key, value) => __defNormalProp$3(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$5 = Object.defineProperty;
+var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT$1 = 1;
 class Mutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * Indicates whether the current agent owns the lock.
      */
-    __publicField$3(this, "_isOwner");
+    __publicField$5(this, "_isOwner");
     /**
-     * The shared atomic memory for the mutex.
+     * The shared memory for the mutex.
      */
-    __publicField$3(this, "_mem");
+    __publicField$5(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.and(this._mem, 0, LOCK_BIT$1);
   }
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer() {
     return this._mem.buffer;
   }
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
+  get byteLength() {
+    return this._mem.byteLength;
+  }
   get byteOffset() {
     return this._mem.byteOffset;
   }
-  /**
-   * Indicates whether the current agent owns the lock.
-   */
   get ownsLock() {
     return this._isOwner;
   }
   /**
-   * Acquires the mutex, blocking until the lock is available.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RelockError} If the lock is already locked by the caller.
    */
   async lock() {
     if (this._isOwner) {
-      throw new MutexRelockError();
+      throw new RelockError();
     }
     while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
       await Atomics.waitAsync(this._mem, 0, LOCK_BIT$1).value;
     }
     this._isOwner = true;
   }
-  /**
-   * Acquires the mutex and executes the provided callback, automatically
-   * unlocking afterwards. Blocks until the lock is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async request(callbackfn) {
-    await this.lock();
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex and execute the provided
-   * callback, automatically unlocking afterwards. Blocks
-   * until either the lock is available or the specified timeout elapses.
-   *
-   * @param timeout The timeout in milliseconds.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
-   *
-   * @returns A promise with the return value from `callbackfn`.
-   */
-  async requestFor(callbackfn, timeout) {
-    if (this._isOwner) {
-      throw new MutexRelockError();
-    }
-    if (!await this.tryLockFor(timeout)) {
-      throw new TimeoutError(ERR_MUTEX_TIMEOUT, timeout);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex and execute the provided
-   * callback, automatically unlocking afterwards. Blocks
-   * until either the lock is available or the specified time elapses.
-   *
-   * @param timestamp The absolute time in milliseconds.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
-   *
-   * @returns A promise with the return value from `callbackfn`.
-   */
-  async requestUntil(callbackfn, timestamp) {
-    if (this._isOwner) {
-      throw new MutexRelockError();
-    }
-    if (!await this.tryLockUntil(timestamp)) {
-      throw new TimeoutError(ERR_MUTEX_TIMEOUT, void 0, timestamp);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex without blocking.
-   *
-   * @returns `true` if the lock was successful, otherwise `false`.
-   */
   tryLock() {
     if (this._isOwner) {
       return false;
@@ -354,46 +150,11 @@ class Mutex {
     return this._isOwner = Atomics.or(this._mem, 0, LOCK_BIT$1) === 0;
   }
   /**
-   * Attempts to acquire the lock, blocking until either
-   * the lock is acquired or the specified timeout elapses.
-   *
-   * @param timeout The timeout in milliseconds.
-   *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
-   */
-  async tryLockFor(timeout) {
-    return this.tryLockUntil(performance.now() + timeout);
-  }
-  /**
-   * Attempts to acquire the lock, blocking until either
-   * the lock is acquired or the specified point in time is reached.
-   *
-   * @param timestamp The absolute time in milliseconds.
-   *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
-   */
-  async tryLockUntil(timestamp) {
-    if (this._isOwner) {
-      return false;
-    }
-    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
-      const timeout = timestamp - performance.now();
-      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1, timeout);
-      const value = res.async ? await res.value : res.value;
-      if (value === ATOMICS_TIMED_OUT) {
-        return false;
-      }
-    }
-    return this._isOwner = true;
-  }
-  /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
    */
   unlock() {
     if (!this._isOwner) {
-      throw new MutexOwnershipError();
+      throw new OwnershipError();
     }
     Atomics.store(this._mem, 0, 0);
     this._isOwner = false;
@@ -401,46 +162,38 @@ class Mutex {
   }
 }
 
-var __defProp$2 = Object.defineProperty;
-var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$4 = Object.defineProperty;
+var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT = 1;
 const _RecursiveMutex = class _RecursiveMutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The number of locks acquired by the agent.
      */
-    __publicField$2(this, "_depth");
+    __publicField$4(this, "_depth");
     /**
      * The shared atomic memory for the mutex.
      */
-    __publicField$2(this, "_mem");
+    __publicField$4(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._depth = 0;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.and(this._mem, 0, LOCK_BIT);
   }
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer() {
     return this._mem.buffer;
   }
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
+  get byteLength() {
+    return this._mem.byteLength;
+  }
   get byteOffset() {
     return this._mem.byteOffset;
   }
-  /**
-   * Indicates whether the current agent owns the lock.
-   */
   get ownsLock() {
     return this._depth > 0;
   }
   /**
-   * Acquires the mutex, blocking until the lock is available.
-   *
    * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    */
   async lock() {
@@ -454,79 +207,6 @@ const _RecursiveMutex = class _RecursiveMutex {
     }
     ++this._depth;
   }
-  /**
-   * Acquires the mutex and executes the provided callback,
-   * automatically unlocking afterwards. Blocks until the lock is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async request(callbackfn) {
-    await this.lock();
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex and execute the provided
-   * callback, automatically unlocking afterwards. Blocks
-   * until either the lock is available or the specified timeout elapses.
-   *
-   * @param timeout The timeout in milliseconds.
-   *
-   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
-   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
-   *
-   * @returns A promise with the return value from `callbackfn`.
-   */
-  async requestFor(callbackfn, timeout) {
-    if (this._depth === _RecursiveMutex.MAX) {
-      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
-    }
-    if (!await this.tryLockFor(timeout)) {
-      throw new TimeoutError(ERR_MUTEX_TIMEOUT, timeout);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex and execute the provided
-   * callback, automatically unlocking afterwards. Blocks
-   * until either the lock is available or the specified time elapses.
-   *
-   * @param timestamp The absolute time in milliseconds.
-   *
-   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
-   * @throws A {@link TimeoutError} If the mutex could not be acquired within the specified time.
-   *
-   * @returns A promise with the return value from `callbackfn`.
-   */
-  async requestUntil(callbackfn, timestamp) {
-    if (this._depth === _RecursiveMutex.MAX) {
-      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
-    }
-    if (!await this.tryLockUntil(timestamp)) {
-      throw new TimeoutError(ERR_MUTEX_TIMEOUT, void 0, timestamp);
-    }
-    try {
-      return await callbackfn();
-    } finally {
-      this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex without blocking.
-   *
-   * @returns `true` if the lock was successful, otherwise `false`.
-   */
   tryLock() {
     if (this._depth === _RecursiveMutex.MAX) {
       return false;
@@ -538,26 +218,36 @@ const _RecursiveMutex = class _RecursiveMutex {
     return true;
   }
   /**
-   * Attempts to acquire the lock, blocking until either
-   * the lock is acquired or the specified timeout elapses.
-   *
-   * @param timeout The timeout in milliseconds.
-   *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
    */
+  unlock() {
+    if (this._depth <= 0) {
+      throw new OwnershipError();
+    }
+    if (this._depth > 1) {
+      --this._depth;
+      return;
+    }
+    Atomics.store(this._mem, 0, 0);
+    this._depth = 0;
+    Atomics.notify(this._mem, 0);
+  }
+};
+/**
+ * The maximum levels of recursive ownership.
+ */
+__publicField$4(_RecursiveMutex, "MAX", Number.MAX_SAFE_INTEGER);
+let RecursiveMutex = _RecursiveMutex;
+
+const ATOMICS_NOT_EQUAL = "not-equal";
+const ATOMICS_TIMED_OUT = "timed-out";
+
+class RecursiveTimedMutex extends RecursiveMutex {
   async tryLockFor(timeout) {
     return this.tryLockUntil(performance.now() + timeout);
   }
-  /**
-   * Attempts to acquire the lock, blocking until either
-   * the lock is acquired or the specified point in time is reached.
-   *
-   * @param timestamp The absolute time in milliseconds.
-   *
-   * @returns A promise resolved to `true` if the lock was succesful, otherwise `false`.
-   */
   async tryLockUntil(timestamp) {
-    if (this._depth === _RecursiveMutex.MAX) {
+    if (this._depth === RecursiveMutex.MAX) {
       return false;
     }
     if (this._depth === 0) {
@@ -573,55 +263,348 @@ const _RecursiveMutex = class _RecursiveMutex {
     ++this._depth;
     return true;
   }
-  /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   */
-  unlock() {
-    if (this._depth <= 0) {
-      throw new MutexOwnershipError();
-    }
-    if (this._depth > 1) {
-      --this._depth;
-      return;
-    }
-    Atomics.store(this._mem, 0, 0);
-    this._depth = 0;
-    Atomics.notify(this._mem, 0);
-  }
-};
-/**
- * The maximum levels of recursive ownership.
- */
-__publicField$2(_RecursiveMutex, "MAX", Number.MAX_SAFE_INTEGER);
-let RecursiveMutex = _RecursiveMutex;
+}
 
-var __defProp$1 = Object.defineProperty;
-var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
-const _Semaphore = class _Semaphore {
+var __defProp$3 = Object.defineProperty;
+var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$3 = (obj, key, value) => __defNormalProp$3(obj, key + "" , value);
+class ConditionVariable {
   constructor(sharedBuffer, byteOffset = 0) {
-    __publicField$1(this, "_gate");
-    __publicField$1(this, "_mem");
-    __publicField$1(this, "_mutex");
-    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(3 * bInt32));
+    /**
+     * The shared atomic memory where the condition variable stores its state.
+     */
+    __publicField$3(this, "_mem");
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
-    byteOffset += bInt32;
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
-    byteOffset += bInt32;
-    this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+    Atomics.store(this._mem, 0, 0);
   }
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer() {
     return this._mem.buffer;
   }
+  get byteLength() {
+    return this._mem.byteLength;
+  }
+  get byteOffset() {
+    return this._mem.byteOffset;
+  }
   /**
-   * Gets the byte offset in the underlying shared buffer.
+   * Notify waiting agents that are blocked on this condition variable.
+   *
+   * @param count - The number of agents to notify.
+   *
+   * @returns The number of agents that were notified.
    */
+  notify(count) {
+    return Atomics.notify(this._mem, 0, count);
+  }
+  /**
+   * Notify all waiting agents that are blocked on this condition variable.
+   *
+   * @returns The number of agents that were notified.
+   */
+  notifyAll() {
+    return Atomics.notify(this._mem, 0);
+  }
+  /**
+   * Notify one waiting agent that is blocked on this condition variable.
+   *
+   * @returns The number of agents that were notified.
+   */
+  notifyOne() {
+    return Atomics.notify(this._mem, 0, 1);
+  }
+  /**
+   * Blocks the current agent until this condition variable is notified.
+   * The associated mutex is released before blocking and re-acquired
+   * after waking up.
+   *
+   * @param mutex The mutex that must be locked by the current agent.
+   *
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
+   */
+  async wait(mutex) {
+    await this.waitFor(mutex, Infinity);
+  }
+  /**
+   * Blocks the current agent until this condition variable is notified,
+   * or an optional timeout expires. The associated mutex is released
+   * before blocking and re-acquired after waking up.
+   *
+   * @param mutex The mutex that must be locked by the current agent.
+   * @param timeout A timeout in milliseconds after which the wait is aborted.
+   *
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
+   *
+   * @returns A {@link CVStatus} representing the result of the operation.
+   */
+  async waitFor(mutex, timeout) {
+    if (!mutex.ownsLock) {
+      throw new OwnershipError();
+    }
+    try {
+      const res = Atomics.waitAsync(this._mem, 0, 0, timeout);
+      mutex.unlock();
+      const value = res.async ? await res.value : res.value;
+      if (value === ATOMICS_NOT_EQUAL) {
+        throw new RangeError(ERR_CV_VALUE);
+      }
+      return value === ATOMICS_TIMED_OUT ? CV_TIMED_OUT : CV_OK;
+    } finally {
+      await mutex.lock();
+    }
+  }
+  /**
+   * Blocks the current agent until this condition variable is notified,
+   * or until a specified point in time is reached. The associated mutex
+   * is released before blocking and re-acquired after waking up.
+   *
+   * @param mutex The mutex that must be locked by the current agent.
+   * @param timestamp The absolute time in milliseconds at which the wait is aborted.
+   *
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
+   *
+   * @returns A {@link CVStatus} representing the result of the operation.
+   */
+  async waitUntil(mutex, timestamp) {
+    return this.waitFor(mutex, timestamp - performance.now());
+  }
+}
+
+var __defProp$2 = Object.defineProperty;
+var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
+const WRITE_BIT = 1 << 31;
+const READ_BITS = ~WRITE_BIT;
+class SharedMutex {
+  constructor(sharedBuffer, byteOffset = 0) {
+    __publicField$2(this, "_gate1");
+    __publicField$2(this, "_gate2");
+    __publicField$2(this, "_isReader");
+    __publicField$2(this, "_isWriter");
+    __publicField$2(this, "_mem");
+    __publicField$2(this, "_mutex");
+    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
+    byteOffset += bInt32;
+    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._gate1 = new ConditionVariable(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._gate2 = new ConditionVariable(sharedBuffer, byteOffset);
+    this._isReader = false;
+    this._isWriter = false;
+  }
+  get buffer() {
+    return this._mem.buffer;
+  }
+  get byteLength() {
+    return this._mem.byteLength;
+  }
+  get byteOffset() {
+    return this._mem.byteOffset;
+  }
+  get ownsLock() {
+    return this._isWriter;
+  }
+  get ownsSharedLock() {
+    return this._isReader;
+  }
+  // Exclusive
+  /**
+   * @throws A {@link RelockError} If the mutex is already locked by the caller.
+   */
+  async lock() {
+    if (this._isWriter || this._isReader) {
+      throw new RelockError();
+    }
+    await this._mutex.lock();
+    try {
+      while (Atomics.or(this._mem, 0, WRITE_BIT) & WRITE_BIT) {
+        await this._gate1.wait(this._mutex);
+      }
+      this._isWriter = true;
+      while (Atomics.load(this._mem, 0) & READ_BITS) {
+        await this._gate2.wait(this._mutex);
+      }
+    } finally {
+      await this._mutex.unlock();
+    }
+  }
+  async tryLock() {
+    if (this._isWriter || this._isReader) {
+      return false;
+    }
+    await this._mutex.lock();
+    try {
+      return this._isWriter = Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0;
+    } finally {
+      this._mutex.unlock();
+    }
+  }
+  /**
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  async unlock() {
+    if (!this._isWriter) {
+      throw new OwnershipError();
+    }
+    await this._mutex.lock();
+    try {
+      Atomics.and(this._mem, 0, READ_BITS);
+      this._isWriter = false;
+    } finally {
+      await this._mutex.unlock();
+    }
+    this._gate1.notifyAll();
+  }
+  // Shared
+  /**
+   * @throws A {@link RelockError} If the lock is already locked by the caller.
+   */
+  async lockShared() {
+    if (this._isReader || this._isWriter) {
+      throw new RelockError();
+    }
+    await this._mutex.lock();
+    try {
+      let state = Atomics.load(this._mem, 0);
+      while (state & WRITE_BIT || state === READ_BITS) {
+        await this._gate1.wait(this._mutex);
+        state = Atomics.load(this._mem, 0);
+      }
+      Atomics.add(this._mem, 0, 1);
+      this._isReader = true;
+    } finally {
+      await this._mutex.unlock();
+    }
+  }
+  async tryLockShared() {
+    if (this._isReader || this._isWriter) {
+      return false;
+    }
+    await this._mutex.lock();
+    try {
+      const state = Atomics.load(this._mem, 0);
+      if (state & WRITE_BIT || state === READ_BITS) {
+        return false;
+      }
+      Atomics.add(this._mem, 0, 1);
+      this._isReader = true;
+      return true;
+    } finally {
+      await this._mutex.unlock();
+    }
+  }
+  /**
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  async unlockShared() {
+    if (!this._isReader) {
+      throw new OwnershipError();
+    }
+    await this._mutex.lock();
+    try {
+      const state = Atomics.sub(this._mem, 0, 1);
+      this._isReader = false;
+      if (state & WRITE_BIT) {
+        if ((state & READ_BITS) === 1) {
+          this._gate2.notifyAll();
+        }
+      } else if (state === READ_BITS) {
+        this._gate1.notifyAll();
+      }
+    } finally {
+      await this._mutex.unlock();
+    }
+  }
+}
+
+class TimedMutex extends Mutex {
+  async tryLockFor(timeout) {
+    return this.tryLockUntil(performance.now() + timeout);
+  }
+  async tryLockUntil(timestamp) {
+    if (this._isOwner) {
+      return false;
+    }
+    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
+      const timeout = timestamp - performance.now();
+      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1, timeout);
+      const value = res.async ? await res.value : res.value;
+      if (value === ATOMICS_TIMED_OUT) {
+        return false;
+      }
+    }
+    return this._isOwner = true;
+  }
+}
+
+async function lockGuard(mutex, callbackfn) {
+  await mutex.lock();
+  try {
+    return await callbackfn();
+  } finally {
+    mutex.unlock();
+  }
+}
+
+var __defProp$1 = Object.defineProperty;
+var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, key + "" , value);
+class SharedLock {
+  constructor(mutex) {
+    __publicField$1(this, "_mutex");
+    this._mutex = mutex;
+  }
+  get mutex() {
+    return this._mutex;
+  }
+  get ownsLock() {
+    return this._mutex.ownsSharedLock;
+  }
+  lock() {
+    return this._mutex.lockShared();
+  }
+  tryLock() {
+    return this._mutex.tryLockShared();
+  }
+  tryLockFor(timeout) {
+    return this._mutex.tryLockSharedFor(timeout);
+  }
+  tryLockUntil(timestamp) {
+    return this._mutex.tryLockSharedUntil(timestamp);
+  }
+  unlock() {
+    return this._mutex.unlockShared();
+  }
+}
+
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+const _CountingSemaphore = class _CountingSemaphore {
+  constructor(sharedBuffer, byteOffset = 0) {
+    __publicField(this, "_gate");
+    __publicField(this, "_mem");
+    __publicField(this, "_mutex");
+    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(3 * bInt32));
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+    byteOffset += bInt32;
+    this._mutex = new TimedMutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+  }
+  get buffer() {
+    return this._mem.buffer;
+  }
+  get byteLength() {
+    return this._mem.byteLength;
+  }
   get byteOffset() {
     return this._mem.byteOffset;
   }
@@ -631,7 +614,7 @@ const _Semaphore = class _Semaphore {
    * @returns A promise that resolves when acquisition is successful.
    */
   acquire() {
-    return this._mutex.request(async () => {
+    return lockGuard(this._mutex, async () => {
       while (Atomics.load(this._mem, 0) <= 0) {
         await this._gate.wait(this._mutex);
       }
@@ -644,7 +627,7 @@ const _Semaphore = class _Semaphore {
    * @returns A promise resolving to `true` if successful, otherwise `false`.
    */
   tryAcquire() {
-    return this._mutex.request(() => {
+    return lockGuard(this._mutex, () => {
       if (Atomics.load(this._mem, 0) <= 0) {
         return false;
       }
@@ -699,9 +682,9 @@ const _Semaphore = class _Semaphore {
     if (count < 0) {
       throw new RangeError(ERR_SEM_NEG_COUNT);
     }
-    return this._mutex.request(() => {
+    return lockGuard(this._mutex, () => {
       const state = Atomics.load(this._mem, 0);
-      if (count > _Semaphore.MAX - state) {
+      if (count > _CountingSemaphore.MAX - state) {
         throw new RangeError(ERR_SEM_OVERFLOW);
       }
       Atomics.add(this._mem, 0, count);
@@ -712,232 +695,22 @@ const _Semaphore = class _Semaphore {
 /**
  * The maximum possible value of the internal counter
  */
-__publicField$1(_Semaphore, "MAX", ~(1 << 31));
-let Semaphore = _Semaphore;
-
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-const WRITE_BIT = 1 << 31;
-const READ_BITS = ~WRITE_BIT;
-class SharedMutex {
-  constructor(sharedBuffer, byteOffset = 0) {
-    __publicField(this, "_gate1");
-    __publicField(this, "_gate2");
-    __publicField(this, "_isReader");
-    __publicField(this, "_isWriter");
-    __publicField(this, "_mem");
-    __publicField(this, "_mutex");
-    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
-    byteOffset += bInt32;
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
-    byteOffset += bInt32;
-    this._gate1 = new ConditionVariable(sharedBuffer, byteOffset);
-    byteOffset += bInt32;
-    this._gate2 = new ConditionVariable(sharedBuffer, byteOffset);
-    this._isReader = false;
-    this._isWriter = false;
-  }
-  /**
-   * Gets the underlying shared buffer.
-   */
-  get buffer() {
-    return this._mem.buffer;
-  }
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
-  get byteOffset() {
-    return this._mem.byteOffset;
-  }
-  // Exclusive
-  /**
-   * Indicates whether the current agent owns the lock.
-   */
-  get ownsLock() {
-    return this._isWriter;
-  }
-  /**
-   * Acquires the mutex, blocking until the lock is available.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   */
-  async lock() {
-    if (this._isWriter || this._isReader) {
-      throw new MutexRelockError();
-    }
-    await this._mutex.lock();
-    try {
-      while (Atomics.or(this._mem, 0, WRITE_BIT) & WRITE_BIT) {
-        await this._gate1.wait(this._mutex);
-      }
-      this._isWriter = true;
-      while (Atomics.load(this._mem, 0) & READ_BITS) {
-        await this._gate2.wait(this._mutex);
-      }
-    } finally {
-      await this._mutex.unlock();
-    }
-  }
-  /**
-   * Acquires the mutex and executes the provided callback, automatically
-   * unlocking afterwards. Blocks until the lock is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async request(callbackfn) {
-    await this.lock();
-    try {
-      return await callbackfn();
-    } finally {
-      await this.unlock();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex without blocking.
-   *
-   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
-   */
-  async tryLock() {
-    if (this._isWriter || this._isReader) {
-      return false;
-    }
-    await this._mutex.lock();
-    try {
-      return this._isWriter = Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0;
-    } finally {
-      this._mutex.unlock();
-    }
-  }
-  /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   */
-  async unlock() {
-    if (!this._isWriter) {
-      throw new MutexOwnershipError();
-    }
-    await this._mutex.lock();
-    try {
-      Atomics.and(this._mem, 0, READ_BITS);
-      this._isWriter = false;
-    } finally {
-      await this._mutex.unlock();
-    }
-    this._gate1.notifyAll();
-  }
-  // Shared
-  /**
-   * Indicates whether the current agent owns a shared lock.
-   */
-  get ownsSharedLock() {
-    return this._isReader;
-  }
-  /**
-   * Acquires the mutex for shared ownership, blocking until a lock is available.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   */
-  async lockShared() {
-    if (this._isReader || this._isWriter) {
-      throw new MutexRelockError();
-    }
-    await this._mutex.lock();
-    try {
-      let state = Atomics.load(this._mem, 0);
-      while (state & WRITE_BIT || state === READ_BITS) {
-        await this._gate1.wait(this._mutex);
-        state = Atomics.load(this._mem, 0);
-      }
-      Atomics.add(this._mem, 0, 1);
-      this._isReader = true;
-    } finally {
-      await this._mutex.unlock();
-    }
-  }
-  /**
-   * Acquires the mutex for shared ownership and executes the provided
-   * callback, automatically unlocking afterwards. Blocks until a lock
-   * is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async requestShared(callbackfn) {
-    await this.lockShared();
-    try {
-      return await callbackfn();
-    } finally {
-      await this.unlockShared();
-    }
-  }
-  /**
-   * Attempts to acquire the mutex for shared ownership without blocking.
-   *
-   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
-   */
-  async tryLockShared() {
-    if (this._isReader || this._isWriter) {
-      return false;
-    }
-    await this._mutex.lock();
-    try {
-      const state = Atomics.load(this._mem, 0);
-      if (state & WRITE_BIT || state === READ_BITS) {
-        return false;
-      }
-      Atomics.add(this._mem, 0, 1);
-      this._isReader = true;
-      return true;
-    } finally {
-      await this._mutex.unlock();
-    }
-  }
-  /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   */
-  async unlockShared() {
-    if (!this._isReader) {
-      throw new MutexOwnershipError();
-    }
-    await this._mutex.lock();
-    try {
-      const state = Atomics.sub(this._mem, 0, 1);
-      this._isReader = false;
-      if (state & WRITE_BIT) {
-        if ((state & READ_BITS) === 1) {
-          this._gate2.notifyAll();
-        }
-      } else if (state === READ_BITS) {
-        this._gate1.notifyAll();
-      }
-    } finally {
-      await this._mutex.unlock();
-    }
-  }
-}
+__publicField(_CountingSemaphore, "MAX", ~(1 << 31));
+let CountingSemaphore = _CountingSemaphore;
 
 exports.CV_OK = CV_OK;
 exports.CV_TIMED_OUT = CV_TIMED_OUT;
 exports.ConditionVariable = ConditionVariable;
+exports.CountingSemaphore = CountingSemaphore;
+exports.LockError = LockError;
 exports.Mutex = Mutex;
-exports.MutexError = MutexError;
-exports.MutexOwnershipError = MutexOwnershipError;
-exports.MutexRelockError = MutexRelockError;
+exports.OwnershipError = OwnershipError;
 exports.RecursiveMutex = RecursiveMutex;
-exports.Semaphore = Semaphore;
+exports.RecursiveTimedMutex = RecursiveTimedMutex;
+exports.RelockError = RelockError;
+exports.SharedLock = SharedLock;
 exports.SharedMutex = SharedMutex;
+exports.TimedMutex = TimedMutex;
 exports.TimeoutError = TimeoutError;
+exports.lockGuard = lockGuard;
 //# sourceMappingURL=semafy.cjs.map

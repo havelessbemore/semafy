@@ -1,7 +1,7 @@
 import { ERR_TIMEOUT } from "./constants";
 
 /**
- * Represents an error that occurs when a process exceeds a set timeout.
+ * Represents an error that occurs when a process exceeds a set time.
  */
 export class TimeoutError extends Error {
   /**
@@ -17,8 +17,6 @@ export class TimeoutError extends Error {
   timeout?: number;
 
   /**
-   * Create a new `TimeoutError`.
-   *
    * @param message - A custom error message. Defaults to `undefined`.
    * @param timeout - The timeout duration in milliseconds. Defaults to `undefined`.
    * @param deadline - The absolute time in milliseconds. Defaults to `undefined`.

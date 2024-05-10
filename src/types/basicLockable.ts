@@ -6,7 +6,7 @@ export interface BasicLockable {
   /**
    * Indicates whether the current agent owns the lock.
    */
-  ownsLock: readonly boolean;
+  ownsLock: Readonly<boolean>;
 
   /**
    * Blocks until the lock can be acquired for the current agent.

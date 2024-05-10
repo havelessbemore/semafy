@@ -5,15 +5,15 @@ export const ERR_TIMEOUT = "Operation timed out.";
 export const ERR_CV_VALUE = "Unexpected value in shared memory location";
 
 // Mutex
-export const ERR_MUTEX = "Mutex has encountered an error.";
+export const ERR_LOCK = "A lock has encountered an error.";
 
-export const ERR_MUTEX_OWNERSHIP =
-  "Operation not permitted. Mutex must be acquired first.";
+export const ERR_LOCK_OWNERSHIP =
+  "Operation not permitted. Lock must be acquired first.";
 
-export const ERR_MUTEX_RELOCK =
-  "Attempted relock of already acquired mutex. Deadlock would occur.";
+export const ERR_LOCK_RELOCK =
+  "Attempted relock of already acquired lock. Deadlock would occur.";
 
-export const ERR_MUTEX_TIMEOUT = "Timed out acquiring mutex.";
+export const ERR_LOCK_TIMEOUT = "Timed out acquiring lock.";
 
 // Recursive Mutex
 

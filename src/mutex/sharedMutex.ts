@@ -1,12 +1,15 @@
-import { ConditionVariable } from "./conditionVariable";
-import { MutexOwnershipError } from "./errors/mutexOwnershipError";
-import { MutexRelockError } from "./errors/mutexRelockError";
-import { Mutex } from "./mutex";
-import { Lockable } from "./types/lockable";
-import { SharedLockable } from "./types/sharedLockable";
+import type { Lockable } from "../types/lockable";
+import type { SharedResource } from "../types/sharedResource";
+import type { SharedLockable } from "../types/sharedLockable";
 
-const WRITE_BIT = 1 << 31;
-const READ_BITS = ~WRITE_BIT;
+import { OwnershipError } from "../errors/ownershipError";
+import { RelockError } from "../errors/relockError";
+
+import { ConditionVariable } from "../conditionVariable";
+import { Mutex } from "./mutex";
+
+export const WRITE_BIT = 1 << 31;
+export const READ_BITS = ~WRITE_BIT;
 
 /**
  * Provides synchronization across agents (main thread and workers)
@@ -21,25 +24,25 @@ const READ_BITS = ~WRITE_BIT;
  * of agents simultaneously, but should be written to by only one agent at a
  * time, and not readable by other agents during writing.
  *
+ * Behavior is undefined if:
+ *    - The mutex is destroyed while being owned.
+ *    - The agent is terminated while owning the mutex.
+ *    - The mutex's shared memory location is modified externally.
+ *
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/shared_mutex | C++ std::shared_mutex}
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
-export class SharedMutex implements Lockable, SharedLockable {
-  private _gate1: ConditionVariable;
-  private _gate2: ConditionVariable;
-  private _isReader: boolean;
-  private _isWriter: boolean;
-  private _mem: Int32Array;
-  private _mutex: Mutex;
+export class SharedMutex implements Lockable, SharedLockable, SharedResource {
+  protected _gate1: ConditionVariable;
+  protected _gate2: ConditionVariable;
+  protected _isReader: boolean;
+  protected _isWriter: boolean;
+  protected _mem: Int32Array;
+  protected _mutex: Mutex;
 
-  /**
-   * Creates a new instance of a SharedMutex.
-   */
   constructor();
   /**
-   * Creates a new instance of a SharedMutex.
-   *
    * @param sharedBuffer The shared buffer that backs the mutex.
    * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
    */
@@ -51,7 +54,7 @@ export class SharedMutex implements Lockable, SharedLockable {
     sharedBuffer ??= new SharedArrayBuffer(4 * bInt32);
 
     // Initialize properties
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
+    this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
     byteOffset += bInt32;
     this._mutex = new Mutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
@@ -62,38 +65,35 @@ export class SharedMutex implements Lockable, SharedLockable {
     this._isWriter = false;
   }
 
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer(): SharedArrayBuffer {
     return this._mem.buffer as SharedArrayBuffer;
   }
 
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
+  get byteLength(): number {
+    return this._mem.byteLength;
+  }
+
   get byteOffset(): number {
     return this._mem.byteOffset;
+  }
+
+  get ownsLock(): boolean {
+    return this._isWriter;
+  }
+
+  get ownsSharedLock(): boolean {
+    return this._isReader;
   }
 
   // Exclusive
 
   /**
-   * Indicates whether the current agent owns the lock.
-   */
-  get ownsLock(): boolean {
-    return this._isWriter;
-  }
-
-  /**
-   * Acquires the mutex, blocking until the lock is available.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RelockError} If the mutex is already locked by the caller.
    */
   async lock(): Promise<void> {
     // If already has lock
     if (this._isWriter || this._isReader) {
-      throw new MutexRelockError();
+      throw new RelockError();
     }
 
     // Acquire internal lock
@@ -115,33 +115,6 @@ export class SharedMutex implements Lockable, SharedLockable {
     }
   }
 
-  /**
-   * Acquires the mutex and executes the provided callback, automatically
-   * unlocking afterwards. Blocks until the lock is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async request<T>(callbackfn: () => T | Promise<T>): Promise<T> {
-    // Acquire write lock
-    await this.lock();
-    try {
-      // Execute callback
-      return await callbackfn();
-    } finally {
-      // Release write lock
-      await this.unlock();
-    }
-  }
-
-  /**
-   * Attempts to acquire the mutex without blocking.
-   *
-   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
-   */
   async tryLock(): Promise<boolean> {
     // If already has lock
     if (this._isWriter || this._isReader) {
@@ -162,14 +135,12 @@ export class SharedMutex implements Lockable, SharedLockable {
   }
 
   /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
    */
   async unlock(): Promise<void> {
     // Check if write lock owned
     if (!this._isWriter) {
-      throw new MutexOwnershipError();
+      throw new OwnershipError();
     }
 
     // Acquire internal lock
@@ -191,21 +162,12 @@ export class SharedMutex implements Lockable, SharedLockable {
   // Shared
 
   /**
-   * Indicates whether the current agent owns a shared lock.
-   */
-  get ownsSharedLock(): boolean {
-    return this._isReader;
-  }
-
-  /**
-   * Acquires the mutex for shared ownership, blocking until a lock is available.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
+   * @throws A {@link RelockError} If the lock is already locked by the caller.
    */
   async lockShared(): Promise<void> {
     // If already has lock
     if (this._isReader || this._isWriter) {
-      throw new MutexRelockError();
+      throw new RelockError();
     }
 
     // Acquire internal lock
@@ -227,34 +189,6 @@ export class SharedMutex implements Lockable, SharedLockable {
     }
   }
 
-  /**
-   * Acquires the mutex for shared ownership and executes the provided
-   * callback, automatically unlocking afterwards. Blocks until a lock
-   * is available.
-   *
-   * @param callbackfn The callback function.
-   *
-   * @throws A {@link MutexRelockError} If the mutex is already locked by the caller.
-   *
-   * @returns A promise resolved to the return value of `callbackfn`.
-   */
-  async requestShared<T>(callbackfn: () => T | Promise<T>): Promise<T> {
-    // Acquire read lock
-    await this.lockShared();
-    try {
-      // Execute callback
-      return await callbackfn();
-    } finally {
-      // Release read lock
-      await this.unlockShared();
-    }
-  }
-
-  /**
-   * Attempts to acquire the mutex for shared ownership without blocking.
-   *
-   * @returns A promise resolved to `true` if the lock was successful, otherwise `false`.
-   */
   async tryLockShared(): Promise<boolean> {
     // If already has lock
     if (this._isReader || this._isWriter) {
@@ -282,14 +216,12 @@ export class SharedMutex implements Lockable, SharedLockable {
   }
 
   /**
-   * Releases the mutex if currently owned by the caller.
-   *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
    */
   async unlockShared(): Promise<void> {
     // Check if read lock owned
     if (!this._isReader) {
-      throw new MutexOwnershipError();
+      throw new OwnershipError();
     }
 
     // Acquire internal lock

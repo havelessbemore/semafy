@@ -1,39 +1,32 @@
 import { ATOMICS_NOT_EQUAL, ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
+import type { BasicLockable } from "./types/basicLockable";
 import { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
+import type { SharedResource } from "./types/sharedResource";
 
 import { ERR_CV_VALUE } from "./errors/constants";
-import { MutexOwnershipError } from "./errors/mutexOwnershipError";
-
-import { Mutex } from "./mutex";
+import { OwnershipError } from "./errors/ownershipError";
 
 /**
- * Represents a condition variable similar to those used in C++.
- *
  * A condition variable manages an atomic wait/block mechanism that
  * is tightly coupled with a mutex for safe cross-agent synchronization.
+ *
+ * Behavior is undefined if:
+ *    - The shared memory location is modified externally.
  *
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/condition_variable | C++ std::condition_variable}
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
-export class ConditionVariable {
+export class ConditionVariable implements SharedResource {
   /**
    * The shared atomic memory where the condition variable stores its state.
    */
   private _mem: Int32Array;
 
-  /**
-   * Creates a new instance of ConditionVariable.
-   */
   constructor();
   /**
-   * Creates a new instance of ConditionVariable.
-   *
    * @param sharedBuffer The {@link SharedArrayBuffer} that backs the condition variable.
    * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
-   *
-   * Note: The shared memory location should not be modified outside
-   * of this condition variable. Doing so may cause errors.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
@@ -47,80 +40,78 @@ export class ConditionVariable {
     Atomics.store(this._mem, 0, 0);
   }
 
-  /**
-   * Gets the underlying shared buffer.
-   */
   get buffer(): SharedArrayBuffer {
     return this._mem.buffer as SharedArrayBuffer;
   }
 
-  /**
-   * Gets the byte offset in the underlying shared buffer.
-   */
+  get byteLength(): number {
+    return this._mem.byteLength;
+  }
+
   get byteOffset(): number {
     return this._mem.byteOffset;
   }
 
   /**
-   * Notify waiting workers that are blocked on this condition variable.
+   * Notify waiting agents that are blocked on this condition variable.
    *
-   * @param count - The number of workers to notify.
+   * @param count - The number of agents to notify.
    *
-   * @returns The number of workers that were woken up.
+   * @returns The number of agents that were notified.
    */
   notify(count: number): number {
     return Atomics.notify(this._mem, 0, count);
   }
 
   /**
-   * Notify all waiting workers that are blocked on this condition variable.
+   * Notify all waiting agents that are blocked on this condition variable.
    *
-   * @returns The number of workers that were woken up.
+   * @returns The number of agents that were notified.
    */
   notifyAll(): number {
     return Atomics.notify(this._mem, 0);
   }
 
   /**
-   * Notify one waiting worker that is blocked on this condition variable.
+   * Notify one waiting agent that is blocked on this condition variable.
    *
-   * @returns The number of workers that were woken up.
+   * @returns The number of agents that were notified.
    */
   notifyOne(): number {
     return Atomics.notify(this._mem, 0, 1);
   }
 
   /**
-   * Blocks the current worker until this condition variable is notified,
-   * or an optional timeout expires. The associated mutex is atomically
-   * released before blocking and re-acquired after waking up.
+   * Blocks the current agent until this condition variable is notified.
+   * The associated mutex is released before blocking and re-acquired
+   * after waking up.
    *
-   * @param mutex The {@link Mutex} that must be locked by the current agent.
+   * @param mutex The mutex that must be locked by the current agent.
    *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
    */
-  async wait(mutex: Mutex): Promise<void> {
+  async wait(mutex: BasicLockable): Promise<void> {
     await this.waitFor(mutex, Infinity);
   }
 
   /**
-   * Blocks the current worker until this condition variable is notified,
-   * or an optional timeout expires. The associated mutex is atomically
-   * released before blocking and re-acquired after waking up.
+   * Blocks the current agent until this condition variable is notified,
+   * or an optional timeout expires. The associated mutex is released
+   * before blocking and re-acquired after waking up.
    *
    * @param mutex The mutex that must be locked by the current agent.
-   * @param timeout An optional timeout in milliseconds after which the wait is aborted.
+   * @param timeout A timeout in milliseconds after which the wait is aborted.
    *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
    *
    * @returns A {@link CVStatus} representing the result of the operation.
    */
-  async waitFor(mutex: Mutex, timeout: number): Promise<CVStatus> {
+  async waitFor(mutex: BasicLockable, timeout: number): Promise<CVStatus> {
     // Check mutex is owned
     if (!mutex.ownsLock) {
-      throw new MutexOwnershipError();
+      throw new OwnershipError();
     }
     try {
       // Start waiting BEFORE releasing mutex
@@ -143,18 +134,18 @@ export class ConditionVariable {
 
   /**
    * Blocks the current agent until this condition variable is notified,
-   * or until a specified point in time is reached. This is a convenience
-   * method for waiting within a deadline.
+   * or until a specified point in time is reached. The associated mutex
+   * is released before blocking and re-acquired after waking up.
    *
-   * @param mutex The {@link Mutex} that must be locked by the current agent.
-   * @param timestamp The absolute time (in milliseconds) at which to stop waiting.
+   * @param mutex The mutex that must be locked by the current agent.
+   * @param timestamp The absolute time in milliseconds at which the wait is aborted.
    *
-   * @throws A {@link MutexOwnershipError} If the mutex is not owned by the caller.
-   * @throws A {@link RangeError} If the condition variable's internal value is not expected.
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+   * @throws A {@link RangeError} If the shared memory data is unexpected.
    *
    * @returns A {@link CVStatus} representing the result of the operation.
    */
-  async waitUntil(mutex: Mutex, timestamp: number): Promise<CVStatus> {
+  async waitUntil(mutex: BasicLockable, timestamp: number): Promise<CVStatus> {
     return this.waitFor(mutex, timestamp - performance.now());
   }
 }
