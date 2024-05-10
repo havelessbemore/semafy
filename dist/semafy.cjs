@@ -373,6 +373,26 @@ class ConditionVariable {
   }
 }
 
+class TimedMutex extends Mutex {
+  async tryLockFor(timeout) {
+    return this.tryLockUntil(performance.now() + timeout);
+  }
+  async tryLockUntil(timestamp) {
+    if (this._isOwner) {
+      return false;
+    }
+    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
+      const timeout = timestamp - performance.now();
+      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1, timeout);
+      const value = res.async ? await res.value : res.value;
+      if (value === ATOMICS_TIMED_OUT) {
+        return false;
+      }
+    }
+    return this._isOwner = true;
+  }
+}
+
 var __defProp$2 = Object.defineProperty;
 var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
@@ -390,7 +410,7 @@ class SharedMutex {
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
     byteOffset += bInt32;
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    this._mutex = new TimedMutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._gate1 = new ConditionVariable(sharedBuffer, byteOffset);
     byteOffset += bInt32;
@@ -431,7 +451,7 @@ class SharedMutex {
         await this._gate2.wait(this._mutex);
       }
     } finally {
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
   async tryLock() {
@@ -457,7 +477,7 @@ class SharedMutex {
       Atomics.and(this._mem, 0, READ_BITS);
       this._isWriter = false;
     } finally {
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
     this._gate1.notifyAll();
   }
@@ -479,7 +499,7 @@ class SharedMutex {
       Atomics.add(this._mem, 0, 1);
       this._isReader = true;
     } finally {
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
   async tryLockShared() {
@@ -496,7 +516,7 @@ class SharedMutex {
       this._isReader = true;
       return true;
     } finally {
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
   /**
@@ -518,28 +538,73 @@ class SharedMutex {
         this._gate1.notifyAll();
       }
     } finally {
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
 }
 
-class TimedMutex extends Mutex {
+class SharedTimedMutex extends SharedMutex {
   async tryLockFor(timeout) {
     return this.tryLockUntil(performance.now() + timeout);
   }
   async tryLockUntil(timestamp) {
-    if (this._isOwner) {
+    if (this._isWriter || this._isReader) {
       return false;
     }
-    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
-      const timeout = timestamp - performance.now();
-      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1, timeout);
-      const value = res.async ? await res.value : res.value;
-      if (value === ATOMICS_TIMED_OUT) {
-        return false;
+    if (!await this._mutex.tryLockUntil(timestamp)) {
+      return false;
+    }
+    let notify = false;
+    try {
+      while (Atomics.or(this._mem, 0, WRITE_BIT) & WRITE_BIT) {
+        const res = await this._gate1.waitUntil(this._mutex, timestamp);
+        if (res === CV_TIMED_OUT) {
+          return false;
+        }
+      }
+      this._isWriter = true;
+      while (Atomics.load(this._mem, 0) & READ_BITS) {
+        const res = await this._gate2.waitUntil(this._mutex, timestamp);
+        if (res === CV_TIMED_OUT) {
+          notify = true;
+          Atomics.and(this._mem, 0, READ_BITS);
+          this._isWriter = false;
+          return false;
+        }
+      }
+      return true;
+    } finally {
+      this._mutex.unlock();
+      if (notify) {
+        this._gate1.notifyAll();
       }
     }
-    return this._isOwner = true;
+  }
+  async tryLockSharedFor(timeout) {
+    return this.tryLockSharedUntil(performance.now() + timeout);
+  }
+  async tryLockSharedUntil(timestamp) {
+    if (this._isReader || this._isWriter) {
+      return false;
+    }
+    if (!await this._mutex.tryLockUntil(timestamp)) {
+      return false;
+    }
+    try {
+      let state = Atomics.load(this._mem, 0);
+      while (state & WRITE_BIT || state === READ_BITS) {
+        const res = await this._gate1.waitUntil(this._mutex, timestamp);
+        if (res === CV_TIMED_OUT) {
+          return false;
+        }
+        state = Atomics.load(this._mem, 0);
+      }
+      Atomics.add(this._mem, 0, 1);
+      this._isReader = true;
+      return true;
+    } finally {
+      this._mutex.unlock();
+    }
   }
 }
 
@@ -719,6 +784,7 @@ exports.RecursiveTimedMutex = RecursiveTimedMutex;
 exports.RelockError = RelockError;
 exports.SharedLock = SharedLock;
 exports.SharedMutex = SharedMutex;
+exports.SharedTimedMutex = SharedTimedMutex;
 exports.TimedMutex = TimedMutex;
 exports.TimeoutError = TimeoutError;
 exports.lockGuard = lockGuard;

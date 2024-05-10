@@ -416,6 +416,37 @@ declare class ConditionVariable implements SharedResource {
 
 /**
  * Provides synchronization across agents (main thread and workers)
+ * to allow exclusive access to shared resources / blocks of code.
+ *
+ * A mutex is owned from the time an agent successfully locks it
+ * and until the agent unlocks it. During ownership, any other agents
+ * attempting to lock the mutex will block (or receive `false` from
+ * `tryLock` methods). When unlocked, any blocked agent will have
+ * the chance to acquire owernship.
+ *
+ * A locked mutex should not be relocked by the owner. Attempts
+ * for additional locks will throw an error, and calls to `tryLock`
+ * methods will return `false`.
+ *
+ * Behavior is undefined if:
+ *    - The mutex is destroyed while being owned.
+ *    - The agent is terminated while owning the mutex.
+ *    - The mutex's shared memory location is modified externally.
+ *
+ * Timeout precision for time-based methods may vary due to system load
+ * and inherent limitations of JavaScript timing. Developers should
+ * consider this possible variability in their applications.
+ *
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
+ */
+declare class TimedMutex extends Mutex implements TimedLockable {
+    tryLockFor(timeout: number): Promise<boolean>;
+    tryLockUntil(timestamp: number): Promise<boolean>;
+}
+
+/**
+ * Provides synchronization across agents (main thread and workers)
  * to allow exclusive and shared access to resources / blocks of code.
  *
  * If one agent has acquired an exclusive lock, no other agents can acquire
@@ -442,7 +473,7 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
     protected _isReader: boolean;
     protected _isWriter: boolean;
     protected _mem: Int32Array;
-    protected _mutex: Mutex;
+    protected _mutex: TimedMutex;
     constructor();
     /**
      * @param sharedBuffer The shared buffer that backs the mutex.
@@ -476,17 +507,16 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
 
 /**
  * Provides synchronization across agents (main thread and workers)
- * to allow exclusive access to shared resources / blocks of code.
+ * to allow exclusive and shared access to resources / blocks of code.
  *
- * A mutex is owned from the time an agent successfully locks it
- * and until the agent unlocks it. During ownership, any other agents
- * attempting to lock the mutex will block (or receive `false` from
- * `tryLock` methods). When unlocked, any blocked agent will have
- * the chance to acquire owernship.
+ * If one agent has acquired an exclusive lock, no other agents can acquire
+ * the mutex. If one agent has acquired a shared lock, other agents can still
+ * acquire the shared lock, but cannot acquire an exclusive lock. Within one
+ * agent, only one lock (shared or exclusive) can be acquired at the same time.
  *
- * A locked mutex should not be relocked by the owner. Attempts
- * for additional locks will throw an error, and calls to `tryLock`
- * methods will return `false`.
+ * Shared mutexes are useful when shared data can be safely read by any number
+ * of agents simultaneously, but should be written to by only one agent at a
+ * time, and not readable by other agents during writing.
  *
  * Behavior is undefined if:
  *    - The mutex is destroyed while being owned.
@@ -498,11 +528,14 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
  * consider this possible variability in their applications.
  *
  * @privateRemarks
- * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/shared_timed_mutex | C++ std::shared_timed)mutex}
+ * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
-declare class TimedMutex extends Mutex implements TimedLockable {
+declare class SharedTimedMutex extends SharedMutex implements TimedLockable, SharedTimedLockable {
     tryLockFor(timeout: number): Promise<boolean>;
     tryLockUntil(timestamp: number): Promise<boolean>;
+    tryLockSharedFor(timeout: number): Promise<boolean>;
+    tryLockSharedUntil(timestamp: number): Promise<boolean>;
 }
 
 /**
@@ -610,4 +643,4 @@ declare class CountingSemaphore implements SharedResource {
     release(count?: number): Promise<void>;
 }
 
-export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, LockError, type Lockable, Mutex, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, type TimedLockable, TimedMutex, TimeoutError, lockGuard };
+export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, LockError, type Lockable, Mutex, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, lockGuard };

@@ -6,7 +6,7 @@ import { OwnershipError } from "../errors/ownershipError";
 import { RelockError } from "../errors/relockError";
 
 import { ConditionVariable } from "../conditionVariable";
-import { Mutex } from "./mutex";
+import { TimedMutex } from "./timedMutex";
 
 export const WRITE_BIT = 1 << 31;
 export const READ_BITS = ~WRITE_BIT;
@@ -39,7 +39,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
   protected _isReader: boolean;
   protected _isWriter: boolean;
   protected _mem: Int32Array;
-  protected _mutex: Mutex;
+  protected _mutex: TimedMutex;
 
   constructor();
   /**
@@ -56,7 +56,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     // Initialize properties
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
     byteOffset += bInt32;
-    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    this._mutex = new TimedMutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._gate1 = new ConditionVariable(sharedBuffer, byteOffset);
     byteOffset += bInt32;
@@ -111,7 +111,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       }
     } finally {
       // Release internal lock
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
 
@@ -152,7 +152,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       this._isWriter = false;
     } finally {
       // Release internal lock
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
 
     // Notify agents waiting on mutex
@@ -185,7 +185,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       this._isReader = true;
     } finally {
       // Release internal lock
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
 
@@ -211,7 +211,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       return true;
     } finally {
       // Release internal lock
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
 
@@ -247,7 +247,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       }
     } finally {
       // Release internal lock
-      await this._mutex.unlock();
+      this._mutex.unlock();
     }
   }
 }

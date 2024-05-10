@@ -44,6 +44,8 @@ yarn add semafy
 
 - **SharedMutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
 
+- **SharedTimedMutex**: A timed variant that supports timed operations.
+
 ### Mutex Management
 
 - **lockGuard()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.

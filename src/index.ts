@@ -18,6 +18,7 @@ export { Mutex } from "./mutex/mutex";
 export { RecursiveMutex } from "./mutex/recursiveMutex";
 export { RecursiveTimedMutex } from "./mutex/recursiveTimedMutex";
 export { SharedMutex } from "./mutex/sharedMutex";
+export { SharedTimedMutex } from "./mutex/sharedTimedMutex";
 export { TimedMutex } from "./mutex/timedMutex";
 
 // Mutex Management
