@@ -4,6 +4,7 @@ import { ERR_MUTEX_TIMEOUT } from "./errors/constants";
 import { MutexRelockError } from "./errors/mutexRelockError";
 import { MutexOwnershipError } from "./errors/mutexOwnershipError";
 import { TimeoutError } from "./errors/timeoutError";
+import { TimedLockable } from "./types/timedLockable";
 
 /**
  * Represents the mutex lock state.
@@ -36,7 +37,7 @@ const LOCK_BIT = 1;
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
  */
-export class Mutex {
+export class Mutex implements TimedLockable {
   /**
    * Indicates whether the current agent owns the lock.
    */

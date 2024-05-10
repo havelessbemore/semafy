@@ -3,6 +3,7 @@ import { ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
 import { ERR_MUTEX_TIMEOUT, ERR_REC_MUTEX_OVERFLOW } from "./errors/constants";
 import { MutexOwnershipError } from "./errors/mutexOwnershipError";
 import { TimeoutError } from "./errors/timeoutError";
+import { TimedLockable } from "./types/timedLockable";
 
 /**
  * Represents the mutex lock state.
@@ -38,7 +39,7 @@ const LOCK_BIT = 1;
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
  */
-export class RecursiveMutex {
+export class RecursiveMutex implements TimedLockable {
   /**
    * The number of locks acquired by the agent.
    */

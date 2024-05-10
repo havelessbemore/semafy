@@ -5,12 +5,11 @@
 export type CVStatus = typeof CV_OK | typeof CV_TIMED_OUT;
 
 /**
- * Indicates the {@link ConditionVariable} operation completed successfully.
+ * The {@link ConditionVariable} was awakened via notification.
  */
 export const CV_OK = "ok";
 
 /**
- * Indicates the {@link ConditionVariable}
- * operation did not complete within the given time.
+ * The {@link ConditionVariable} was awakened by timeout expiration.
  */
 export const CV_TIMED_OUT = "timed-out";

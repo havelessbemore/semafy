@@ -1,5 +1,8 @@
 // Types
+export { BasicLockable } from "./types/basicLockable";
 export { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
+export { Lockable } from "./types/lockable";
+export { TimedLockable } from "./types/timedLockable";
 
 // Errors
 export { MutexError } from "./errors/mutexError";
