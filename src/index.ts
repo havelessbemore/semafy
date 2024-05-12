@@ -9,6 +9,8 @@ export type { TimedLockable } from "./types/timedLockable";
 
 // Errors
 export { LockError } from "./errors/lockError";
+export { MultiLockError } from "./errors/multiLockError";
+export { MultiUnlockError } from "./errors/multiUnlockError";
 export { OwnershipError } from "./errors/ownershipError";
 export { RelockError } from "./errors/relockError";
 export { TimeoutError } from "./errors/timeoutError";
@@ -24,6 +26,7 @@ export { TimedMutex } from "./mutex/timedMutex";
 // Mutex Management
 export { lockGuard } from "./utils/lockGuard";
 export { SharedLock } from "./utils/sharedLock";
+export { tryLock } from "./utils/tryLock";
 
 // Condition Variables
 export { ConditionVariable } from "./conditionVariable";
