@@ -112,18 +112,26 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     });
   }
 
-  async tryLock(): Promise<boolean> {
+  tryLock(): boolean {
     // If already has lock
     if (this._isWriter || this._isReader) {
       return false;
     }
 
-    // Acquire internal lock
-    return lockGuard(this._mutex, () => {
-      // Try to acquire write lock
-      return (this._isWriter =
-        Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0);
-    });
+    // Try to acquire internal lock
+    if (this._mutex.tryLock()) {
+      try {
+        // Try to acquire write lock
+        this._isWriter =
+          Atomics.compareExchange(this._mem, 0, 0, WRITE_BIT) === 0;
+      } finally {
+        // Release internal lock
+        this._mutex.unlock();
+      }
+    }
+
+    // Return result
+    return this._isWriter;
   }
 
   /**
@@ -161,7 +169,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     await lockGuard(this._mutex, async () => {
       // Wait until there's no writer and there's read capacity
       let state = Atomics.load(this._mem, 0);
-      while (state & WRITE_BIT || state === READ_BITS) {
+      while (state & WRITE_BIT || (state & READ_BITS) === READ_BITS) {
         await this._gate1.wait(this._mutex);
         state = Atomics.load(this._mem, 0);
       }
@@ -172,27 +180,32 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
     });
   }
 
-  async tryLockShared(): Promise<boolean> {
+  tryLockShared(): boolean {
     // If already has lock
     if (this._isReader || this._isWriter) {
       return false;
     }
 
-    // Acquire internal lock
-    return await lockGuard(this._mutex, () => {
-      // Check for active / blocked writers and read capacity
-      const state = Atomics.load(this._mem, 0);
-      if (state & WRITE_BIT || state === READ_BITS) {
-        return false;
+    // Try to acquire internal lock
+    if (this._mutex.tryLock()) {
+      try {
+        // Check for writers and read capacity
+        const state = Atomics.load(this._mem, 0);
+        if (state & WRITE_BIT || (state & READ_BITS) === READ_BITS) {
+          return false;
+        }
+
+        // Try to acquire read lock
+        this._isReader =
+          Atomics.compareExchange(this._mem, 0, state, state + 1) === state;
+      } finally {
+        // Release internal lock
+        this._mutex.unlock();
       }
+    }
 
-      // Acquire a read lock
-      Atomics.add(this._mem, 0, 1);
-      this._isReader = true;
-
-      // Return success
-      return true;
-    });
+    // Return result
+    return this._isReader;
   }
 
   /**
@@ -220,7 +233,7 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
       } else if (state === READ_BITS) {
         // If there are no writers
         // and readers no longer at capacity,
-        // then notify blocked agents
+        // then notify blocked readers
         this._gate1.notifyAll();
       }
     });
