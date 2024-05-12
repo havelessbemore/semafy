@@ -20,6 +20,11 @@ export const ERR_LOCK_TIMEOUT = "Timed out acquiring lock.";
 export const ERR_REC_MUTEX_OVERFLOW =
   "Operation not permitted. Additional lock would excee the RecursiveMutex's maximum levels of ownership.";
 
+// Mutex Management
+export const ERR_MULTI_LOCK = "Failed to acquire all locks.";
+
+export const ERR_MULTI_UNLOCK = "Failed to unlock all locks.";
+
 // Semaphore
 export const ERR_SEM_NEG_COUNT =
   "Operation not permitted. Cannot release a negative amount from the semaphore.";
