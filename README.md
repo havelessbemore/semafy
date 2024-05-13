@@ -66,6 +66,8 @@ yarn add semafy
 
 - **SharedLock**: Wraps a `SharedLockable` object (e.g. `SharedMutex`) to create a shared lock. Calls to `lock`, `unlock`, etc will acquire a shared lock instead of an exclusive lock.
 
+- **tryLock()**: Tries to sequentially acquire all provided locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
+
 ### Condition Variable
 
 - **ConditionVariable**: Allows agents to wait for specific conditions, tightly integrated with mutexes for state management.
