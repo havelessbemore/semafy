@@ -1,6 +1,6 @@
 # Semafy
 
-**Semafy** provides synchronization and concurrency management across execution agents such as web workers and the main thread. It contains a robust set of tools modeled after C++ synchronization primitives, offering control and flexibility for managing shared resources and states.
+**Semafy** provides synchronization and concurrency management across execution agents (main thread, web workers). It contains a robust set of tools modeled after C++ synchronization primitives, offering control and flexibility for managing shared resources and states.
 
 [![Version](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
 [![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/havelessbemore/semafy/graphs/commit-activity)
@@ -11,10 +11,12 @@
 ## Features
 
 - **Mutexes**: Exclusive and shared locking to protect data from concurrent access.
-- **ConditionVariable**: Allows agents (main thread, web workers) to wait for certain conditions to occur.
 - **Semaphores**: Control access to a finite number of resources.
-- **Error Handling**: Specific classes for various lock-related issues, enhancing debuggability and reliability.
-- **Platform Agnostic**: Works in both [browser](#browser-usage) and server-side applications, and generally any environment that supports `SharedArrayBuffer`.
+- **ConditionVariable**: Allows agents to wait for certain conditions to occur.
+- **Barriers**: Ensures agents reach a certain point before any can proceed.
+- **Async Management**:  Easily handle async operations with utilities like `tryLock`, `lockGuard`, and `callOnce`.
+- **Error Handling**: Specific error classes to enhance debuggability and reliability.
+- **Platform Agnostic**: Works in any [browser](#browser-usage) or server-side environment that supports `SharedArrayBuffer`.
 
 ## Installation
 
@@ -86,7 +88,7 @@ yarn add semafy
 
 ### Barriers
 
-- **Latch**: Allows agents to wait until a set of operations has been completed.
+- **Latch**: Allows agents to wait until a set of operations has been completed. Ideal for scenarios where multiple tasks must reach a common point before proceeding. For example, the completion of multiple data loading operations before data processing begins.
 
 ### Errors
 
@@ -104,8 +106,17 @@ yarn add semafy
 
 ## Browser Usage
 
-For security reasons, browsers have certain requirements for using shared memory. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
+Browser security requirements for using shared memory must be met. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
 
 ## Contributing
 
-Contributions are welcome! Please submit any bugs, issues, or pull requests to the [project's GitHub repository](https://github.com/havelessbemore/semafy).
+
+Contributions are welcome!
+
+- **Bug Reports**: Please use the [GitHub issue tracker](https://github.com/havelessbemore/semafy/issues) to report any bugs. Include a detailed description and any relevant code snippets or logs.
+
+- **Feature Requests**: Please submit feature requests as issues, clearly describing the feature and its potential benefits.
+
+- **Pull Requests**: Please ensure your code adheres to the existing style of the project and include any necessary tests and documentation.
+
+For more information, check out the [contributor's guide](https://github.com/havelessbemore/semafy/CONTRIBUTING.md).

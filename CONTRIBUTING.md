@@ -13,7 +13,6 @@ This project is governed by the [Code of Conduct](./CODE_OF_CONDUCT.md). By cont
 
 ## Developing
 
-- `npm run dev`: Start a local test server
 - `npm run test`: Run tests
 - `npm run test:coverage`: Create coverage reports
 - `npm run lint`: Check styleguide adherence
