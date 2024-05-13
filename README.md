@@ -32,6 +32,20 @@ yarn add semafy
 
 ## API
 
+### Generic
+
+- **BasicLockable**: A base interface that provides exclusive blocking for agents.
+
+- **Lockable**: Extends `BasicLockable` to include attempted locking.
+
+- **SharedLockable**: Provides shared blocking semantics for agents.
+
+- **SharedResource**: Represents a shared resource that is backed by a `SharedArrayBuffer`.
+
+- **SharedTimedLockable**: Extends `SharedLockable` to include timed blocking.
+
+- **TimedLockable**: Extends `Lockable` to include timed blocking.
+
 ### Mutex
 
 - **Mutex**: Provides essential mutex operations including `lock`, `unlock`, and `tryLock`.
