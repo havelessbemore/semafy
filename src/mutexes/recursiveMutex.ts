@@ -3,6 +3,7 @@ import type { SharedResource } from "../types/sharedResource";
 
 import { ERR_REC_MUTEX_OVERFLOW } from "../errors/constants";
 import { OwnershipError } from "../errors/ownershipError";
+import { MAX_INT32_VALUE } from "../utils/constants";
 
 /**
  * Represents the mutex lock state.
@@ -22,7 +23,7 @@ export const LOCK_BIT = 1;
  * any blocked agent will have the chance to acquire owernship.
  *
  * The maximum number of times a mutex can be locked recursively
- * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * is defined by {@link RecursiveMutex.Max}. Once reached, attempts
  * for additional locks will throw an error, and calls to `tryLock` methods
  * will return `false`.
  *
@@ -38,7 +39,7 @@ export class RecursiveMutex implements Lockable, SharedResource {
   /**
    * The maximum levels of recursive ownership.
    */
-  static readonly MAX = Number.MAX_SAFE_INTEGER;
+  static readonly Max = MAX_INT32_VALUE;
 
   /**
    * The number of locks acquired by the agent.
@@ -89,7 +90,7 @@ export class RecursiveMutex implements Lockable, SharedResource {
    */
   async lock(): Promise<void> {
     // If at capacity
-    if (this._depth === RecursiveMutex.MAX) {
+    if (this._depth === RecursiveMutex.Max) {
       throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
     }
 
@@ -106,7 +107,7 @@ export class RecursiveMutex implements Lockable, SharedResource {
 
   tryLock(): boolean {
     // If at capacity
-    if (this._depth === RecursiveMutex.MAX) {
+    if (this._depth === RecursiveMutex.Max) {
       return false;
     }
 

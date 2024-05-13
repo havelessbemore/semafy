@@ -19,7 +19,7 @@ export class CountingSemaphore implements SharedResource {
   /**
    * The maximum possible value of the internal counter
    */
-  static readonly MAX = MAX_INT32_VALUE;
+  static readonly Max = MAX_INT32_VALUE;
 
   private _gate: ConditionVariable;
   private _mem: Int32Array;
@@ -160,7 +160,7 @@ export class CountingSemaphore implements SharedResource {
       const state = Atomics.load(this._mem, 0);
 
       // Check for overflow
-      if (count > CountingSemaphore.MAX - state) {
+      if (count > CountingSemaphore.Max - state) {
         throw new RangeError(ERR_SEM_OVERFLOW);
       }
 

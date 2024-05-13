@@ -202,6 +202,8 @@ class Mutex {
   }
 }
 
+const MAX_INT32_VALUE = 2147483647;
+
 var __defProp$6 = Object.defineProperty;
 var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, typeof key !== "symbol" ? key + "" : key, value);
@@ -237,7 +239,7 @@ const _RecursiveMutex = class _RecursiveMutex {
    * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
    */
   async lock() {
-    if (this._depth === _RecursiveMutex.MAX) {
+    if (this._depth === _RecursiveMutex.Max) {
       throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
     }
     if (this._depth === 0) {
@@ -248,7 +250,7 @@ const _RecursiveMutex = class _RecursiveMutex {
     ++this._depth;
   }
   tryLock() {
-    if (this._depth === _RecursiveMutex.MAX) {
+    if (this._depth === _RecursiveMutex.Max) {
       return false;
     }
     if (this._depth === 0 && Atomics.or(this._mem, 0, LOCK_BIT)) {
@@ -276,7 +278,7 @@ const _RecursiveMutex = class _RecursiveMutex {
 /**
  * The maximum levels of recursive ownership.
  */
-__publicField$6(_RecursiveMutex, "MAX", Number.MAX_SAFE_INTEGER);
+__publicField$6(_RecursiveMutex, "Max", MAX_INT32_VALUE);
 let RecursiveMutex = _RecursiveMutex;
 
 const ATOMICS_NOT_EQUAL = "not-equal";
@@ -287,7 +289,7 @@ class RecursiveTimedMutex extends RecursiveMutex {
     return this.tryLockUntil(performance.now() + timeout);
   }
   async tryLockUntil(timestamp) {
-    if (this._depth === RecursiveMutex.MAX) {
+    if (this._depth === RecursiveTimedMutex.Max) {
       return false;
     }
     if (this._depth === 0) {
@@ -940,7 +942,7 @@ const _CountingSemaphore = class _CountingSemaphore {
     }
     return lockGuard(this._mutex, () => {
       const state = Atomics.load(this._mem, 0);
-      if (count > _CountingSemaphore.MAX - state) {
+      if (count > _CountingSemaphore.Max - state) {
         throw new RangeError(ERR_SEM_OVERFLOW);
       }
       Atomics.add(this._mem, 0, count);
@@ -951,7 +953,7 @@ const _CountingSemaphore = class _CountingSemaphore {
 /**
  * The maximum possible value of the internal counter
  */
-__publicField(_CountingSemaphore, "MAX", ~(1 << 31));
+__publicField(_CountingSemaphore, "Max", MAX_INT32_VALUE);
 let CountingSemaphore = _CountingSemaphore;
 
 exports.CV_OK = CV_OK;

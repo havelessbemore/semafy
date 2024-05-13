@@ -294,7 +294,7 @@ declare class Mutex implements Lockable, SharedResource {
  * any blocked agent will have the chance to acquire owernship.
  *
  * The maximum number of times a mutex can be locked recursively
- * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * is defined by {@link RecursiveMutex.Max}. Once reached, attempts
  * for additional locks will throw an error, and calls to `tryLock` methods
  * will return `false`.
  *
@@ -308,6 +308,10 @@ declare class Mutex implements Lockable, SharedResource {
  */
 declare class RecursiveMutex implements Lockable, SharedResource {
     /**
+     * The maximum levels of recursive ownership.
+     */
+    static readonly Max = 2147483647;
+    /**
      * The number of locks acquired by the agent.
      */
     protected _depth: number;
@@ -315,10 +319,6 @@ declare class RecursiveMutex implements Lockable, SharedResource {
      * The shared atomic memory for the mutex.
      */
     protected _mem: Int32Array;
-    /**
-     * The maximum levels of recursive ownership.
-     */
-    static readonly MAX: number;
     constructor();
     /**
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
@@ -353,7 +353,7 @@ declare class RecursiveMutex implements Lockable, SharedResource {
  * any blocked agent will have the chance to acquire owernship.
  *
  * The maximum number of times a mutex can be locked recursively
- * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * is defined by {@link RecursiveTimedMutex.Max}. Once reached, attempts
  * for additional locks will throw an error, and calls to `tryLock` methods
  * will return `false`.
  *
@@ -758,13 +758,13 @@ declare function callOnce<T>(flag: OnceFlag, callbackfn: () => T): T | undefined
  * 1. {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
  */
 declare class CountingSemaphore implements SharedResource {
-    private _gate;
-    private _mem;
-    private _mutex;
     /**
      * The maximum possible value of the internal counter
      */
-    static readonly MAX: number;
+    static readonly Max = 2147483647;
+    private _gate;
+    private _mem;
+    private _mutex;
     constructor();
     /**
      * @param sharedBuffer The shared buffer that backs the semaphore.

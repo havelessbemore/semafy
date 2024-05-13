@@ -16,7 +16,7 @@ import { LOCK_BIT, RecursiveMutex } from "./recursiveMutex";
  * any blocked agent will have the chance to acquire owernship.
  *
  * The maximum number of times a mutex can be locked recursively
- * is defined by {@link RecursiveMutex.MAX}. Once reached, attempts
+ * is defined by {@link RecursiveTimedMutex.Max}. Once reached, attempts
  * for additional locks will throw an error, and calls to `tryLock` methods
  * will return `false`.
  *
@@ -42,7 +42,7 @@ export class RecursiveTimedMutex
 
   async tryLockUntil(timestamp: number): Promise<boolean> {
     // If at capacity
-    if (this._depth === RecursiveMutex.MAX) {
+    if (this._depth === RecursiveTimedMutex.Max) {
       return false;
     }
 
