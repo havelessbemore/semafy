@@ -77,8 +77,15 @@ yarn add semafy
 ### Errors
 
 - **LockError**: A generic error related to errors in lock acquisition, release and management.
+
+- **MultiLockError**: Occurs when attempting to acquire multiple locks simultaneously.
+
+- **MultiUnlockError**: Occurs when attempting multiple unlocks simultaneously.
+
 - **OwnershipError**: Occurs when attempting to unlock an unacquired mutex.
+
 - **RelockError**: Occurs when attempting to lock an already acquired mutex. Prevents deadlocks from occurring.
+
 - **TimeoutError**: Occurs when an operation exceeds a set time, such as when using `tryLockFor` or `tryLockUntil`.
 
 ## Browser Usage
