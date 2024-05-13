@@ -68,6 +68,14 @@ yarn add semafy
 
 - **tryLock()**: Tries to sequentially acquire all provided locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
 
+- **UniqueLock**: Wraps a `BasicLockable` object to create a unique lock. Calls to `lock`, `unlock`, etc will acquire an exclusive lock on the wrapped object.
+
+### Call Once
+
+- **callOnce()**: Executes a callback function at most once, based on the state of a provided `OnceFlag`.
+
+- **OnceFlag**: Represents a flag that can be set exactly once, shared across different execution agents.
+
 ### Condition Variable
 
 - **ConditionVariable**: Allows agents to wait for specific conditions, tightly integrated with mutexes for state management.
