@@ -4,9 +4,9 @@ import type { SharedLockable } from "../types/sharedLockable";
 
 import { OwnershipError } from "../errors/ownershipError";
 import { RelockError } from "../errors/relockError";
-import { lockGuard } from "../utils/lockGuard";
+import { lockGuard } from "../locks/lockGuard";
 
-import { ConditionVariable } from "../conditionVariable";
+import { ConditionVariable } from "../condVars/conditionVariable";
 import { TimedMutex } from "./timedMutex";
 
 export const WRITE_BIT = 1 << 31;

@@ -1,10 +1,10 @@
-import { ATOMICS_NOT_EQUAL, ATOMICS_TIMED_OUT } from "./types/atomicsStatus";
-import type { BasicLockable } from "./types/basicLockable";
-import { type CVStatus, CV_OK, CV_TIMED_OUT } from "./types/cvStatus";
-import type { SharedResource } from "./types/sharedResource";
+import { ATOMICS_NOT_EQUAL, ATOMICS_TIMED_OUT } from "../types/atomicsStatus";
+import type { BasicLockable } from "../types/basicLockable";
+import { type CVStatus, CV_OK, CV_TIMED_OUT } from "../types/cvStatus";
+import type { SharedResource } from "../types/sharedResource";
 
-import { ERR_CV_VALUE } from "./errors/constants";
-import { OwnershipError } from "./errors/ownershipError";
+import { ERR_CV_VALUE } from "../errors/constants";
+import { OwnershipError } from "../errors/ownershipError";
 
 /**
  * A condition variable manages an atomic wait/block mechanism that

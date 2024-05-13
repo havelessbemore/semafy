@@ -16,27 +16,25 @@ export { RelockError } from "./errors/relockError";
 export { TimeoutError } from "./errors/timeoutError";
 
 // Mutex
-export { Mutex } from "./mutex/mutex";
-export { RecursiveMutex } from "./mutex/recursiveMutex";
-export { RecursiveTimedMutex } from "./mutex/recursiveTimedMutex";
-export { SharedMutex } from "./mutex/sharedMutex";
-export { SharedTimedMutex } from "./mutex/sharedTimedMutex";
-export { TimedMutex } from "./mutex/timedMutex";
+export { Mutex } from "./mutexes/mutex";
+export { RecursiveMutex } from "./mutexes/recursiveMutex";
+export { RecursiveTimedMutex } from "./mutexes/recursiveTimedMutex";
+export { SharedMutex } from "./mutexes/sharedMutex";
+export { SharedTimedMutex } from "./mutexes/sharedTimedMutex";
+export { TimedMutex } from "./mutexes/timedMutex";
 
-// Mutex Management
-export { lockGuard } from "./utils/lockGuard";
-export { SharedLock } from "./utils/sharedLock";
-export { UniqueLock } from "./utils/uniqueLock";
-
-// Generic locking
-export { tryLock } from "./utils/tryLock";
+// Locks
+export { lockGuard } from "./locks/lockGuard";
+export { SharedLock } from "./locks/sharedLock";
+export { tryLock } from "./locks/tryLock";
+export { UniqueLock } from "./locks/uniqueLock";
 
 // Call once
-export { callOnce } from "./utils/callOnce";
-export { OnceFlag } from "./utils/onceFlag";
+export { callOnce } from "./callOnce/callOnce";
+export { OnceFlag } from "./callOnce/onceFlag";
 
 // Condition Variables
-export { ConditionVariable } from "./conditionVariable";
+export { ConditionVariable } from "./condVars/conditionVariable";
 
 // Semaphores
-export { CountingSemaphore } from "./semaphore/countingSemaphore";
+export { CountingSemaphore } from "./semaphores/countingSemaphore";

@@ -142,6 +142,52 @@ declare class LockError extends Error {
 }
 
 /**
+ * Represents an error that occurs when attempting to lock multiple {@link Lockable} objects simultaneously.
+ *
+ * This error provides detailed information about the failure of locking operations, including specifics
+ * about any errors that occurred. It ensures that any partial state due to errors can be adequately handled.
+ */
+declare class MultiLockError extends LockError {
+    locks: Lockable[];
+    numLocked: number;
+    lockErrors: [number, unknown][];
+    unlockErrors: [number, unknown][];
+    /**
+     * @param locks - The array of all lockable objects that were part of the operation.
+     * @param numLocked - The number of locks successfully updated before failure.
+     * @param lockErrors - An array of [index, error] pairs that contain the index of the lock in
+     * the `locks` array and the error that occurred while attempting to lock it. Useful for
+     * understanding why lock acquisition failed.
+     * @param unlockErrors - An array of [index, error] pairs that contain the index of the lock in
+     * the `locks` array and the error that occurred while attempting rollback. Useful for
+     * debugging unexpected issues during unlocking.
+     * @param message - An optional custom error message that describes the error.
+     */
+    constructor(locks: Lockable[], numLocked: number, lockErrors?: [number, unknown][], unlockErrors?: [number, unknown][], message?: string);
+}
+
+/**
+ * Represents an error that occurs when attempting to unlock multiple {@link Lockable} objects simultaneously.
+ *
+ * This error provides detailed information about the failure of unlocking operations, including specifics
+ * about any errors that occurred. It ensures that any partial state due to errors can be adequately handled.
+ */
+declare class MultiUnlockError extends LockError {
+    locks: Lockable[];
+    numUnlocked: number;
+    unlockErrors: [number, unknown][];
+    /**
+     * @param locks - The array of all lockable objects that were part of the operation.
+     * @param numUnlocked - The number of unlocks successfully updated before failure.
+     * @param unlockErrors - An array of [index, error] pairs that contain the index of the lock in
+     * the `locks` array and the error that occurred while attempting to unlock it. Useful for
+     * debugging unexpected issues during unlocking.
+     * @param message - An optional custom error message that describes the error.
+     */
+    constructor(locks: Lockable[], numUnlocked: number, unlockErrors?: [number, unknown][], message?: string);
+}
+
+/**
  * Represents an ownership error originating from a lock.
  */
 declare class OwnershipError extends LockError {
@@ -489,7 +535,7 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
      * @throws A {@link RelockError} If the mutex is already locked by the caller.
      */
     lock(): Promise<void>;
-    tryLock(): Promise<boolean>;
+    tryLock(): boolean;
     /**
      * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
      */
@@ -498,7 +544,7 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
      * @throws A {@link RelockError} If the lock is already locked by the caller.
      */
     lockShared(): Promise<void>;
-    tryLockShared(): Promise<boolean>;
+    tryLockShared(): boolean;
     /**
      * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
      */
@@ -562,22 +608,147 @@ declare class SharedLock implements TimedLockable {
     /**
      * The associated mutex.
      */
-    protected _mutex: SharedLockable;
+    mutex: SharedLockable | undefined;
     /**
-     * @param mutex - The shared mutex to associate.
+     * @param mutex - The shared lockable to associate.
      */
-    constructor(mutex: SharedLockable);
-    /**
-     * The associated mutex.
-     */
-    get mutex(): SharedLockable;
+    constructor(mutex?: SharedLockable);
     get ownsLock(): boolean;
     lock(): Promise<void>;
+    /**
+     * Exchanges the internal states of the shared locks.
+     */
+    swap(other: SharedLock): void;
     tryLock(): boolean | Promise<boolean>;
     tryLockFor(timeout: number): Promise<boolean>;
     tryLockUntil(timestamp: number): Promise<boolean>;
     unlock(): void | Promise<void>;
 }
+
+/**
+ * Tries to sequentially acquire locks on the provided {@link Lockable} objects.
+ * If any lock acquisition fails or an error is thrown, the process is halted,
+ * and previously acquired locks are released in reverse order.
+ *
+ * @param locks - An array of lockable objects to be locked sequentially.
+ *
+ * @throws A {@link MultiLockError} if an error occurs trying to acquire all
+ * locks. Details include:
+ *  - `locks`: The array of all locks.
+ *  - `numLocked`: The number of locks successfully acquired before failure.
+ *  - `lockErrors`: Errors encountered while trying to acquire all locks.
+ *  - `unlockErrors`: Errors encountered while trying to roll back acquired locks.
+ *
+ * @throws A {@link MultiUnlockError} if, after lock failure, an errors occurs
+ * while trying to roll back acquired locks. Details include:
+ *  - `locks`: The array of all locks.
+ *  - `numUnlocked`: The number of locks successfully unlocked.
+ *  - `unlockErrors`: Errors encountered while trying to roll back acquired locks.
+ *
+ * @returns `-1` if all locks are successfully acquired, otherwise the 0-based index of the lock that failed.
+ */
+declare function tryLock(...locks: Lockable[]): Promise<number>;
+
+/**
+ * A mutex ownership wrapper.
+ *
+ * Locking a UniqueLock exclusively locks the associated mutex.
+ *
+ * If the given mutex implements {@link Lockable}, then UniqueLock will too.
+ * If the given mutex implements {@link TimedLockable}, then UniqueLock will too.
+ * Otherwise, using attempting locking (`tryLock`) or timed methods
+ * (`tryLockFor`, `tryLockUntil`) will result in errors.
+ */
+declare class UniqueLock implements TimedLockable {
+    /**
+     * The associated basic lockable.
+     */
+    mutex: BasicLockable | undefined;
+    /**
+     * @param mutex - The basic lockable to associate.
+     */
+    constructor(mutex?: BasicLockable);
+    get ownsLock(): boolean;
+    lock(): Promise<void>;
+    /**
+     * Exchanges the internal states of the unique locks.
+     */
+    swap(other: UniqueLock): void;
+    tryLock(): boolean | Promise<boolean>;
+    tryLockFor(timeout: number): Promise<boolean>;
+    tryLockUntil(timestamp: number): Promise<boolean>;
+    unlock(): void | Promise<void>;
+}
+
+/**
+ * Represents a flag that can be set exactly once across different execution agents.
+ */
+declare class OnceFlag implements SharedResource {
+    /**
+     * The bit within the shared memory used to set the flag.
+     */
+    protected _bit: number;
+    /**
+     * The offset for the bit within the 32-bit integer of the shared memory.
+     */
+    protected _bitOffset: number;
+    /**
+     * The shared memory buffer used for the flag.
+     */
+    protected _mem: Int32Array;
+    constructor();
+    /**
+     * @param sharedBuffer The {@link SharedArrayBuffer} that backs the flag.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     * @param bitOffset The bit offset within the shared memory location. Defaults to `0`.
+     * This allows for different bits of a single integer to be used by different flags.
+     */
+    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number, bitOffset?: number);
+    get buffer(): SharedArrayBuffer;
+    get byteLength(): number;
+    get byteOffset(): number;
+    /**
+     * The bit offset for the flag within shared memory, relative to `byteOffset`.
+     */
+    get bitOffset(): number;
+    /**
+     * Resets the flag state to `false`.
+     *
+     * @returns `true` if the flag was previously set, `false` otherwise.
+     */
+    clear(): boolean;
+    /**
+     * Checks if the flag is currently set.
+     *
+     * @returns `true` if the flag is set, `false` otherwise.
+     */
+    isSet(): boolean;
+    /**
+     * Sets the flag to `true`. This operation is atomic and thread-safe.
+     *
+     * @returns `true` if the flag was set, `false` if it was already set.
+     */
+    set(): boolean;
+}
+
+/**
+ * Executes a callback function at most once, based on the state of a provided {@link OnceFlag}.
+ *
+ * This function ensures the callback is executed exactly once, even across multiple
+ * calls in different agents (main thread, web workers). This is useful for one-time
+ * processes, such as initialization and cleanup routines.
+ *
+ * - If the flag is already set, the callback is not executed and `undefined` is returned.
+ *
+ * - If the flag is not set, the flag is set, the callback is executed, and the callback's
+ * result is returned.
+ *
+ * @param flag - The {@link OnceFlag} used to determine whether the callback has been invoked.
+ * @param callbackfn - A function that will be called if the flag has not been set.
+ *
+ * @returns The result of `callbackfn` if the flag was not previously set, otherwise `undefined`.
+ */
+declare function callOnce<T>(flag: OnceFlag, callbackfn: () => T): T | undefined;
 
 /**
  * A counting semaphore based on shared memory and atomics, allowing for
@@ -643,4 +814,4 @@ declare class CountingSemaphore implements SharedResource {
     release(count?: number): Promise<void>;
 }
 
-export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, LockError, type Lockable, Mutex, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, lockGuard };
+export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, LockError, type Lockable, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lockGuard, tryLock };

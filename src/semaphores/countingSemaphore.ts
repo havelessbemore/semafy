@@ -3,10 +3,10 @@ import type { SharedResource } from "../types/sharedResource";
 import type { TimedLockable } from "../types/timedLockable";
 
 import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "../errors/constants";
-import { lockGuard } from "../utils/lockGuard";
+import { lockGuard } from "../locks/lockGuard";
 
-import { ConditionVariable } from "../conditionVariable";
-import { TimedMutex } from "../mutex/timedMutex";
+import { ConditionVariable } from "../condVars/conditionVariable";
+import { TimedMutex } from "../mutexes/timedMutex";
 
 /**
  * A counting semaphore based on shared memory and atomics, allowing for
