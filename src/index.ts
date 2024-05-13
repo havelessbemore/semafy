@@ -26,7 +26,14 @@ export { TimedMutex } from "./mutex/timedMutex";
 // Mutex Management
 export { lockGuard } from "./utils/lockGuard";
 export { SharedLock } from "./utils/sharedLock";
+export { UniqueLock } from "./utils/uniqueLock";
+
+// Generic locking
 export { tryLock } from "./utils/tryLock";
+
+// Call once
+export { callOnce } from "./utils/callOnce";
+export { OnceFlag } from "./utils/onceFlag";
 
 // Condition Variables
 export { ConditionVariable } from "./conditionVariable";
