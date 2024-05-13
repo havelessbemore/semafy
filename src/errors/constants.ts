@@ -1,6 +1,18 @@
 // Generic
 export const ERR_TIMEOUT = "Operation timed out.";
 
+export const ERR_NEGATIVE_VALUE = "Value cannot be negative";
+
+export const ERR_OVERFLOW = "Cannot exceed maximum value";
+
+// Barriers
+
+export const ERR_LATCH_INPUT_UNDERFLOW =
+  "Operation not permitted. Latch decrement cannot be negative";
+
+export const ERR_LATCH_INPUT_OVERFLOW =
+  "Operation not permitted. Latch decrement cannot exceed current count";
+
 // Condition Variable
 export const ERR_CV_VALUE = "Unexpected value in shared memory location";
 
@@ -26,8 +38,8 @@ export const ERR_MULTI_LOCK = "Failed to acquire all locks.";
 export const ERR_MULTI_UNLOCK = "Failed to unlock all locks.";
 
 // Semaphore
-export const ERR_SEM_NEG_COUNT =
-  "Operation not permitted. Cannot release a negative amount from the semaphore.";
+export const ERR_SEM_INPUT_NEG =
+  "Operation not permitted. Semaphore release value cannot be negative.";
 
-export const ERR_SEM_OVERFLOW =
-  "Operation not permitted. Releasing the given amount from the semaphore would cause overflow.";
+export const ERR_SEM_INPUT_OVERFLOW =
+  "Operation not permitted. Semaphore release would cause overflow.";

@@ -29,7 +29,7 @@ export { SharedLock } from "./locks/sharedLock";
 export { tryLock } from "./locks/tryLock";
 export { UniqueLock } from "./locks/uniqueLock";
 
-// Call once
+// Call Once
 export { callOnce } from "./callOnce/callOnce";
 export { OnceFlag } from "./callOnce/onceFlag";
 
@@ -38,3 +38,6 @@ export { ConditionVariable } from "./condVars/conditionVariable";
 
 // Semaphores
 export { CountingSemaphore } from "./semaphores/countingSemaphore";
+
+// Barriers
+export { Latch } from "./barriers/latch";

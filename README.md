@@ -84,6 +84,10 @@ yarn add semafy
 
 - **CountingSemaphore**: Manages access to a finite number of resources, allowing multiple entities to hold the semaphore concurrently up to a maximum count.
 
+### Barriers
+
+- **Latch**: Allows agents to wait until a set of operations has been completed.
+
 ### Errors
 
 - **LockError**: A generic error related to errors in lock acquisition, release and management.

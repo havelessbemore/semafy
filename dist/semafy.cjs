@@ -31,6 +31,10 @@ const CV_OK = "ok";
 const CV_TIMED_OUT = "timed-out";
 
 const ERR_TIMEOUT = "Operation timed out.";
+const ERR_NEGATIVE_VALUE = "Value cannot be negative";
+const ERR_OVERFLOW = "Cannot exceed maximum value";
+const ERR_LATCH_INPUT_UNDERFLOW = "Operation not permitted. Latch decrement cannot be negative";
+const ERR_LATCH_INPUT_OVERFLOW = "Operation not permitted. Latch decrement cannot exceed current count";
 const ERR_CV_VALUE = "Unexpected value in shared memory location";
 const ERR_LOCK = "A lock has encountered an error.";
 const ERR_LOCK_OWNERSHIP = "Operation not permitted. Lock must be acquired first.";
@@ -38,8 +42,8 @@ const ERR_LOCK_RELOCK = "Attempted relock of already acquired lock. Deadlock wou
 const ERR_REC_MUTEX_OVERFLOW = "Operation not permitted. Additional lock would excee the RecursiveMutex's maximum levels of ownership.";
 const ERR_MULTI_LOCK = "Failed to acquire all locks.";
 const ERR_MULTI_UNLOCK = "Failed to unlock all locks.";
-const ERR_SEM_NEG_COUNT = "Operation not permitted. Cannot release a negative amount from the semaphore.";
-const ERR_SEM_OVERFLOW = "Operation not permitted. Releasing the given amount from the semaphore would cause overflow.";
+const ERR_SEM_INPUT_NEG = "Operation not permitted. Semaphore release value cannot be negative.";
+const ERR_SEM_INPUT_OVERFLOW = "Operation not permitted. Semaphore release would cause overflow.";
 
 class LockError extends Error {
   /**
@@ -110,9 +114,9 @@ class RelockError extends LockError {
   }
 }
 
-var __defProp$8 = Object.defineProperty;
-var __defNormalProp$8 = (obj, key, value) => key in obj ? __defProp$8(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$8 = (obj, key, value) => __defNormalProp$8(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$9 = Object.defineProperty;
+var __defNormalProp$9 = (obj, key, value) => key in obj ? __defProp$9(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$9 = (obj, key, value) => __defNormalProp$9(obj, typeof key !== "symbol" ? key + "" : key, value);
 class TimeoutError extends Error {
   /**
    * @param message - A custom error message. Defaults to `undefined`.
@@ -125,12 +129,12 @@ class TimeoutError extends Error {
      * Absolute time in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$8(this, "deadline");
+    __publicField$9(this, "deadline");
     /**
      * Duration in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$8(this, "timeout");
+    __publicField$9(this, "timeout");
     this.deadline = deadline;
     this.timeout = timeout;
     this.name = TimeoutError.name;
@@ -140,20 +144,20 @@ class TimeoutError extends Error {
   }
 }
 
-var __defProp$7 = Object.defineProperty;
-var __defNormalProp$7 = (obj, key, value) => key in obj ? __defProp$7(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$8 = Object.defineProperty;
+var __defNormalProp$8 = (obj, key, value) => key in obj ? __defProp$8(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$8 = (obj, key, value) => __defNormalProp$8(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT$1 = 1;
 class Mutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * Indicates whether the current agent owns the lock.
      */
-    __publicField$7(this, "_isOwner");
+    __publicField$8(this, "_isOwner");
     /**
      * The shared memory for the mutex.
      */
-    __publicField$7(this, "_mem");
+    __publicField$8(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -204,20 +208,20 @@ class Mutex {
 
 const MAX_INT32_VALUE = 2147483647;
 
-var __defProp$6 = Object.defineProperty;
-var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$7 = Object.defineProperty;
+var __defNormalProp$7 = (obj, key, value) => key in obj ? __defProp$7(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT = 1;
 const _RecursiveMutex = class _RecursiveMutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The number of locks acquired by the agent.
      */
-    __publicField$6(this, "_depth");
+    __publicField$7(this, "_depth");
     /**
      * The shared atomic memory for the mutex.
      */
-    __publicField$6(this, "_mem");
+    __publicField$7(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._depth = 0;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -278,7 +282,7 @@ const _RecursiveMutex = class _RecursiveMutex {
 /**
  * The maximum levels of recursive ownership.
  */
-__publicField$6(_RecursiveMutex, "Max", MAX_INT32_VALUE);
+__publicField$7(_RecursiveMutex, "Max", MAX_INT32_VALUE);
 let RecursiveMutex = _RecursiveMutex;
 
 const ATOMICS_NOT_EQUAL = "not-equal";
@@ -316,15 +320,15 @@ async function lockGuard(mutex, callbackfn) {
   }
 }
 
-var __defProp$5 = Object.defineProperty;
-var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, key + "" , value);
+var __defProp$6 = Object.defineProperty;
+var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, key + "" , value);
 class ConditionVariable {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The shared atomic memory where the condition variable stores its state.
      */
-    __publicField$5(this, "_mem");
+    __publicField$6(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.store(this._mem, 0, 0);
@@ -444,19 +448,19 @@ class TimedMutex extends Mutex {
   }
 }
 
-var __defProp$4 = Object.defineProperty;
-var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$5 = Object.defineProperty;
+var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
 const WRITE_BIT = 1 << 31;
 const READ_BITS = ~WRITE_BIT;
 class SharedMutex {
   constructor(sharedBuffer, byteOffset = 0) {
-    __publicField$4(this, "_gate1");
-    __publicField$4(this, "_gate2");
-    __publicField$4(this, "_isReader");
-    __publicField$4(this, "_isWriter");
-    __publicField$4(this, "_mem");
-    __publicField$4(this, "_mutex");
+    __publicField$5(this, "_gate1");
+    __publicField$5(this, "_gate2");
+    __publicField$5(this, "_isReader");
+    __publicField$5(this, "_isWriter");
+    __publicField$5(this, "_mem");
+    __publicField$5(this, "_mutex");
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
@@ -649,9 +653,9 @@ class SharedTimedMutex extends SharedMutex {
   }
 }
 
-var __defProp$3 = Object.defineProperty;
-var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$3 = (obj, key, value) => __defNormalProp$3(obj, key + "" , value);
+var __defProp$4 = Object.defineProperty;
+var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, key + "" , value);
 class SharedLock {
   /**
    * @param mutex - The shared lockable to associate.
@@ -660,7 +664,7 @@ class SharedLock {
     /**
      * The associated mutex.
      */
-    __publicField$3(this, "mutex");
+    __publicField$4(this, "mutex");
     this.mutex = mutex;
   }
   get ownsLock() {
@@ -731,9 +735,9 @@ async function tryLock(...locks) {
   return numLocked;
 }
 
-var __defProp$2 = Object.defineProperty;
-var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, key + "" , value);
+var __defProp$3 = Object.defineProperty;
+var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$3 = (obj, key, value) => __defNormalProp$3(obj, key + "" , value);
 class UniqueLock {
   /**
    * @param mutex - The basic lockable to associate.
@@ -742,7 +746,7 @@ class UniqueLock {
     /**
      * The associated basic lockable.
      */
-    __publicField$2(this, "mutex");
+    __publicField$3(this, "mutex");
     this.mutex = mutex;
   }
   get ownsLock() {
@@ -777,23 +781,23 @@ function callOnce(flag, callbackfn) {
   return flag.set() ? callbackfn() : void 0;
 }
 
-var __defProp$1 = Object.defineProperty;
-var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$2 = Object.defineProperty;
+var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
 class OnceFlag {
   constructor(sharedBuffer, byteOffset = 0, bitOffset) {
     /**
      * The bit within the shared memory used to set the flag.
      */
-    __publicField$1(this, "_bit");
+    __publicField$2(this, "_bit");
     /**
      * The offset for the bit within the 32-bit integer of the shared memory.
      */
-    __publicField$1(this, "_bitOffset");
+    __publicField$2(this, "_bitOffset");
     /**
      * The shared memory buffer used for the flag.
      */
-    __publicField$1(this, "_mem");
+    __publicField$2(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     bitOffset ?? (bitOffset = 0);
     this._bit = 1 << bitOffset;
@@ -841,21 +845,41 @@ class OnceFlag {
   }
 }
 
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$1 = Object.defineProperty;
+var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
 const _CountingSemaphore = class _CountingSemaphore {
   constructor(sharedBuffer, byteOffset = 0) {
-    __publicField(this, "_gate");
-    __publicField(this, "_mem");
-    __publicField(this, "_mutex");
+    __publicField$1(this, "_gate");
+    __publicField$1(this, "_mem");
+    __publicField$1(this, "_mutex");
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(3 * bInt32));
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+    if (sharedBuffer instanceof SharedArrayBuffer) {
+      this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+      byteOffset += bInt32;
+      this._mutex = new TimedMutex(sharedBuffer, byteOffset);
+      byteOffset += bInt32;
+      this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+      return;
+    }
+    const desired = sharedBuffer;
+    if (desired < 0) {
+      throw new RangeError(ERR_NEGATIVE_VALUE, {
+        cause: `${desired} < 0`
+      });
+    }
+    if (desired > _CountingSemaphore.Max) {
+      throw new RangeError(ERR_OVERFLOW, {
+        cause: `${desired} > ${_CountingSemaphore.Max}`
+      });
+    }
+    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new TimedMutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+    this._mem[0] = desired;
   }
   get buffer() {
     return this._mem.buffer;
@@ -938,12 +962,16 @@ const _CountingSemaphore = class _CountingSemaphore {
    */
   release(count = 1) {
     if (count < 0) {
-      throw new RangeError(ERR_SEM_NEG_COUNT);
+      throw new RangeError(ERR_SEM_INPUT_NEG, {
+        cause: `${count} < 0`
+      });
     }
     return lockGuard(this._mutex, () => {
       const state = Atomics.load(this._mem, 0);
       if (count > _CountingSemaphore.Max - state) {
-        throw new RangeError(ERR_SEM_OVERFLOW);
+        throw new RangeError(ERR_SEM_INPUT_OVERFLOW, {
+          cause: `${count} > ${_CountingSemaphore.Max - state}`
+        });
       }
       Atomics.add(this._mem, 0, count);
       this._gate.notifyAll();
@@ -953,13 +981,148 @@ const _CountingSemaphore = class _CountingSemaphore {
 /**
  * The maximum possible value of the internal counter
  */
-__publicField(_CountingSemaphore, "Max", MAX_INT32_VALUE);
+__publicField$1(_CountingSemaphore, "Max", MAX_INT32_VALUE);
 let CountingSemaphore = _CountingSemaphore;
+
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+const _Latch = class _Latch {
+  constructor(sharedBuffer, byteOffset = 0) {
+    /**
+     * Condition variable to manage waiting agents.
+     */
+    __publicField(this, "_gate");
+    /**
+     * The shared atomic memory for the internal counter.
+     */
+    __publicField(this, "_mem");
+    /**
+     * Mutex to protect access to the internal counter.
+     */
+    __publicField(this, "_mutex");
+    const bInt32 = Int32Array.BYTES_PER_ELEMENT;
+    if (sharedBuffer instanceof SharedArrayBuffer) {
+      this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+      byteOffset += bInt32;
+      this._mutex = new Mutex(sharedBuffer, byteOffset);
+      byteOffset += bInt32;
+      this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+      return;
+    }
+    const expected = sharedBuffer;
+    if (expected < 0) {
+      throw new RangeError(ERR_NEGATIVE_VALUE, {
+        cause: `${expected} < 0`
+      });
+    }
+    if (expected > _Latch.Max) {
+      throw new RangeError(ERR_OVERFLOW, {
+        cause: `${expected} > ${_Latch.Max}`
+      });
+    }
+    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    this._mem = new Int32Array(sharedBuffer, 0, 3);
+    byteOffset += bInt32;
+    this._mutex = new Mutex(sharedBuffer, byteOffset);
+    byteOffset += bInt32;
+    this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+    this._mem[0] = expected;
+  }
+  /**
+   * Decrements the counter by a specified amount.
+   *
+   * If the counter reaches zero, waiting agents are notified.
+   *
+   * @param n The amount to decrement the counter.
+   *
+   * @throws A {@link RangeError} If `n` is negative or exceeds the current count.
+   */
+  async countDown(n = 1) {
+    if (n < 0) {
+      throw new RangeError(ERR_LATCH_INPUT_UNDERFLOW, {
+        cause: `${n} < 0`
+      });
+    }
+    await lockGuard(this._mutex, async () => {
+      const value = Atomics.load(this._mem, 0);
+      if (n > value) {
+        throw new RangeError(ERR_LATCH_INPUT_OVERFLOW, {
+          cause: `${n} > ${value}`
+        });
+      }
+      if (Atomics.sub(this._mem, 0, n) === n) {
+        this._gate.notifyAll();
+      }
+    });
+  }
+  /**
+   * Decrements the counter by a specified amount, then waits for it to reach zero.
+   *
+   * If the counter is decremented to zero, waiting agents are notified.
+   *
+   * @param n The amount to decrement the counter.
+   *
+   * @throws A {@link RangeError} If `n` is negative or exceeds the current count.
+   *
+   * @returns A promise that resolves once the internal count reaches zero,
+   * allowing the agent to proceed.
+   */
+  async arriveAndWait(n = 1) {
+    if (n < 0) {
+      throw new RangeError(ERR_LATCH_INPUT_UNDERFLOW, {
+        cause: `${n} < 0`
+      });
+    }
+    await lockGuard(this._mutex, async () => {
+      const value = Atomics.load(this._mem, 0);
+      if (n > value) {
+        throw new RangeError(ERR_LATCH_INPUT_OVERFLOW, {
+          cause: `${n} > ${value}`
+        });
+      }
+      if (Atomics.sub(this._mem, 0, n) === n) {
+        this._gate.notifyAll();
+        return;
+      }
+      do {
+        await this._gate.wait(this._mutex);
+      } while (Atomics.load(this._mem, 0) !== 0);
+    });
+  }
+  /**
+   * Tests if the counter has reached zero.
+   *
+   * @returns `true` if the current count is zero, otherwise `false`.
+   */
+  tryWait() {
+    return Atomics.load(this._mem, 0) === 0;
+  }
+  /**
+   * Wait until the counter reaches zero.
+   *
+   * @returns A promise that resolves once the internal count reaches zero,
+   * allowing the agent to proceed.
+   */
+  async wait() {
+    await lockGuard(this._mutex, async () => {
+      while (Atomics.load(this._mem, 0) !== 0) {
+        await this._gate.wait(this._mutex);
+      }
+    });
+  }
+};
+/**
+ * The maximum possible value of the internal counter.
+ */
+__publicField(_Latch, "Max", MAX_INT32_VALUE);
+let Latch = _Latch;
 
 exports.CV_OK = CV_OK;
 exports.CV_TIMED_OUT = CV_TIMED_OUT;
 exports.ConditionVariable = ConditionVariable;
 exports.CountingSemaphore = CountingSemaphore;
+exports.Latch = Latch;
 exports.LockError = LockError;
 exports.MultiLockError = MultiLockError;
 exports.MultiUnlockError = MultiUnlockError;

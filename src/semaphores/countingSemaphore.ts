@@ -3,7 +3,12 @@ import type { SharedResource } from "../types/sharedResource";
 import type { TimedLockable } from "../types/timedLockable";
 
 import { ConditionVariable } from "../condVars/conditionVariable";
-import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "../errors/constants";
+import {
+  ERR_NEGATIVE_VALUE,
+  ERR_OVERFLOW,
+  ERR_SEM_INPUT_NEG,
+  ERR_SEM_INPUT_OVERFLOW,
+} from "../errors/constants";
 import { lockGuard } from "../locks/lockGuard";
 import { TimedMutex } from "../mutexes/timedMutex";
 import { MAX_INT32_VALUE } from "../utils/constants";
@@ -25,24 +30,52 @@ export class CountingSemaphore implements SharedResource {
   private _mem: Int32Array;
   private _mutex: TimedLockable;
 
-  constructor();
+  /**
+   * @param desired The initial value of the internal counter. Must be non-negative and
+   * not exceed {@link CountingSemaphore.Max}.
+   *
+   * @throws A {@link RangeError} if `desired` is negative or exceeds {@link CountingSemaphore.Max}.
+   */
+  constructor(desired: number);
   /**
    * @param sharedBuffer The shared buffer that backs the semaphore.
    * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
-  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
+  constructor(sharedBuffer: number | SharedArrayBuffer, byteOffset = 0) {
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
 
-    // Sanitize input
-    sharedBuffer ??= new SharedArrayBuffer(3 * bInt32);
+    if (sharedBuffer instanceof SharedArrayBuffer) {
+      this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+      byteOffset += bInt32;
+      this._mutex = new TimedMutex(sharedBuffer, byteOffset);
+      byteOffset += bInt32;
+      this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+      return;
+    }
 
-    // Initialize properties
-    this._mem = new Int32Array(sharedBuffer, byteOffset, 3);
+    // Check for underflow
+    const desired = sharedBuffer;
+    if (desired < 0) {
+      throw new RangeError(ERR_NEGATIVE_VALUE, {
+        cause: `${desired} < 0`,
+      });
+    }
+
+    // Check for overflow
+    if (desired > CountingSemaphore.Max) {
+      throw new RangeError(ERR_OVERFLOW, {
+        cause: `${desired} > ${CountingSemaphore.Max}`,
+      });
+    }
+
+    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new TimedMutex(sharedBuffer, byteOffset);
     byteOffset += bInt32;
     this._gate = new ConditionVariable(sharedBuffer, byteOffset);
+    this._mem[0] = desired;
   }
 
   get buffer(): SharedArrayBuffer {
@@ -80,7 +113,7 @@ export class CountingSemaphore implements SharedResource {
    * @returns A promise resolving to `true` if successful, otherwise `false`.
    */
   tryAcquire(): Promise<boolean> {
-    // Acquire the internal mutex within scope
+    // Acquire the internal mutex
     return lockGuard(this._mutex, () => {
       // Check internal counter
       if (Atomics.load(this._mem, 0) <= 0) {
@@ -114,7 +147,7 @@ export class CountingSemaphore implements SharedResource {
    * @returns A promise resolved to `true` if succesful, otherwise `false`.
    */
   async tryAcquireUntil(timestamp: number): Promise<boolean> {
-    // Acquire the internal mutex within scope
+    // Acquire the internal mutex
     if (!(await this._mutex.tryLockUntil(timestamp))) {
       return false;
     }
@@ -151,17 +184,21 @@ export class CountingSemaphore implements SharedResource {
   release(count = 1): Promise<void> {
     // Sanitize input
     if (count < 0) {
-      throw new RangeError(ERR_SEM_NEG_COUNT);
+      throw new RangeError(ERR_SEM_INPUT_NEG, {
+        cause: `${count} < 0`,
+      });
     }
 
-    // Acquire internal mutex within scope
+    // Acquire internal mutex
     return lockGuard(this._mutex, () => {
       // Get the internal counter
       const state = Atomics.load(this._mem, 0);
 
       // Check for overflow
       if (count > CountingSemaphore.Max - state) {
-        throw new RangeError(ERR_SEM_OVERFLOW);
+        throw new RangeError(ERR_SEM_INPUT_OVERFLOW, {
+          cause: `${count} > ${CountingSemaphore.Max - state}`,
+        });
       }
 
       // Increment the internal counter

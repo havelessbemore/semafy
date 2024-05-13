@@ -765,7 +765,13 @@ declare class CountingSemaphore implements SharedResource {
     private _gate;
     private _mem;
     private _mutex;
-    constructor();
+    /**
+     * @param desired The initial value of the internal counter. Must be non-negative and
+     * not exceed {@link CountingSemaphore.Max}.
+     *
+     * @throws A {@link RangeError} if `desired` is negative or exceeds {@link CountingSemaphore.Max}.
+     */
+    constructor(desired: number);
     /**
      * @param sharedBuffer The shared buffer that backs the semaphore.
      * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
@@ -814,4 +820,78 @@ declare class CountingSemaphore implements SharedResource {
     release(count?: number): Promise<void>;
 }
 
-export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, LockError, type Lockable, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lockGuard, tryLock };
+/**
+ * A synchronization primitive that allows one or more agents to wait until
+ * a set of operations has been completed.
+ *
+ * @privateRemarks
+ * 1. {@link https://en.cppreference.com/w/cpp/thread/latch | std::latch}
+ */
+declare class Latch {
+    /**
+     * The maximum possible value of the internal counter.
+     */
+    static readonly Max = 2147483647;
+    /**
+     * Condition variable to manage waiting agents.
+     */
+    protected _gate: ConditionVariable;
+    /**
+     * The shared atomic memory for the internal counter.
+     */
+    protected _mem: Int32Array;
+    /**
+     * Mutex to protect access to the internal counter.
+     */
+    protected _mutex: Lockable;
+    /**
+     * @param expected The initial value of the internal counter. Must be non-negative and
+     * not exceed {@link Latch.Max}.
+     *
+     * @throws A {@link RangeError} if `expected` is negative or exceeds {@link Latch.Max}.
+     */
+    constructor(expected: number);
+    /**
+     * @param sharedBuffer The shared buffer that backs the latch.
+     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+     */
+    constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
+    /**
+     * Decrements the counter by a specified amount.
+     *
+     * If the counter reaches zero, waiting agents are notified.
+     *
+     * @param n The amount to decrement the counter.
+     *
+     * @throws A {@link RangeError} If `n` is negative or exceeds the current count.
+     */
+    countDown(n?: number): Promise<void>;
+    /**
+     * Decrements the counter by a specified amount, then waits for it to reach zero.
+     *
+     * If the counter is decremented to zero, waiting agents are notified.
+     *
+     * @param n The amount to decrement the counter.
+     *
+     * @throws A {@link RangeError} If `n` is negative or exceeds the current count.
+     *
+     * @returns A promise that resolves once the internal count reaches zero,
+     * allowing the agent to proceed.
+     */
+    arriveAndWait(n?: number): Promise<void>;
+    /**
+     * Tests if the counter has reached zero.
+     *
+     * @returns `true` if the current count is zero, otherwise `false`.
+     */
+    tryWait(): boolean;
+    /**
+     * Wait until the counter reaches zero.
+     *
+     * @returns A promise that resolves once the internal count reaches zero,
+     * allowing the agent to proceed.
+     */
+    wait(): Promise<void>;
+}
+
+export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, type Lockable, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lockGuard, tryLock };
