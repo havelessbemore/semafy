@@ -15,43 +15,45 @@ export class SharedLock implements TimedLockable {
   /**
    * The associated mutex.
    */
-  protected _mutex: SharedLockable;
+  mutex: SharedLockable | undefined;
 
   /**
-   * @param mutex - The shared mutex to associate.
+   * @param mutex - The shared lockable to associate.
    */
-  constructor(mutex: SharedLockable) {
-    this._mutex = mutex;
-  }
-
-  /**
-   * The associated mutex.
-   */
-  get mutex(): SharedLockable {
-    return this._mutex;
+  constructor(mutex?: SharedLockable) {
+    this.mutex = mutex;
   }
 
   get ownsLock(): boolean {
-    return this._mutex.ownsSharedLock;
+    return this.mutex?.ownsSharedLock ?? false;
   }
 
   lock(): Promise<void> {
-    return this._mutex.lockShared();
+    return this.mutex!.lockShared();
+  }
+
+  /**
+   * Exchanges the internal states of the shared locks.
+   */
+  swap(other: SharedLock): void {
+    const temp = this.mutex;
+    this.mutex = other.mutex;
+    other.mutex = temp;
   }
 
   tryLock(): boolean | Promise<boolean> {
-    return this._mutex.tryLockShared();
+    return this.mutex!.tryLockShared();
   }
 
   tryLockFor(timeout: number): Promise<boolean> {
-    return (this._mutex as SharedTimedLockable).tryLockSharedFor(timeout);
+    return (this.mutex as SharedTimedLockable).tryLockSharedFor(timeout);
   }
 
   tryLockUntil(timestamp: number): Promise<boolean> {
-    return (this._mutex as SharedTimedLockable).tryLockSharedUntil(timestamp);
+    return (this.mutex as SharedTimedLockable).tryLockSharedUntil(timestamp);
   }
 
   unlock(): void | Promise<void> {
-    return this._mutex.unlockShared();
+    return this.mutex!.unlockShared();
   }
 }
