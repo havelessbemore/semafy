@@ -2,11 +2,11 @@ import { CV_TIMED_OUT } from "../types/cvStatus";
 import type { SharedResource } from "../types/sharedResource";
 import type { TimedLockable } from "../types/timedLockable";
 
+import { ConditionVariable } from "../condVars/conditionVariable";
 import { ERR_SEM_NEG_COUNT, ERR_SEM_OVERFLOW } from "../errors/constants";
 import { lockGuard } from "../locks/lockGuard";
-
-import { ConditionVariable } from "../condVars/conditionVariable";
 import { TimedMutex } from "../mutexes/timedMutex";
+import { MAX_INT32_VALUE } from "../utils/constants";
 
 /**
  * A counting semaphore based on shared memory and atomics, allowing for
@@ -16,14 +16,14 @@ import { TimedMutex } from "../mutexes/timedMutex";
  * 1. {@link https://en.cppreference.com/w/cpp/thread/counting_semaphore | C++ std::counting_semaphore}
  */
 export class CountingSemaphore implements SharedResource {
-  private _gate: ConditionVariable;
-  private _mem: Int32Array;
-  private _mutex: TimedLockable;
-
   /**
    * The maximum possible value of the internal counter
    */
-  static readonly MAX = ~(1 << 31);
+  static readonly MAX = MAX_INT32_VALUE;
+
+  private _gate: ConditionVariable;
+  private _mem: Int32Array;
+  private _mutex: TimedLockable;
 
   constructor();
   /**

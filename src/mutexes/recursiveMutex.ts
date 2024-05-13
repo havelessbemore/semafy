@@ -36,6 +36,11 @@ export const LOCK_BIT = 1;
  */
 export class RecursiveMutex implements Lockable, SharedResource {
   /**
+   * The maximum levels of recursive ownership.
+   */
+  static readonly MAX = Number.MAX_SAFE_INTEGER;
+
+  /**
    * The number of locks acquired by the agent.
    */
   protected _depth: number;
@@ -44,11 +49,6 @@ export class RecursiveMutex implements Lockable, SharedResource {
    * The shared atomic memory for the mutex.
    */
   protected _mem: Int32Array;
-
-  /**
-   * The maximum levels of recursive ownership.
-   */
-  static readonly MAX = Number.MAX_SAFE_INTEGER;
 
   constructor();
   /**
