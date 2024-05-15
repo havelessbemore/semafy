@@ -34,7 +34,7 @@ yarn add semafy
 
 ## API
 
-### Generic
+### Generics
 
 - **BasicLockable**: A base interface that provides exclusive blocking for agents.
 
@@ -48,7 +48,7 @@ yarn add semafy
 
 - **TimedLockable**: Extends `Lockable` to include timed blocking.
 
-### Mutex
+### Mutexes
 
 - **Mutex**: Provides essential mutex operations including `lock`, `unlock`, and `tryLock`.
 
@@ -86,7 +86,7 @@ yarn add semafy
 
 - **ConditionVariable**: Allows agents to wait for specific conditions, tightly integrated with mutexes for state management.
 
-### Semaphore
+### Semaphores
 
 - **CountingSemaphore**: Manages access to a finite number of resources, allowing multiple entities to hold the semaphore concurrently up to a maximum count.
 
