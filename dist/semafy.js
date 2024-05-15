@@ -114,9 +114,9 @@ class RelockError extends LockError {
   }
 }
 
-var __defProp$9 = Object.defineProperty;
-var __defNormalProp$9 = (obj, key, value) => key in obj ? __defProp$9(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$9 = (obj, key, value) => __defNormalProp$9(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$a = Object.defineProperty;
+var __defNormalProp$a = (obj, key, value) => key in obj ? __defProp$a(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$a = (obj, key, value) => __defNormalProp$a(obj, typeof key !== "symbol" ? key + "" : key, value);
 class TimeoutError extends Error {
   /**
    * @param message - A custom error message. Defaults to `undefined`.
@@ -129,12 +129,12 @@ class TimeoutError extends Error {
      * Absolute time in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$9(this, "deadline");
+    __publicField$a(this, "deadline");
     /**
      * Duration in milliseconds after which the timeout error was thrown.
      * Can be `undefined` if not specified.
      */
-    __publicField$9(this, "timeout");
+    __publicField$a(this, "timeout");
     this.deadline = deadline;
     this.timeout = timeout;
     this.name = TimeoutError.name;
@@ -144,20 +144,20 @@ class TimeoutError extends Error {
   }
 }
 
-var __defProp$8 = Object.defineProperty;
-var __defNormalProp$8 = (obj, key, value) => key in obj ? __defProp$8(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$8 = (obj, key, value) => __defNormalProp$8(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$9 = Object.defineProperty;
+var __defNormalProp$9 = (obj, key, value) => key in obj ? __defProp$9(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$9 = (obj, key, value) => __defNormalProp$9(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT$1 = 1;
 class Mutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * Indicates whether the current agent owns the lock.
      */
-    __publicField$8(this, "_isOwner");
+    __publicField$9(this, "_isOwner");
     /**
      * The shared memory for the mutex.
      */
-    __publicField$8(this, "_mem");
+    __publicField$9(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -208,20 +208,20 @@ class Mutex {
 
 const MAX_INT32_VALUE = 2147483647;
 
-var __defProp$7 = Object.defineProperty;
-var __defNormalProp$7 = (obj, key, value) => key in obj ? __defProp$7(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$8 = Object.defineProperty;
+var __defNormalProp$8 = (obj, key, value) => key in obj ? __defProp$8(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$8 = (obj, key, value) => __defNormalProp$8(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT = 1;
 const _RecursiveMutex = class _RecursiveMutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The number of locks acquired by the agent.
      */
-    __publicField$7(this, "_depth");
+    __publicField$8(this, "_depth");
     /**
      * The shared atomic memory for the mutex.
      */
-    __publicField$7(this, "_mem");
+    __publicField$8(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._depth = 0;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -282,7 +282,7 @@ const _RecursiveMutex = class _RecursiveMutex {
 /**
  * The maximum levels of recursive ownership.
  */
-__publicField$7(_RecursiveMutex, "Max", MAX_INT32_VALUE);
+__publicField$8(_RecursiveMutex, "Max", MAX_INT32_VALUE);
 let RecursiveMutex = _RecursiveMutex;
 
 const ATOMICS_NOT_EQUAL = "not-equal";
@@ -320,15 +320,15 @@ async function lockGuard(mutex, callbackfn) {
   }
 }
 
-var __defProp$6 = Object.defineProperty;
-var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, key + "" , value);
+var __defProp$7 = Object.defineProperty;
+var __defNormalProp$7 = (obj, key, value) => key in obj ? __defProp$7(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, key + "" , value);
 class ConditionVariable {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The shared atomic memory where the condition variable stores its state.
      */
-    __publicField$6(this, "_mem");
+    __publicField$7(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.store(this._mem, 0, 0);
@@ -448,19 +448,19 @@ class TimedMutex extends Mutex {
   }
 }
 
-var __defProp$5 = Object.defineProperty;
-var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$6 = Object.defineProperty;
+var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, typeof key !== "symbol" ? key + "" : key, value);
 const WRITE_BIT = 1 << 31;
 const READ_BITS = ~WRITE_BIT;
 class SharedMutex {
   constructor(sharedBuffer, byteOffset = 0) {
-    __publicField$5(this, "_gate1");
-    __publicField$5(this, "_gate2");
-    __publicField$5(this, "_isReader");
-    __publicField$5(this, "_isWriter");
-    __publicField$5(this, "_mem");
-    __publicField$5(this, "_mutex");
+    __publicField$6(this, "_gate1");
+    __publicField$6(this, "_gate2");
+    __publicField$6(this, "_isReader");
+    __publicField$6(this, "_isWriter");
+    __publicField$6(this, "_mem");
+    __publicField$6(this, "_mutex");
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
@@ -653,6 +653,133 @@ class SharedTimedMutex extends SharedMutex {
   }
 }
 
+async function lock(...locks) {
+  const N = locks.length;
+  const lockErrors = [];
+  let numLocked = N;
+  for (let i = 0; i < N; ++i) {
+    try {
+      await locks[i].lock();
+    } catch (err) {
+      lockErrors.push([i, err]);
+      numLocked = i;
+      break;
+    }
+  }
+  if (numLocked === N) {
+    return;
+  }
+  const unlockErrors = [];
+  for (let i = numLocked - 1; i >= 0; --i) {
+    try {
+      await locks[i].unlock();
+    } catch (err) {
+      unlockErrors.push([i, err]);
+    }
+  }
+  throw new MultiLockError(locks, numLocked, lockErrors, unlockErrors);
+}
+
+async function tryLock(...locks) {
+  const N = locks.length;
+  const lockErrors = [];
+  let numLocked = N;
+  for (let i = 0; i < N; ++i) {
+    try {
+      if (!await locks[i].tryLock()) {
+        numLocked = i;
+        break;
+      }
+    } catch (err) {
+      lockErrors.push([i, err]);
+      numLocked = i;
+      break;
+    }
+  }
+  if (numLocked === N) {
+    return -1;
+  }
+  if (numLocked < 1 && lockErrors.length < 1) {
+    return numLocked;
+  }
+  const unlockErrors = [];
+  for (let i = numLocked - 1; i >= 0; --i) {
+    try {
+      await locks[i].unlock();
+    } catch (err) {
+      unlockErrors.push([i, err]);
+    }
+  }
+  if (lockErrors.length > 0) {
+    throw new MultiLockError(locks, numLocked, lockErrors, unlockErrors);
+  }
+  if (unlockErrors.length > 0) {
+    const numUnlocked = numLocked - unlockErrors.length;
+    throw new MultiUnlockError(locks, numUnlocked, unlockErrors);
+  }
+  return numLocked;
+}
+
+var __defProp$5 = Object.defineProperty;
+var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
+class MultiLock {
+  /**
+   * @param mutex - The basic lockable to associate.
+   */
+  constructor(...mutexes) {
+    /**
+     * Indicates whether the current agent owns the lock.
+     */
+    __publicField$5(this, "_isOwner");
+    /**
+     * The associated basic lockable.
+     */
+    __publicField$5(this, "mutexes");
+    this._isOwner = false;
+    this.mutexes = mutexes;
+  }
+  get ownsLock() {
+    return this._isOwner;
+  }
+  async lock() {
+    await lock(...this.mutexes);
+    this._isOwner = true;
+  }
+  /**
+   * Exchange internal state
+   */
+  swap(other) {
+    const tIsOwner = this._isOwner;
+    this._isOwner = other._isOwner;
+    other._isOwner = tIsOwner;
+    const tMutex = this.mutexes;
+    this.mutexes = other.mutexes;
+    other.mutexes = tMutex;
+  }
+  async tryLock() {
+    const res = await tryLock(...this.mutexes);
+    return this._isOwner = res < 0;
+  }
+  async unlock() {
+    const locks = this.mutexes;
+    const N = locks.length;
+    const unlockErrors = [];
+    for (let i = N - 1; i >= 0; --i) {
+      try {
+        await locks[i].unlock();
+      } catch (err) {
+        unlockErrors.push([i, err]);
+      }
+    }
+    this._isOwner = false;
+    if (unlockErrors.length > 0) {
+      const unlocked = N - unlockErrors.length;
+      throw new MultiUnlockError(Array.from(locks), unlocked, unlockErrors);
+    }
+  }
+}
+
 var __defProp$4 = Object.defineProperty;
 var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$4 = (obj, key, value) => __defNormalProp$4(obj, key + "" , value);
@@ -693,46 +820,6 @@ class SharedLock {
   unlock() {
     return this.mutex.unlockShared();
   }
-}
-
-async function tryLock(...locks) {
-  const N = locks.length;
-  const lockErrors = [];
-  let numLocked = N;
-  for (let i = 0; i < N; ++i) {
-    try {
-      if (!await locks[i].tryLock()) {
-        numLocked = i;
-        break;
-      }
-    } catch (err) {
-      lockErrors.push([i, err]);
-      numLocked = i;
-      break;
-    }
-  }
-  if (numLocked === N) {
-    return -1;
-  }
-  if (numLocked < 1) {
-    return numLocked;
-  }
-  const unlockErrors = [];
-  for (let i = numLocked - 1; i >= 0; --i) {
-    try {
-      await locks[i].unlock();
-    } catch (err) {
-      unlockErrors.push([i, err]);
-    }
-  }
-  if (lockErrors.length > 0) {
-    throw new MultiLockError(locks, numLocked, lockErrors, unlockErrors);
-  }
-  if (unlockErrors.length > 0) {
-    const numUnlocked = numLocked - unlockErrors.length;
-    throw new MultiUnlockError(locks, numUnlocked, unlockErrors);
-  }
-  return numLocked;
 }
 
 var __defProp$3 = Object.defineProperty;
@@ -1124,6 +1211,7 @@ exports.ConditionVariable = ConditionVariable;
 exports.CountingSemaphore = CountingSemaphore;
 exports.Latch = Latch;
 exports.LockError = LockError;
+exports.MultiLock = MultiLock;
 exports.MultiLockError = MultiLockError;
 exports.MultiUnlockError = MultiUnlockError;
 exports.Mutex = Mutex;
@@ -1139,6 +1227,7 @@ exports.TimedMutex = TimedMutex;
 exports.TimeoutError = TimeoutError;
 exports.UniqueLock = UniqueLock;
 exports.callOnce = callOnce;
+exports.lock = lock;
 exports.lockGuard = lockGuard;
 exports.tryLock = tryLock;
-//# sourceMappingURL=semafy.cjs.map
+//# sourceMappingURL=semafy.js.map

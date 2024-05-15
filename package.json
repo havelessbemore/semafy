@@ -1,6 +1,6 @@
 {
   "name": "semafy",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A robust cross-agent synchronization library.",
   "license": "MIT",
   "author": "Michael Rojas <dev.michael.rojas@gmail.com> (https://github.com/havelessbemore)",
@@ -48,6 +48,7 @@
     "lock",
     "lock guard",
     "lockable",
+    "multilock",
     "mutex",
     "parallel",
     "recursive mutex",

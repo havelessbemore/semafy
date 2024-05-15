@@ -142,13 +142,13 @@ declare class LockError extends Error {
 }
 
 /**
- * Represents an error that occurs when attempting to lock multiple {@link Lockable} objects simultaneously.
+ * Represents an error that occurs when attempting to lock multiple {@link BasicLockable} objects simultaneously.
  *
  * This error provides detailed information about the failure of locking operations, including specifics
  * about any errors that occurred. It ensures that any partial state due to errors can be adequately handled.
  */
 declare class MultiLockError extends LockError {
-    locks: Lockable[];
+    locks: BasicLockable[];
     numLocked: number;
     lockErrors: [number, unknown][];
     unlockErrors: [number, unknown][];
@@ -163,17 +163,17 @@ declare class MultiLockError extends LockError {
      * debugging unexpected issues during unlocking.
      * @param message - An optional custom error message that describes the error.
      */
-    constructor(locks: Lockable[], numLocked: number, lockErrors?: [number, unknown][], unlockErrors?: [number, unknown][], message?: string);
+    constructor(locks: BasicLockable[], numLocked: number, lockErrors?: [number, unknown][], unlockErrors?: [number, unknown][], message?: string);
 }
 
 /**
- * Represents an error that occurs when attempting to unlock multiple {@link Lockable} objects simultaneously.
+ * Represents an error that occurs when attempting to unlock multiple {@link BasicLockable} objects simultaneously.
  *
  * This error provides detailed information about the failure of unlocking operations, including specifics
  * about any errors that occurred. It ensures that any partial state due to errors can be adequately handled.
  */
 declare class MultiUnlockError extends LockError {
-    locks: Lockable[];
+    locks: BasicLockable[];
     numUnlocked: number;
     unlockErrors: [number, unknown][];
     /**
@@ -184,7 +184,7 @@ declare class MultiUnlockError extends LockError {
      * debugging unexpected issues during unlocking.
      * @param message - An optional custom error message that describes the error.
      */
-    constructor(locks: Lockable[], numUnlocked: number, unlockErrors?: [number, unknown][], message?: string);
+    constructor(locks: BasicLockable[], numUnlocked: number, unlockErrors?: [number, unknown][], message?: string);
 }
 
 /**
@@ -585,6 +585,23 @@ declare class SharedTimedMutex extends SharedMutex implements TimedLockable, Sha
 }
 
 /**
+ * Sequentially locks the provided {@link BasicLockable} objects.
+ *
+ * If any lock acquisition fails, the process is halted
+ * and previously acquired locks are released in reverse order.
+ *
+ * @param locks - An array of lockable objects to be locked sequentially.
+ *
+ * @throws A {@link MultiLockError} if an error occurs trying to acquire all
+ * locks. Details include:
+ *  - `locks`: The array of all locks.
+ *  - `numLocked`: The number of locks successfully acquired before failure.
+ *  - `lockErrors`: Errors encountered while trying to acquire all locks.
+ *  - `unlockErrors`: Errors encountered while trying to roll back acquired locks.
+ */
+declare function lock(...locks: BasicLockable[]): Promise<void>;
+
+/**
  * Acquires the mutex and executes the provided callback, automatically
  * unlocking afterwards. Blocks until the lock is available.
  *
@@ -594,6 +611,37 @@ declare class SharedTimedMutex extends SharedMutex implements TimedLockable, Sha
  * @returns A promise resolved to the return value of `callbackfn`.
  */
 declare function lockGuard<T>(mutex: BasicLockable, callbackfn: () => T | Promise<T>): Promise<T>;
+
+/**
+ * A mutex ownership wrapper.
+ *
+ * Locking a MultiLock exclusively locks the associated mutexes.
+ *
+ * If the given mutexes implement {@link Lockable}, then MultiLock will too.
+ * Otherwise, using attempted locking (`tryLock`) will result in errors.
+ */
+declare class MultiLock implements Lockable {
+    /**
+     * Indicates whether the current agent owns the lock.
+     */
+    protected _isOwner: boolean;
+    /**
+     * The associated basic lockable.
+     */
+    mutexes: BasicLockable[];
+    /**
+     * @param mutex - The basic lockable to associate.
+     */
+    constructor(...mutexes: BasicLockable[]);
+    get ownsLock(): boolean;
+    lock(): Promise<void>;
+    /**
+     * Exchange internal state
+     */
+    swap(other: MultiLock): void;
+    tryLock(): Promise<boolean>;
+    unlock(): Promise<void>;
+}
 
 /**
  * A shared mutex wrapper.
@@ -626,8 +674,9 @@ declare class SharedLock implements TimedLockable {
 }
 
 /**
- * Tries to sequentially acquire locks on the provided {@link Lockable} objects.
- * If any lock acquisition fails or an error is thrown, the process is halted,
+ * Tries to sequentially lock the provided {@link Lockable} objects.
+ *
+ * If any lock acquisition fails, the process is halted
  * and previously acquired locks are released in reverse order.
  *
  * @param locks - An array of lockable objects to be locked sequentially.
@@ -656,7 +705,7 @@ declare function tryLock(...locks: Lockable[]): Promise<number>;
  *
  * If the given mutex implements {@link Lockable}, then UniqueLock will too.
  * If the given mutex implements {@link TimedLockable}, then UniqueLock will too.
- * Otherwise, using attempting locking (`tryLock`) or timed methods
+ * Otherwise, using attempted locking (`tryLock`) or timed methods
  * (`tryLockFor`, `tryLockUntil`) will result in errors.
  */
 declare class UniqueLock implements TimedLockable {
@@ -894,4 +943,4 @@ declare class Latch {
     wait(): Promise<void>;
 }
 
-export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, type Lockable, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lockGuard, tryLock };
+export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, type Lockable, MultiLock, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lock, lockGuard, tryLock };
