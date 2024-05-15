@@ -1,6 +1,6 @@
 {
   "name": "semafy",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "A robust cross-agent synchronization library.",
   "license": "MIT",
   "author": "Michael Rojas <dev.michael.rojas@gmail.com> (https://github.com/havelessbemore)",
@@ -11,13 +11,13 @@
     "node": ">= 18"
   },
   "type": "module",
-  "main": "./dist/semafy.cjs",
+  "main": "./dist/semafy.js",
   "module": "./dist/semafy.mjs",
   "types": "./dist/semafy.d.ts",
   "exports": {
     ".": {
       "import": "./dist/semafy.mjs",
-      "require": "./dist/semafy.cjs",
+      "require": "./dist/semafy.js",
       "types": "./dist/semafy.d.ts"
     }
   },
@@ -48,6 +48,7 @@
     "lock",
     "lock guard",
     "lockable",
+    "multilock",
     "mutex",
     "parallel",
     "recursive mutex",
@@ -74,7 +75,7 @@
     "rollup": "^4.17.2",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.1",
-    "rollup-plugin-license": "^3.3.1",
+    "rollup-plugin-license": "^3.4.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",

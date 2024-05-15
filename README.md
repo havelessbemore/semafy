@@ -14,7 +14,7 @@
 - **Semaphores**: Control access to a finite number of resources.
 - **ConditionVariable**: Allows agents to wait for certain conditions to occur.
 - **Barriers**: Ensures agents reach a certain point before any can proceed.
-- **Async Management**:  Easily handle async operations with utilities like `tryLock`, `lockGuard`, and `callOnce`.
+- **Utilities**: Manage async code with `lock`, `tryLock`, `lockGuard`, and `callOnce`.
 - **Error Handling**: Specific error classes to enhance debuggability and reliability.
 - **Platform Agnostic**: Works in any [browser](#browser-usage) or server-side environment that supports `SharedArrayBuffer`.
 
@@ -64,13 +64,17 @@ yarn add semafy
 
 ### Mutex Management
 
+- **lock()**: Sequentially acquires the given locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
+
 - **lockGuard()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.
 
-- **SharedLock**: Wraps a `SharedLockable` object (e.g. `SharedMutex`) to create a shared lock. Calls to `lock`, `unlock`, etc will acquire a shared lock instead of an exclusive lock.
+- **MultiLock**: Wraps multiple `BasicLockable` objects to create a multi-lock. Calls to `lock`, `unlock`, etc will acquire / release locks on all of the wrapped objects.
 
-- **tryLock()**: Tries to sequentially acquire all provided locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
+- **SharedLock**: Wraps a `SharedLockable` object (e.g. `SharedMutex`) to create a shared lock. Calls to `lock`, `unlock`, etc will acquire / release a shared lock instead of an exclusive lock.
 
-- **UniqueLock**: Wraps a `BasicLockable` object to create a unique lock. Calls to `lock`, `unlock`, etc will acquire an exclusive lock on the wrapped object.
+- **tryLock()**: Tries to sequentially acquire the given locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
+
+- **UniqueLock**: Wraps a `BasicLockable` object to create a unique lock. Calls to `lock`, `unlock`, etc will acquire / release a lock on the wrapped object.
 
 ### Call Once
 
@@ -109,7 +113,6 @@ yarn add semafy
 Browser security requirements for using shared memory must be met. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
 
 ## Contributing
-
 
 Contributions are welcome!
 

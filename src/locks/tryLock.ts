@@ -3,8 +3,9 @@ import { MultiUnlockError } from "../errors/multiUnlockError";
 import { Lockable } from "../types/lockable";
 
 /**
- * Tries to sequentially acquire locks on the provided {@link Lockable} objects.
- * If any lock acquisition fails or an error is thrown, the process is halted,
+ * Tries to sequentially lock the provided {@link Lockable} objects.
+ *
+ * If any lock acquisition fails, the process is halted
  * and previously acquired locks are released in reverse order.
  *
  * @param locks - An array of lockable objects to be locked sequentially.
@@ -49,7 +50,7 @@ export async function tryLock(...locks: Lockable[]): Promise<number> {
   }
 
   // If immediate failure
-  if (numLocked < 1) {
+  if (numLocked < 1 && lockErrors.length < 1) {
     return numLocked;
   }
 
