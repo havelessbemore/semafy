@@ -9,7 +9,7 @@ import type { TimedLockable } from "../types/timedLockable";
  *
  * If the given mutex implements {@link Lockable}, then UniqueLock will too.
  * If the given mutex implements {@link TimedLockable}, then UniqueLock will too.
- * Otherwise, using attempting locking (`tryLock`) or timed methods
+ * Otherwise, using attempted locking (`tryLock`) or timed methods
  * (`tryLockFor`, `tryLockUntil`) will result in errors.
  */
 export class UniqueLock implements TimedLockable {

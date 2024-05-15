@@ -1,9 +1,9 @@
-import { Lockable } from "../types/lockable";
+import { BasicLockable } from "../types/basicLockable";
 import { ERR_MULTI_LOCK } from "./constants";
 import { LockError } from "./lockError";
 
 /**
- * Represents an error that occurs when attempting to lock multiple {@link Lockable} objects simultaneously.
+ * Represents an error that occurs when attempting to lock multiple {@link BasicLockable} objects simultaneously.
  *
  * This error provides detailed information about the failure of locking operations, including specifics
  * about any errors that occurred. It ensures that any partial state due to errors can be adequately handled.
@@ -21,7 +21,7 @@ export class MultiLockError extends LockError {
    * @param message - An optional custom error message that describes the error.
    */
   constructor(
-    public locks: Lockable[],
+    public locks: BasicLockable[],
     public numLocked: number,
     public lockErrors: [number, unknown][] = [],
     public unlockErrors: [number, unknown][] = [],

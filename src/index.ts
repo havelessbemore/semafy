@@ -24,7 +24,9 @@ export { SharedTimedMutex } from "./mutexes/sharedTimedMutex";
 export { TimedMutex } from "./mutexes/timedMutex";
 
 // Locks
+export { lock } from "./locks/lock";
 export { lockGuard } from "./locks/lockGuard";
+export { MultiLock } from "./locks/multiLock";
 export { SharedLock } from "./locks/sharedLock";
 export { tryLock } from "./locks/tryLock";
 export { UniqueLock } from "./locks/uniqueLock";

@@ -11,13 +11,13 @@
     "node": ">= 18"
   },
   "type": "module",
-  "main": "./dist/semafy.cjs",
+  "main": "./dist/semafy.js",
   "module": "./dist/semafy.mjs",
   "types": "./dist/semafy.d.ts",
   "exports": {
     ".": {
       "import": "./dist/semafy.mjs",
-      "require": "./dist/semafy.cjs",
+      "require": "./dist/semafy.js",
       "types": "./dist/semafy.d.ts"
     }
   },
