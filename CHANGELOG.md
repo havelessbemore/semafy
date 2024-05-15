@@ -85,7 +85,7 @@
 - Utilities
     - lockGuard
 
-## Breaking
+### Breaking
 
 Until v2.1.0, breaking changes may be released in patched or minor versions. These will be always be highlighted in the release notes / changelog.
 
