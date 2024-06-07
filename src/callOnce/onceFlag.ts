@@ -29,14 +29,9 @@ export class OnceFlag implements SharedResource {
     byteOffset?: number,
     bitOffset?: number,
   );
-  constructor(
-    sharedBuffer?: SharedArrayBuffer,
-    byteOffset = 0,
-    bitOffset?: number,
-  ) {
+  constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0, bitOffset = 0) {
     // Sanitize input
     sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
-    bitOffset ??= 0;
 
     // Initialize properties
     this._bit = 1 << bitOffset;
