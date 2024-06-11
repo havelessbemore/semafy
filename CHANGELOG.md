@@ -5,10 +5,11 @@
 ### What's New
 
 - Classes
-    - `MultiLock` for managing multiple locks as one.
+
+  - `MultiLock` for managing multiple locks as one.
 
 - Utilities
-    - `lock()` function for joint locking of multiple locks.
+  - `lock()` function for joint locking of multiple locks.
 
 ### What's Changed
 
@@ -19,19 +20,20 @@
 ### What's New
 
 - Classes
-    - Latch
-    - UniqueLock
-    - OnceFlag
+
+  - Latch
+  - UniqueLock
+  - OnceFlag
 
 - Utilities
-    - callOnce()
+  - callOnce()
 
 ### What's Changed
 
 - `CountingSemaphore` constructor now alternatively accepts an initial value.
 - The maximum value for `RecursiveMutex` has changed.
-    - Before: Number.MAX_SAFE_INTEGER
-    - After: (2**31) - 1
+  - Before: Number.MAX_SAFE_INTEGER
+  - After: (2\*\*31) - 1
 
 ### Breaking Changes
 
@@ -42,11 +44,12 @@
 ### What's New
 
 - Utilities
-    - `tryLock` function for attempted joint locking of multiple locks.
+
+  - `tryLock` function for attempted joint locking of multiple locks.
 
 - Errors
-    - `MultiLockError` class to collect and surface errors attempting to lock multiple locks.
-    - `MultiUnlockError` class to collect and surface errors attempting to unlock multiple locks.
+  - `MultiLockError` class to collect and surface errors attempting to lock multiple locks.
+  - `MultiUnlockError` class to collect and surface errors attempting to unlock multiple locks.
 
 ### What's Changed
 
@@ -63,52 +66,56 @@
 ### What's New
 
 - Classes
-    - SharedTimedMutex
+  - SharedTimedMutex
 
 ## [2.0.2](https://github.com/havelessbemore/semafy/compare/v2.0.1...v2.0.2) (2024-05-10)
 
 ### What's New
 
 - Interfaces:
-    - BasicLockable
-    - Lockable
-    - SharedLockable
-    - SharedResource
-    - SharedTimedLockable
-    - TimedLockable
+
+  - BasicLockable
+  - Lockable
+  - SharedLockable
+  - SharedResource
+  - SharedTimedLockable
+  - TimedLockable
 
 - Classes
-    - RecursiveTimedMutex
-    - SharedLock
-    - TimedMutex
+
+  - RecursiveTimedMutex
+  - SharedLock
+  - TimedMutex
 
 - Utilities
-    - lockGuard
+  - lockGuard
 
 ### Breaking
 
 Until v2.1.0, breaking changes may be released in patched or minor versions. These will be always be highlighted in the release notes / changelog.
 
-- Remove .request, .requestFor, .requestShared and .requestUntil methods. 
-    - .request should be replaced by lockGuard. 
-    - .requestShared should be replaced by wrapping the shared mutex in a shared lock and then using lockGuard.
-    - There are no replacements for .requestFor and .requestUntil at this time.
+- Remove .request, .requestFor, .requestShared and .requestUntil methods.
+
+  - .request should be replaced by lockGuard.
+  - .requestShared should be replaced by wrapping the shared mutex in a shared lock and then using lockGuard.
+  - There are no replacements for .requestFor and .requestUntil at this time.
 
 - Rename classes
-    - Mutex -> TimedMutex
-    - Semaphore -> CountingSemaphore
-    - MutexError -> LockError
-    - MutexOwnershipError -> OwnershipError
-    - MutexRelockError -> RelockError
+  - Mutex -> TimedMutex
+  - Semaphore -> CountingSemaphore
+  - MutexError -> LockError
+  - MutexOwnershipError -> OwnershipError
+  - MutexRelockError -> RelockError
 
 ## [2.0.1](https://github.com/havelessbemore/semafy/compare/v2.0.0...v2.0.1) (2024-05-09)
 
 ### What's New
 
 - Classes
-    - RecursiveMutex
+  - RecursiveMutex
 
 ### Breaking
+
 Given the very brief period since the previous version, this will be released as a patch, despite breaking changes.
 
 - Removed ability to instantiate classes with Int32Array.
@@ -120,17 +127,19 @@ Given the very brief period since the previous version, this will be released as
 ### New
 
 - Types
-    - CVStatus
+
+  - CVStatus
 
 - Classes
-    - ConditionVariable
-    - SharedMutex
+
+  - ConditionVariable
+  - SharedMutex
 
 - Errors
-    - MutexError
-    - MutexOwnershipError
-    - MutexRelockError
-    - TimeoutError
+  - MutexError
+  - MutexOwnershipError
+  - MutexRelockError
+  - TimeoutError
 
 ### What's Changed
 
