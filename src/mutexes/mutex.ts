@@ -1,5 +1,6 @@
 import type { Lockable } from "../types/lockable";
 import type { SharedResource } from "../types/sharedResource";
+import type { SyncLockable } from "../types/sync/syncLockable";
 
 import { OwnershipError } from "../errors/ownershipError";
 import { RelockError } from "../errors/relockError";
@@ -31,7 +32,7 @@ export const LOCK_BIT = 1;
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/mutex | C++ std::mutex}
  */
-export class Mutex implements Lockable, SharedResource {
+export class Mutex implements Lockable, SyncLockable, SharedResource {
   /**
    * Indicates whether the current agent owns the lock.
    */
@@ -87,12 +88,35 @@ export class Mutex implements Lockable, SharedResource {
 
     // Acquire lock
     while (Atomics.or(this._mem, 0, LOCK_BIT)) {
-      await Atomics.waitAsync(this._mem, 0, LOCK_BIT).value;
+      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT);
+      if (res.async) {
+        await res.value;
+      }
+    }
+    this._isOwner = true;
+  }
+
+  /**
+   * @throws A {@link RelockError} If the lock is already locked by the caller.
+   */
+  lockSync(): void {
+    // If already has lock
+    if (this._isOwner) {
+      throw new RelockError();
+    }
+
+    // Acquire lock
+    while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+      Atomics.wait(this._mem, 0, LOCK_BIT);
     }
     this._isOwner = true;
   }
 
   tryLock(): boolean {
+    return this.tryLockSync();
+  }
+
+  tryLockSync(): boolean {
     // If already has lock
     if (this._isOwner) {
       return false;
@@ -105,6 +129,13 @@ export class Mutex implements Lockable, SharedResource {
    * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
    */
   unlock(): void {
+    return this.unlockSync();
+  }
+
+  /**
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  unlockSync(): void {
     // Check if lock owned
     if (!this._isOwner) {
       throw new OwnershipError();

@@ -1,4 +1,4 @@
-import { SharedResource } from "../types/sharedResource";
+import type { SharedResource } from "../types/sharedResource";
 
 /**
  * Represents a flag that can be set exactly once across different execution agents.

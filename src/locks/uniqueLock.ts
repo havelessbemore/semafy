@@ -1,5 +1,8 @@
-import { BasicLockable } from "../types/basicLockable";
-import { Lockable } from "../types/lockable";
+import type { BasicLockable } from "../types/basicLockable";
+import type { Lockable } from "../types/lockable";
+import type { SyncBasicLockable } from "../types/sync/syncBasicLockable";
+import type { SyncLockable } from "../types/sync/syncLockable";
+import { SyncTimedLockable } from "../types/sync/syncTimedLockable";
 import type { TimedLockable } from "../types/timedLockable";
 
 /**
@@ -9,19 +12,19 @@ import type { TimedLockable } from "../types/timedLockable";
  *
  * If the given mutex implements {@link Lockable}, then UniqueLock will too.
  * If the given mutex implements {@link TimedLockable}, then UniqueLock will too.
- * Otherwise, using attempted locking (`tryLock`) or timed methods
- * (`tryLockFor`, `tryLockUntil`) will result in errors.
+ * Otherwise, using attempted locking (e.g. `tryLock`) or timed methods
+ * (e.g. `tryLockFor`, `tryLockUntil`) will result in errors.
  */
-export class UniqueLock implements TimedLockable {
+export class UniqueLock implements TimedLockable, SyncTimedLockable {
   /**
    * The associated basic lockable.
    */
-  mutex: BasicLockable | undefined;
+  mutex: BasicLockable | SyncBasicLockable | undefined;
 
   /**
    * @param mutex - The basic lockable to associate.
    */
-  constructor(mutex?: BasicLockable) {
+  constructor(mutex?: BasicLockable | SyncBasicLockable) {
     this.mutex = mutex;
   }
 
@@ -30,7 +33,11 @@ export class UniqueLock implements TimedLockable {
   }
 
   lock(): Promise<void> {
-    return this.mutex!.lock();
+    return (this.mutex as Lockable).lock();
+  }
+
+  lockSync(): void {
+    return (this.mutex as SyncLockable).lockSync();
   }
 
   /**
@@ -46,15 +53,31 @@ export class UniqueLock implements TimedLockable {
     return (this.mutex as Lockable).tryLock();
   }
 
+  tryLockSync(): boolean {
+    return (this.mutex as SyncLockable).tryLockSync();
+  }
+
   tryLockFor(timeout: number): Promise<boolean> {
     return (this.mutex as TimedLockable).tryLockFor(timeout);
+  }
+
+  tryLockForSync(timeout: number): boolean {
+    return (this.mutex as SyncTimedLockable).tryLockForSync(timeout);
   }
 
   tryLockUntil(timestamp: number): Promise<boolean> {
     return (this.mutex as TimedLockable).tryLockUntil(timestamp);
   }
 
+  tryLockUntilSync(timestamp: number): boolean {
+    return (this.mutex as SyncTimedLockable).tryLockUntilSync(timestamp);
+  }
+
   unlock(): void | Promise<void> {
-    return this.mutex!.unlock();
+    return (this.mutex as Lockable).unlock();
+  }
+
+  unlockSync(): void {
+    return (this.mutex as SyncLockable).unlockSync();
   }
 }

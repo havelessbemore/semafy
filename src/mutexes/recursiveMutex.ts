@@ -1,5 +1,6 @@
 import type { Lockable } from "../types/lockable";
 import type { SharedResource } from "../types/sharedResource";
+import type { SyncLockable } from "../types/sync/syncLockable";
 
 import { ERR_REC_MUTEX_OVERFLOW } from "../errors/constants";
 import { OwnershipError } from "../errors/ownershipError";
@@ -35,7 +36,7 @@ export const LOCK_BIT = 1;
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
  */
-export class RecursiveMutex implements Lockable, SharedResource {
+export class RecursiveMutex implements Lockable, SyncLockable, SharedResource {
   /**
    * The maximum levels of recursive ownership.
    */
@@ -105,7 +106,31 @@ export class RecursiveMutex implements Lockable, SharedResource {
     ++this._depth;
   }
 
+  /**
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+   */
+  lockSync(): void {
+    // If at capacity
+    if (this._depth === RecursiveMutex.Max) {
+      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
+    }
+
+    // Acquire lock if not owned
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        Atomics.wait(this._mem, 0, LOCK_BIT);
+      }
+    }
+
+    // Increment ownership
+    ++this._depth;
+  }
+
   tryLock(): boolean {
+    return this.tryLockSync();
+  }
+
+  tryLockSync(): boolean {
     // If at capacity
     if (this._depth === RecursiveMutex.Max) {
       return false;
@@ -125,6 +150,13 @@ export class RecursiveMutex implements Lockable, SharedResource {
    * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
    */
   unlock(): void {
+    return this.unlockSync();
+  }
+
+  /**
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  unlockSync(): void {
     // Check if lock owned
     if (this._depth <= 0) {
       throw new OwnershipError();

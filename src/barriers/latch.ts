@@ -1,3 +1,5 @@
+import type { Lockable } from "../types/lockable";
+
 import { ConditionVariable } from "../condVars/conditionVariable";
 import {
   ERR_LATCH_INPUT_OVERFLOW,
@@ -7,7 +9,6 @@ import {
 } from "../errors/constants";
 import { lockGuard } from "../locks/lockGuard";
 import { Mutex } from "../mutexes/mutex";
-import { Lockable } from "../types/lockable";
 import { MAX_INT32_VALUE } from "../utils/constants";
 
 /**

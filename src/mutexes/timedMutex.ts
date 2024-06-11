@@ -1,5 +1,6 @@
-import { ATOMICS_TIMED_OUT } from "../types/atomicsStatus";
 import type { TimedLockable } from "../types/timedLockable";
+import { ATOMICS_TIMED_OUT } from "../types/atomicsStatus";
+import type { SyncTimedLockable } from "../types/sync/syncTimedLockable";
 
 import { LOCK_BIT, Mutex } from "./mutex";
 
@@ -29,9 +30,16 @@ import { LOCK_BIT, Mutex } from "./mutex";
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
  */
-export class TimedMutex extends Mutex implements TimedLockable {
+export class TimedMutex
+  extends Mutex
+  implements TimedLockable, SyncTimedLockable
+{
   async tryLockFor(timeout: number): Promise<boolean> {
     return this.tryLockUntil(performance.now() + timeout);
+  }
+
+  tryLockForSync(timeout: number): boolean {
+    return this.tryLockUntilSync(performance.now() + timeout);
   }
 
   async tryLockUntil(timestamp: number): Promise<boolean> {
@@ -44,6 +52,23 @@ export class TimedMutex extends Mutex implements TimedLockable {
       const timeout = timestamp - performance.now();
       const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT, timeout);
       const value = res.async ? await res.value : res.value;
+      // If time expired
+      if (value === ATOMICS_TIMED_OUT) {
+        return false;
+      }
+    }
+    return (this._isOwner = true);
+  }
+
+  tryLockUntilSync(timestamp: number): boolean {
+    // If already has lock
+    if (this._isOwner) {
+      return false;
+    }
+    // Try to acquire lock for a given amount of time
+    while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+      const timeout = timestamp - performance.now();
+      const value = Atomics.wait(this._mem, 0, LOCK_BIT, timeout);
       // If time expired
       if (value === ATOMICS_TIMED_OUT) {
         return false;

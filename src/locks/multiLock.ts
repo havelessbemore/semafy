@@ -1,6 +1,7 @@
+import type { BasicLockable } from "../types/basicLockable";
+import type { Lockable } from "../types/lockable";
+
 import { MultiUnlockError } from "../errors/multiUnlockError";
-import { BasicLockable } from "../types/basicLockable";
-import { Lockable } from "../types/lockable";
 import { lock } from "./lock";
 import { tryLock } from "./tryLock";
 
