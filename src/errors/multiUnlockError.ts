@@ -1,4 +1,5 @@
-import { BasicLockable } from "../types/basicLockable";
+import type { BasicLockable } from "../types/basicLockable";
+
 import { ERR_MULTI_UNLOCK } from "./constants";
 import { LockError } from "./lockError";
 
