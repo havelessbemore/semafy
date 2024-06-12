@@ -1,6 +1,7 @@
+import type { Lockable } from "../types/lockable";
+
 import { MultiLockError } from "../errors/multiLockError";
 import { MultiUnlockError } from "../errors/multiUnlockError";
-import { Lockable } from "../types/lockable";
 
 /**
  * Tries to sequentially lock the provided {@link Lockable} objects.

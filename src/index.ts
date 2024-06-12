@@ -5,6 +5,9 @@ export type { Lockable } from "./types/lockable";
 export type { SharedLockable } from "./types/sharedLockable";
 export type { SharedResource } from "./types/sharedResource";
 export type { SharedTimedLockable } from "./types/sharedTimedLockable";
+export type { SyncBasicLockable } from "./types/sync/syncBasicLockable";
+export type { SyncLockable } from "./types/sync/syncLockable";
+export type { SyncTimedLockable } from "./types/sync/syncTimedLockable";
 export type { TimedLockable } from "./types/timedLockable";
 
 // Errors
@@ -25,7 +28,7 @@ export { TimedMutex } from "./mutexes/timedMutex";
 
 // Locks
 export { lock } from "./locks/lock";
-export { lockGuard } from "./locks/lockGuard";
+export { lockGuard, lockGuardSync } from "./locks/lockGuard";
 export { MultiLock } from "./locks/multiLock";
 export { SharedLock } from "./locks/sharedLock";
 export { tryLock } from "./locks/tryLock";
