@@ -1,0 +1,12 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@rojas/semafy",
+  "version": "2.1.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publish": {
+    "include": ["LICENSE", "README.md", "src"],
+    "exclude": ["src/**/*.test.ts"]
+  }
+}

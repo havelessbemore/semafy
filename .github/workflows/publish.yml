@@ -7,6 +7,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,7 +21,9 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Clean install
         run: npm ci
-      - name: Publish
+      - name: Publish to npm
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to jsr
+        run: npx jsr publish
