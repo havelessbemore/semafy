@@ -25,7 +25,7 @@ export class MultiLock implements Lockable {
   mutexes: BasicLockable[];
 
   /**
-   * @param mutex - The basic lockable to associate.
+   * @param mutexes - The basic lockables to associate.
    */
   constructor(...mutexes: BasicLockable[]) {
     this._isOwner = false;
