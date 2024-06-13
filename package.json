@@ -1,6 +1,6 @@
 {
   "name": "semafy",
-  "version": "2.0.7",
+  "version": "2.1.0",
   "description": "A robust cross-agent synchronization library.",
   "license": "MIT",
   "author": "Michael Rojas <dev.michael.rojas@gmail.com> (https://github.com/havelessbemore)",
@@ -34,7 +34,7 @@
     "build": "rimraf dist && tsc && rollup -c --configPlugin typescript",
     "build:docs": "typedoc",
     "format": "prettier . --write",
-    "lint": "eslint",
+    "lint": "eslint .",
     "prepare": "husky",
     "prepublishOnly": "npm run lint && npm run test && npm run build",
     "test": "jest --passWithNoTests",
