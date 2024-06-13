@@ -36,7 +36,7 @@ The shared lockable to associate.
 
 #### Source
 
-[src/locks/sharedLock.ts:23](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L23)
+[src/locks/sharedLock.ts:23](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L23)
 
 ## Properties
 
@@ -48,7 +48,7 @@ The associated mutex.
 
 #### Source
 
-[src/locks/sharedLock.ts:18](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L18)
+[src/locks/sharedLock.ts:18](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L18)
 
 ## Accessors
 
@@ -64,7 +64,7 @@ Indicates whether the current agent owns the lock.
 
 #### Source
 
-[src/locks/sharedLock.ts:27](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L27)
+[src/locks/sharedLock.ts:27](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L27)
 
 ## Methods
 
@@ -85,7 +85,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Source
 
-[src/locks/sharedLock.ts:31](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L31)
+[src/locks/sharedLock.ts:31](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L31)
 
 ***
 
@@ -105,7 +105,7 @@ Exchanges the internal states of the shared locks.
 
 #### Source
 
-[src/locks/sharedLock.ts:38](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L38)
+[src/locks/sharedLock.ts:38](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L38)
 
 ***
 
@@ -129,7 +129,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/locks/sharedLock.ts:44](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L44)
+[src/locks/sharedLock.ts:44](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L44)
 
 ***
 
@@ -155,7 +155,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/locks/sharedLock.ts:48](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L48)
+[src/locks/sharedLock.ts:48](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L48)
 
 ***
 
@@ -181,7 +181,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/locks/sharedLock.ts:52](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L52)
+[src/locks/sharedLock.ts:52](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L52)
 
 ***
 
@@ -201,4 +201,4 @@ Releases the lock held by the current agent.
 
 #### Source
 
-[src/locks/sharedLock.ts:56](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/sharedLock.ts#L56)
+[src/locks/sharedLock.ts:56](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/sharedLock.ts#L56)

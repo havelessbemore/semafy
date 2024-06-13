@@ -33,4 +33,4 @@ A promise resolved to the return value of `callbackfn`.
 
 ## Source
 
-[src/locks/lockGuard.ts:13](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/locks/lockGuard.ts#L13)
+[src/locks/lockGuard.ts:13](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/lockGuard.ts#L13)

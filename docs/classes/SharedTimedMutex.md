@@ -52,7 +52,7 @@ consider this possible variability in their applications.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L45)
+[src/mutexes/sharedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L45)
 
 ### new SharedTimedMutex()
 
@@ -78,7 +78,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:50](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L50)
+[src/mutexes/sharedMutex.ts:50](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L50)
 
 ## Properties
 
@@ -92,7 +92,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:38](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L38)
+[src/mutexes/sharedMutex.ts:38](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L38)
 
 ***
 
@@ -106,7 +106,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:39](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L39)
+[src/mutexes/sharedMutex.ts:39](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L39)
 
 ***
 
@@ -120,7 +120,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:40](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L40)
+[src/mutexes/sharedMutex.ts:40](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L40)
 
 ***
 
@@ -134,7 +134,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L41)
+[src/mutexes/sharedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L41)
 
 ***
 
@@ -148,7 +148,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:42](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L42)
+[src/mutexes/sharedMutex.ts:42](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L42)
 
 ***
 
@@ -162,7 +162,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:43](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L43)
+[src/mutexes/sharedMutex.ts:43](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L43)
 
 ## Accessors
 
@@ -179,7 +179,7 @@ and primary storage for shared data.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:69](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L69)
+[src/mutexes/sharedMutex.ts:69](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L69)
 
 ***
 
@@ -195,7 +195,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:73](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L73)
+[src/mutexes/sharedMutex.ts:73](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L73)
 
 ***
 
@@ -211,7 +211,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:77](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L77)
+[src/mutexes/sharedMutex.ts:77](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L77)
 
 ***
 
@@ -227,7 +227,7 @@ Indicates whether the current agent owns the lock.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:81](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L81)
+[src/mutexes/sharedMutex.ts:81](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L81)
 
 ***
 
@@ -243,7 +243,7 @@ Indicates whether the current agent owns a shared lock.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:85](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L85)
+[src/mutexes/sharedMutex.ts:85](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L85)
 
 ## Methods
 
@@ -269,7 +269,7 @@ A [RelockError](RelockError.md) If the mutex is already locked by the caller.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:94](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L94)
+[src/mutexes/sharedMutex.ts:94](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L94)
 
 ***
 
@@ -295,7 +295,7 @@ A [RelockError](RelockError.md) If the lock is already locked by the caller.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:162](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L162)
+[src/mutexes/sharedMutex.ts:162](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L162)
 
 ***
 
@@ -323,7 +323,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:115](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L115)
+[src/mutexes/sharedMutex.ts:115](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L115)
 
 ***
 
@@ -349,7 +349,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/mutexes/sharedTimedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L37)
+[src/mutexes/sharedTimedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedTimedMutex.ts#L37)
 
 ***
 
@@ -377,7 +377,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:183](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L183)
+[src/mutexes/sharedMutex.ts:183](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L183)
 
 ***
 
@@ -403,7 +403,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/mutexes/sharedTimedMutex.ts:92](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L92)
+[src/mutexes/sharedTimedMutex.ts:92](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedTimedMutex.ts#L92)
 
 ***
 
@@ -429,7 +429,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/mutexes/sharedTimedMutex.ts:96](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L96)
+[src/mutexes/sharedTimedMutex.ts:96](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedTimedMutex.ts#L96)
 
 ***
 
@@ -455,7 +455,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/mutexes/sharedTimedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L41)
+[src/mutexes/sharedTimedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedTimedMutex.ts#L41)
 
 ***
 
@@ -481,7 +481,7 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:140](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L140)
+[src/mutexes/sharedMutex.ts:140](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L140)
 
 ***
 
@@ -507,4 +507,4 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Source
 
-[src/mutexes/sharedMutex.ts:214](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L214)
+[src/mutexes/sharedMutex.ts:214](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/mutexes/sharedMutex.ts#L214)

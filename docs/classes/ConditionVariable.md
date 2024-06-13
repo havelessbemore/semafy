@@ -28,7 +28,7 @@ Behavior is undefined if:
 
 #### Source
 
-[src/condVars/conditionVariable.ts:26](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L26)
+[src/condVars/conditionVariable.ts:26](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L26)
 
 ### new ConditionVariable()
 
@@ -50,7 +50,7 @@ The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:31](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L31)
+[src/condVars/conditionVariable.ts:31](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L31)
 
 ## Properties
 
@@ -62,7 +62,7 @@ The shared atomic memory where the condition variable stores its state.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:24](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L24)
+[src/condVars/conditionVariable.ts:24](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L24)
 
 ## Accessors
 
@@ -79,7 +79,7 @@ and primary storage for shared data.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:43](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L43)
+[src/condVars/conditionVariable.ts:43](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L43)
 
 ***
 
@@ -95,7 +95,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:47](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L47)
+[src/condVars/conditionVariable.ts:47](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L47)
 
 ***
 
@@ -111,7 +111,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:51](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L51)
+[src/condVars/conditionVariable.ts:51](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L51)
 
 ## Methods
 
@@ -135,7 +135,7 @@ The number of agents that were notified.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:62](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L62)
+[src/condVars/conditionVariable.ts:62](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L62)
 
 ***
 
@@ -153,7 +153,7 @@ The number of agents that were notified.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:71](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L71)
+[src/condVars/conditionVariable.ts:71](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L71)
 
 ***
 
@@ -171,7 +171,7 @@ The number of agents that were notified.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:80](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L80)
+[src/condVars/conditionVariable.ts:80](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L80)
 
 ***
 
@@ -203,7 +203,7 @@ A RangeError If the shared memory data is unexpected.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:94](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L94)
+[src/condVars/conditionVariable.ts:94](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L94)
 
 ***
 
@@ -241,7 +241,7 @@ A RangeError If the shared memory data is unexpected.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:111](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L111)
+[src/condVars/conditionVariable.ts:111](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L111)
 
 ***
 
@@ -279,4 +279,4 @@ A RangeError If the shared memory data is unexpected.
 
 #### Source
 
-[src/condVars/conditionVariable.ts:148](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/condVars/conditionVariable.ts#L148)
+[src/condVars/conditionVariable.ts:148](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/condVars/conditionVariable.ts#L148)

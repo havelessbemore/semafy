@@ -32,6 +32,12 @@ Yarn:
 yarn add semafy
 ```
 
+JSR:
+
+```bash
+jsr add @rojas/semafy
+```
+
 ## API
 
 ### Generics

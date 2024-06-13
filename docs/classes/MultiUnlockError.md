@@ -51,7 +51,7 @@ An optional custom error message that describes the error.
 
 #### Source
 
-[src/errors/multiUnlockError.ts:21](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/multiUnlockError.ts#L21)
+[src/errors/multiUnlockError.ts:21](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/errors/multiUnlockError.ts#L21)
 
 ## Properties
 
@@ -77,7 +77,7 @@ The array of all lockable objects that were part of the operation.
 
 #### Source
 
-[src/errors/multiUnlockError.ts:22](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/multiUnlockError.ts#L22)
+[src/errors/multiUnlockError.ts:22](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/errors/multiUnlockError.ts#L22)
 
 ***
 
@@ -117,7 +117,7 @@ The number of unlocks successfully updated before failure.
 
 #### Source
 
-[src/errors/multiUnlockError.ts:23](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/multiUnlockError.ts#L23)
+[src/errors/multiUnlockError.ts:23](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/errors/multiUnlockError.ts#L23)
 
 ***
 
@@ -145,7 +145,7 @@ debugging unexpected issues during unlocking.
 
 #### Source
 
-[src/errors/multiUnlockError.ts:24](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/multiUnlockError.ts#L24)
+[src/errors/multiUnlockError.ts:24](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/errors/multiUnlockError.ts#L24)
 
 ***
 

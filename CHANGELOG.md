@@ -26,6 +26,14 @@ Introduces synchronous versions of methods.
 
   - lockGuardSync
 
+### Misc
+
+- Update dev dependencies
+- Add support for [JSR](https://jsr.io/@rojas/semafy):
+  ```bash
+  jsr add @rojas/semafy
+  ```
+
 ## [2.0.7](https://github.com/havelessbemore/semafy/compare/v2.0.6...v2.0.7) (2024-05-15)
 
 ### What's New
