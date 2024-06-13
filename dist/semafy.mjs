@@ -181,11 +181,29 @@ class Mutex {
       throw new RelockError();
     }
     while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
-      await Atomics.waitAsync(this._mem, 0, LOCK_BIT$1).value;
+      const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1);
+      if (res.async) {
+        await res.value;
+      }
+    }
+    this._isOwner = true;
+  }
+  /**
+   * @throws A {@link RelockError} If the lock is already locked by the caller.
+   */
+  lockSync() {
+    if (this._isOwner) {
+      throw new RelockError();
+    }
+    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
+      Atomics.wait(this._mem, 0, LOCK_BIT$1);
     }
     this._isOwner = true;
   }
   tryLock() {
+    return this.tryLockSync();
+  }
+  tryLockSync() {
     if (this._isOwner) {
       return false;
     }
@@ -195,6 +213,12 @@ class Mutex {
    * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
    */
   unlock() {
+    return this.unlockSync();
+  }
+  /**
+   * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  unlockSync() {
     if (!this._isOwner) {
       throw new OwnershipError();
     }
@@ -251,7 +275,24 @@ const _RecursiveMutex = class _RecursiveMutex {
     }
     ++this._depth;
   }
+  /**
+   * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+   */
+  lockSync() {
+    if (this._depth === _RecursiveMutex.Max) {
+      throw new RangeError(ERR_REC_MUTEX_OVERFLOW);
+    }
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        Atomics.wait(this._mem, 0, LOCK_BIT);
+      }
+    }
+    ++this._depth;
+  }
   tryLock() {
+    return this.tryLockSync();
+  }
+  tryLockSync() {
     if (this._depth === _RecursiveMutex.Max) {
       return false;
     }
@@ -265,6 +306,12 @@ const _RecursiveMutex = class _RecursiveMutex {
    * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
    */
   unlock() {
+    return this.unlockSync();
+  }
+  /**
+   * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+   */
+  unlockSync() {
     if (this._depth <= 0) {
       throw new OwnershipError();
     }
@@ -290,6 +337,9 @@ class RecursiveTimedMutex extends RecursiveMutex {
   async tryLockFor(timeout) {
     return this.tryLockUntil(performance.now() + timeout);
   }
+  tryLockForSync(timeout) {
+    return this.tryLockUntilSync(performance.now() + timeout);
+  }
   async tryLockUntil(timestamp) {
     if (this._depth === RecursiveTimedMutex.Max) {
       return false;
@@ -307,6 +357,22 @@ class RecursiveTimedMutex extends RecursiveMutex {
     ++this._depth;
     return true;
   }
+  tryLockUntilSync(timestamp) {
+    if (this._depth === RecursiveTimedMutex.Max) {
+      return false;
+    }
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        const timeout = timestamp - performance.now();
+        const value = Atomics.wait(this._mem, 0, LOCK_BIT, timeout);
+        if (value === ATOMICS_TIMED_OUT) {
+          return false;
+        }
+      }
+    }
+    ++this._depth;
+    return true;
+  }
 }
 
 async function lockGuard(mutex, callbackfn) {
@@ -315,6 +381,14 @@ async function lockGuard(mutex, callbackfn) {
     return await callbackfn();
   } finally {
     await mutex.unlock();
+  }
+}
+function lockGuardSync(mutex, callbackfn) {
+  mutex.lockSync();
+  try {
+    return callbackfn();
+  } finally {
+    mutex.unlockSync();
   }
 }
 
@@ -430,6 +504,9 @@ class TimedMutex extends Mutex {
   async tryLockFor(timeout) {
     return this.tryLockUntil(performance.now() + timeout);
   }
+  tryLockForSync(timeout) {
+    return this.tryLockUntilSync(performance.now() + timeout);
+  }
   async tryLockUntil(timestamp) {
     if (this._isOwner) {
       return false;
@@ -438,6 +515,19 @@ class TimedMutex extends Mutex {
       const timeout = timestamp - performance.now();
       const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT$1, timeout);
       const value = res.async ? await res.value : res.value;
+      if (value === ATOMICS_TIMED_OUT) {
+        return false;
+      }
+    }
+    return this._isOwner = true;
+  }
+  tryLockUntilSync(timestamp) {
+    if (this._isOwner) {
+      return false;
+    }
+    while (Atomics.or(this._mem, 0, LOCK_BIT$1)) {
+      const timeout = timestamp - performance.now();
+      const value = Atomics.wait(this._mem, 0, LOCK_BIT$1, timeout);
       if (value === ATOMICS_TIMED_OUT) {
         return false;
       }
@@ -723,7 +813,7 @@ var __defNormalProp$5 = (obj, key, value) => key in obj ? __defProp$5(obj, key, 
 var __publicField$5 = (obj, key, value) => __defNormalProp$5(obj, typeof key !== "symbol" ? key + "" : key, value);
 class MultiLock {
   /**
-   * @param mutex - The basic lockable to associate.
+   * @param mutexes - The basic lockables to associate.
    */
   constructor(...mutexes) {
     /**
@@ -840,6 +930,9 @@ class UniqueLock {
   lock() {
     return this.mutex.lock();
   }
+  lockSync() {
+    return this.mutex.lockSync();
+  }
   /**
    * Exchanges the internal states of the unique locks.
    */
@@ -851,14 +944,26 @@ class UniqueLock {
   tryLock() {
     return this.mutex.tryLock();
   }
+  tryLockSync() {
+    return this.mutex.tryLockSync();
+  }
   tryLockFor(timeout) {
     return this.mutex.tryLockFor(timeout);
+  }
+  tryLockForSync(timeout) {
+    return this.mutex.tryLockForSync(timeout);
   }
   tryLockUntil(timestamp) {
     return this.mutex.tryLockUntil(timestamp);
   }
+  tryLockUntilSync(timestamp) {
+    return this.mutex.tryLockUntilSync(timestamp);
+  }
   unlock() {
     return this.mutex.unlock();
+  }
+  unlockSync() {
+    return this.mutex.unlockSync();
   }
 }
 
@@ -870,7 +975,7 @@ var __defProp$2 = Object.defineProperty;
 var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
 class OnceFlag {
-  constructor(sharedBuffer, byteOffset = 0, bitOffset) {
+  constructor(sharedBuffer, byteOffset = 0, bitOffset = 0) {
     /**
      * The bit within the shared memory used to set the flag.
      */
@@ -884,7 +989,6 @@ class OnceFlag {
      */
     __publicField$2(this, "_mem");
     sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
-    bitOffset ?? (bitOffset = 0);
     this._bit = 1 << bitOffset;
     this._bitOffset = bitOffset;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -1203,5 +1307,5 @@ const _Latch = class _Latch {
 __publicField(_Latch, "Max", MAX_INT32_VALUE);
 let Latch = _Latch;
 
-export { CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, MultiLock, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, SharedMutex, SharedTimedMutex, TimedMutex, TimeoutError, UniqueLock, callOnce, lock, lockGuard, tryLock };
+export { CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, MultiLock, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, SharedMutex, SharedTimedMutex, TimedMutex, TimeoutError, UniqueLock, callOnce, lock, lockGuard, lockGuardSync, tryLock };
 //# sourceMappingURL=semafy.mjs.map

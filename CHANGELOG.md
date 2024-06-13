@@ -26,7 +26,6 @@ Introduces synchronous versions of methods.
 
   - lockGuardSync
 
-
 ## [2.0.7](https://github.com/havelessbemore/semafy/compare/v2.0.6...v2.0.7) (2024-05-15)
 
 ### What's New

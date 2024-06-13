@@ -4,207 +4,130 @@
 
 # Semafy
 
-[![npm](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
-[![types](https://img.shields.io/npm/types/semafy)](https://www.npmjs.com/package/semafy)
+**Semafy** provides synchronization and concurrency management across execution agents (main thread, web workers). It contains a robust set of tools modeled after C++ synchronization primitives, offering control and flexibility for managing shared resources and states.
 
-Semaphore & Mutex implementation for node
+[![Version](https://img.shields.io/npm/v/semafy.svg)](https://www.npmjs.com/package/semafy)
+[![Maintenance](https://img.shields.io/maintenance/yes/2024.svg)](https://github.com/havelessbemore/semafy/graphs/commit-activity)
+[![License](https://img.shields.io/github/license/havelessbemore/semafy.svg)](https://github.com/havelessbemore/semafy/blob/master/LICENSE)
+[![codecov](https://codecov.io/gh/havelessbemore/semafy/graph/badge.svg?token=F362G7C9U0)](https://codecov.io/gh/havelessbemore/semafy)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/semafy)
 
-## Installing
+## Features
+
+- **Mutexes**: Exclusive and shared locking to protect data from concurrent access.
+- **Semaphores**: Control access to a finite number of resources.
+- **ConditionVariable**: Allows agents to wait for certain conditions to occur.
+- **Barriers**: Ensures agents reach a certain point before any can proceed.
+- **Utilities**: Manage async code with `lock`, `tryLock`, `lockGuard`, and `callOnce`.
+- **Error Handling**: Specific error classes to enhance debuggability and reliability.
+- **Platform Agnostic**: Works in any [browser](#browser-usage) or server-side environment that supports `SharedArrayBuffer`.
+
+## Installation
+
+NPM:
 
 ```bash
 npm install semafy
 ```
 
+Yarn:
+
+```bash
+yarn add semafy
+```
+
 ## API
 
-See [docs/](./docs/README.md) for details (or [wiki](https://github.com/havelessbemore/semafy/wiki) for the latest documentation)
+### Generics
 
-**TLDR;** This library provides:
-1. [Semaphore](./docs/classes/semaphore.md)  
-Acquisition returns a [SemaphoreLock](./docs/classes/semaphorelock.md). This ensures that: 
-   <ol type="a">
-      <li>Only a call that has acquired the semaphore (aka decremented its value) can release it (aka increment its value)</li>
-      <li>A call can release the semaphore once at most</li>
-   </ol>
+- **[Sync]BasicLockable**: A base interface that provides exclusive blocking for agents.
 
-1. [Mutex](./docs/classes/mutex.md)  
-A convenience class for defining a binary [Semaphore](./docs/classes/semaphore.md). ```new Mutex()``` is functionally equivalent to ```new Semaphore(1)```.
+- **[Sync]Lockable**: Extends `BasicLockable` to include attempted locking.
 
-1. [RawSemaphore](./docs/classes/rawsemaphore.md)  
-Similar to a [Semaphore](./docs/classes/semaphore.md) but without using [SemaphoreLocks](./docs/classes/semaphorelock.md), so it does not have the same restrictions. Anything with a reference to the semaphore can:
-   <ol type="a">
-      <li>Increment it via <a href="./docs/classes/rawsemaphore.md#post">post()</a>, regardless of if the semaphore was first acquired</li>
-      <li>Increment it multiple times</li>
-      <li> Increment it above the initial value the semaphore was created with
-   </ol>
-   Acquisition returns a self-reference to the semaphore.
+- **SharedLockable**: Provides shared blocking semantics for agents.
 
-## Usage
+- **SharedResource**: Represents a shared resource that is backed by a `SharedArrayBuffer`.
 
-### Semaphore
+- **SharedTimedLockable**: Extends `SharedLockable` to include timed blocking.
 
-#### With Promises
+- **[Sync]TimedLockable**: Extends `Lockable` to include timed blocking.
 
-```js
-import { Semaphore } from 'semafy';
+### Mutexes
 
-// Limit calls to 5 per second
-const delay = 1000; // ms
-const semaphore = new Semaphore(5);
+- **Mutex**: Provides essential mutex operations including `lock`, `unlock`, and `tryLock`.
 
-async function rateLimit(callback) {
-    const lock = await semaphore.wait();
-    setTimeout(() => lock.unlock(), delay);
-    callback();
-}
-```
+- **TimedMutex**: A timed variant that supports timed operations including `tryLockFor` and `tryLockUntil`.
 
-#### With Callbacks
+- **RecursiveMutex**: Allows multiple locks from the same agent.
 
-```js
-import { Semaphore } from 'semafy';
+- **RecursiveTimedMutex**: A timed variant that supports timed operations.
 
-// Limit calls to 5 per second
-const delay = 1000; // ms
-const semaphore = new Semaphore(5);
+- **SharedMutex**: Allows multiple readers or exclusive writer access, facilitating reader-writer scenarios.
 
-function rateLimit(callback) {
-    semaphore.wait((error, lock) => {
-        if (error) {
-            // Could not acquire semaphore
-            // Handle error...
-            return;
-        }
-        setTimeout(() => lock.unlock(), delay);
-        callback();
-    });
-}
-```
+- **SharedTimedMutex**: A timed variant that supports timed operations.
 
-#### With Timeout
+### Mutex Management
 
-```js
-import { Semaphore } from 'semafy';
+- **lock()**: Sequentially acquires the given locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
 
-// Limit calls to 5 per second
-// Give up after 8 seconds
-const delay = 1000; // ms
-const timeout = 8000; // ms
-const semaphore = new Semaphore(5);
+- **lockGuard\[Sync\]()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.
 
-async function rateLimit(callback) {
-    const lock = await semaphore.waitFor(timeout);
-    setTimeout(() => lock.unlock(), delay);
-    callback();
-}
-```
+- **MultiLock**: Wraps multiple `BasicLockable` objects to create a multi-lock. Calls to `lock`, `unlock`, etc will acquire / release locks on all of the wrapped objects.
 
-or
+- **SharedLock**: Wraps a `SharedLockable` object (e.g. `SharedMutex`) to create a shared lock. Calls to `lock`, `unlock`, etc will acquire / release a shared lock instead of an exclusive lock.
 
-```js
-import { Semaphore } from 'semafy';
+- **tryLock()**: Tries to sequentially acquire the given locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
 
-// Limit calls to 5 per second
-// Give up after 8 seconds
-const delay = 1000; // ms
-const timeout = 8000; // ms
-const semaphore = new Semaphore(5);
+- **UniqueLock**: Wraps a `BasicLockable` object to create a unique lock. Calls to `lock`, `unlock`, etc will acquire / release a lock on the wrapped object.
 
-function rateLimit(callback) {
-    semaphore.waitFor(timeout, (error, lock) => {
-        if (error) {
-            // Could not acquire semaphore
-            // Handle error...
-            return;
-        }
-        setTimeout(() => lock.unlock(), delay);
-        callback();
-    });
-}
-```
+### Call Once
 
-#### tryWait()
+- **callOnce()**: Executes a callback function at most once, based on the state of a provided `OnceFlag`.
 
-```js
-import { Semaphore } from 'semafy';
+- **OnceFlag**: Represents a flag that can be set exactly once, shared across different execution agents.
 
-const semaphore = new Semaphore(5);
+### Condition Variable
 
-function nowOrNever(callback) {
-    const lock = semaphore.tryWait();
-    if (lock) {
-        try {
-            callback();
-        } finally {
-            lock.unlock();
-        }
-    }
-}
-```
+- **ConditionVariable**: Allows agents to wait for specific conditions, tightly integrated with mutexes for state management.
 
-### Raw Semaphore
+### Semaphores
 
-#### With Promises
+- **CountingSemaphore**: Manages access to a finite number of resources, allowing multiple entities to hold the semaphore concurrently up to a maximum count.
 
-```js
-import { RawSemaphore } from 'semafy';
+### Barriers
 
-// Limit calls to 5 per second
-const delay = 1000; // ms
-const semaphore = new RawSemaphore(5);
+- **Latch**: Allows agents to wait until a set of operations has been completed. Ideal for scenarios where multiple tasks must reach a common point before proceeding. For example, the completion of multiple data loading operations before data processing begins.
 
-async function rateLimit(callback) {
-    await semaphore.wait();
-    setTimeout(() => semaphore.post(), delay);
-    callback();
-}
-```
+### Errors
 
-#### With Callbacks and Timeout
+- **LockError**: A generic error related to errors in lock acquisition, release and management.
 
-```js
-import { RawSemaphore } from 'semafy';
+- **MultiLockError**: Occurs when attempting to acquire multiple locks simultaneously.
 
-// Limit calls to 5 per second
-// Give up after 8 seconds
-const delay = 1000; // ms
-const timeout = 8000; // ms
-const semaphore = new RawSemaphore(5);
+- **MultiUnlockError**: Occurs when attempting multiple unlocks simultaneously.
 
-function rateLimit(callback) {
-    semaphore.waitFor(timeout, (error, sem) => {
-        if (error) {
-            // Could not acquire semaphore
-            // Handle error...
-            return;
-        }
-        setTimeout(() => sem.post(), delay);
-        callback();
-    });
-}
-```
+- **OwnershipError**: Occurs when attempting to unlock an unacquired mutex.
 
-#### tryWait()
+- **RelockError**: Occurs when attempting to lock an already acquired mutex. Prevents deadlocks from occurring.
 
-```js
-import { RawSemaphore } from 'semafy';
+- **TimeoutError**: Occurs when an operation exceeds a set time, such as when using `tryLockFor` or `tryLockUntil`.
 
-const semaphore = new RawSemaphore(5);
+## Browsers
 
-function nowOrNever(callback) {
-    if (semaphore.tryWait()) {
-        try {
-            callback();
-        } finally {
-            semaphore.post();
-        }
-    }
-}
-```
+Browser security requirements for using shared memory must be met. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
 
-## Contribute
+### Sync methods
 
-There are many ways to contribute:
-* [Submit bugs](https://github.com/havelessbemore/semafy/issues) and help verify fixes.
-* Review [source code changes](https://github.com/havelessbemore/semafy/pulls).
-* Contribute bug fixes.
+The use of synchronous methods (e.g. `lockSync`) may not be allowed on the main thread. If not, their async versions (e.g. `lock`) are available.
+
+## Contributing
+
+Contributions are welcome!
+
+- **Bug Reports**: Please use the [GitHub issue tracker](https://github.com/havelessbemore/semafy/issues) to report any bugs. Include a detailed description and any relevant code snippets or logs.
+
+- **Feature Requests**: Please submit feature requests as issues, clearly describing the feature and its potential benefits.
+
+- **Pull Requests**: Please ensure your code adheres to the existing style of the project and include any necessary tests and documentation.
+
+For more information, check out the [contributor's guide](https://github.com/havelessbemore/semafy/CONTRIBUTING.md).

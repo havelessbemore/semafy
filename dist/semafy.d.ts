@@ -114,6 +114,58 @@ interface SharedTimedLockable extends SharedLockable {
 }
 
 /**
+ * The base interface for types that provide exclusive
+ * blocking for agents (i.e. main thread, workers).
+ */
+interface SyncBasicLockable {
+    /**
+     * Indicates whether the current agent owns the lock.
+     */
+    ownsLock: Readonly<boolean>;
+    /**
+     * Blocks until the lock can be acquired for the current agent.
+     * If an exception is thrown, no lock is acquired.
+     */
+    lockSync(): void;
+    /**
+     * Releases the lock held by the current agent.
+     */
+    unlockSync(): void;
+}
+
+/**
+ * Extends the {@link SyncBasicLockable} interface to include attempted locking.
+ */
+interface SyncLockable extends SyncBasicLockable {
+    /**
+     * Attempts to acquire the lock for the current agent
+     * without blocking until acquired. If an exception
+     * is thrown, no lock is obtained.
+     *
+     * @returns `true` if the lock was acquired, `false` otherwise.
+     */
+    tryLockSync(): boolean;
+}
+
+/**
+ * Extends the {@link SyncLockable} interface to include timed blocking.
+ */
+interface SyncTimedLockable extends SyncLockable {
+    /**
+     * Blocks for the provided duration or until a lock is acquired.
+     *
+     * @returns `true` if the lock was acquired, `false` otherwise.
+     */
+    tryLockForSync(timeout: number): boolean;
+    /**
+     * Blocks until the provided timestamp is reached or a lock is acquired.
+     *
+     * @returns `true` if the lock was acquired, `false` otherwise.
+     */
+    tryLockUntilSync(timestamp: number): boolean;
+}
+
+/**
  * Extends the {@link Lockable} interface to include timed blocking.
  */
 interface TimedLockable extends Lockable {
@@ -251,7 +303,7 @@ declare class TimeoutError extends Error {
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/mutex | C++ std::mutex}
  */
-declare class Mutex implements Lockable, SharedResource {
+declare class Mutex implements Lockable, SyncLockable, SharedResource {
     /**
      * Indicates whether the current agent owns the lock.
      */
@@ -274,11 +326,20 @@ declare class Mutex implements Lockable, SharedResource {
      * @throws A {@link RelockError} If the lock is already locked by the caller.
      */
     lock(): Promise<void>;
+    /**
+     * @throws A {@link RelockError} If the lock is already locked by the caller.
+     */
+    lockSync(): void;
     tryLock(): boolean;
+    tryLockSync(): boolean;
     /**
      * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
      */
     unlock(): void;
+    /**
+     * @throws An {@link OwnershipError} If the mutex is not owned by the caller.
+     */
+    unlockSync(): void;
 }
 
 /**
@@ -306,7 +367,7 @@ declare class Mutex implements Lockable, SharedResource {
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
  */
-declare class RecursiveMutex implements Lockable, SharedResource {
+declare class RecursiveMutex implements Lockable, SyncLockable, SharedResource {
     /**
      * The maximum levels of recursive ownership.
      */
@@ -333,11 +394,20 @@ declare class RecursiveMutex implements Lockable, SharedResource {
      * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
      */
     lock(): Promise<void>;
+    /**
+     * @throws A {@link RangeError} If the mutex is already locked the maximum amount of times.
+     */
+    lockSync(): void;
     tryLock(): boolean;
+    tryLockSync(): boolean;
     /**
      * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
      */
     unlock(): void;
+    /**
+     * @throws A {@link OwnershipError} If the mutex is not owned by the caller.
+     */
+    unlockSync(): void;
 }
 
 /**
@@ -369,9 +439,11 @@ declare class RecursiveMutex implements Lockable, SharedResource {
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/recursive_mutex | C++ std::recursive_mutex}
  */
-declare class RecursiveTimedMutex extends RecursiveMutex implements TimedLockable {
+declare class RecursiveTimedMutex extends RecursiveMutex implements TimedLockable, SyncTimedLockable {
     tryLockFor(timeout: number): Promise<boolean>;
+    tryLockForSync(timeout: number): boolean;
     tryLockUntil(timestamp: number): Promise<boolean>;
+    tryLockUntilSync(timestamp: number): boolean;
 }
 
 /**
@@ -486,9 +558,11 @@ declare class ConditionVariable implements SharedResource {
  * @privateRemarks
  * 1. {@link https://en.cppreference.com/w/cpp/thread/unique_lock | C++ std::unique_lock}
  */
-declare class TimedMutex extends Mutex implements TimedLockable {
+declare class TimedMutex extends Mutex implements TimedLockable, SyncTimedLockable {
     tryLockFor(timeout: number): Promise<boolean>;
+    tryLockForSync(timeout: number): boolean;
     tryLockUntil(timestamp: number): Promise<boolean>;
+    tryLockUntilSync(timestamp: number): boolean;
 }
 
 /**
@@ -611,6 +685,16 @@ declare function lock(...locks: BasicLockable[]): Promise<void>;
  * @returns A promise resolved to the return value of `callbackfn`.
  */
 declare function lockGuard<T>(mutex: BasicLockable, callbackfn: () => T | Promise<T>): Promise<T>;
+/**
+ * Acquires the mutex and executes the provided callback, automatically
+ * unlocking afterwards. Blocks until the lock is available.
+ *
+ * @param mutex The mutex to acquire.
+ * @param callbackfn The callback function.
+ *
+ * @returns The return value of `callbackfn`.
+ */
+declare function lockGuardSync<T>(mutex: SyncBasicLockable, callbackfn: () => T): T;
 
 /**
  * A mutex ownership wrapper.
@@ -630,7 +714,7 @@ declare class MultiLock implements Lockable {
      */
     mutexes: BasicLockable[];
     /**
-     * @param mutex - The basic lockable to associate.
+     * @param mutexes - The basic lockables to associate.
      */
     constructor(...mutexes: BasicLockable[]);
     get ownsLock(): boolean;
@@ -705,28 +789,33 @@ declare function tryLock(...locks: Lockable[]): Promise<number>;
  *
  * If the given mutex implements {@link Lockable}, then UniqueLock will too.
  * If the given mutex implements {@link TimedLockable}, then UniqueLock will too.
- * Otherwise, using attempted locking (`tryLock`) or timed methods
- * (`tryLockFor`, `tryLockUntil`) will result in errors.
+ * Otherwise, using attempted locking (e.g. `tryLock`) or timed methods
+ * (e.g. `tryLockFor`, `tryLockUntil`) will result in errors.
  */
-declare class UniqueLock implements TimedLockable {
+declare class UniqueLock implements TimedLockable, SyncTimedLockable {
     /**
      * The associated basic lockable.
      */
-    mutex: BasicLockable | undefined;
+    mutex: BasicLockable | SyncBasicLockable | undefined;
     /**
      * @param mutex - The basic lockable to associate.
      */
-    constructor(mutex?: BasicLockable);
+    constructor(mutex?: BasicLockable | SyncBasicLockable);
     get ownsLock(): boolean;
     lock(): Promise<void>;
+    lockSync(): void;
     /**
      * Exchanges the internal states of the unique locks.
      */
     swap(other: UniqueLock): void;
     tryLock(): boolean | Promise<boolean>;
+    tryLockSync(): boolean;
     tryLockFor(timeout: number): Promise<boolean>;
+    tryLockForSync(timeout: number): boolean;
     tryLockUntil(timestamp: number): Promise<boolean>;
+    tryLockUntilSync(timestamp: number): boolean;
     unlock(): void | Promise<void>;
+    unlockSync(): void;
 }
 
 /**
@@ -943,4 +1032,4 @@ declare class Latch {
     wait(): Promise<void>;
 }
 
-export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, type Lockable, MultiLock, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lock, lockGuard, tryLock };
+export { type BasicLockable, type CVStatus, CV_OK, CV_TIMED_OUT, ConditionVariable, CountingSemaphore, Latch, LockError, type Lockable, MultiLock, MultiLockError, MultiUnlockError, Mutex, OnceFlag, OwnershipError, RecursiveMutex, RecursiveTimedMutex, RelockError, SharedLock, type SharedLockable, SharedMutex, type SharedResource, type SharedTimedLockable, SharedTimedMutex, type SyncBasicLockable, type SyncLockable, type SyncTimedLockable, type TimedLockable, TimedMutex, TimeoutError, UniqueLock, callOnce, lock, lockGuard, lockGuardSync, tryLock };

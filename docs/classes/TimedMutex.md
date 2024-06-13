@@ -2,9 +2,9 @@
 
 ***
 
-[semafy](../globals.md) / Mutex
+[semafy](../globals.md) / TimedMutex
 
-# Class: Mutex
+# Class: TimedMutex
 
 Provides synchronization across agents (main thread and workers)
 to allow exclusive access to shared resources / blocks of code.
@@ -24,33 +24,40 @@ Behavior is undefined if:
    - The agent is terminated while owning the mutex.
    - The mutex's shared memory location is modified externally.
 
-## Extended by
+Timeout precision for time-based methods may vary due to system load
+and inherent limitations of JavaScript timing. Developers should
+consider this possible variability in their applications.
 
-- [`TimedMutex`](TimedMutex.md)
+## Extends
+
+- [`Mutex`](Mutex.md)
 
 ## Implements
 
-- [`Lockable`](../interfaces/Lockable.md)
-- [`SyncLockable`](../interfaces/SyncLockable.md)
-- [`SharedResource`](../interfaces/SharedResource.md)
+- [`TimedLockable`](../interfaces/TimedLockable.md)
+- [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md)
 
 ## Constructors
 
-### new Mutex()
+### new TimedMutex()
 
-> **new Mutex**(): [`Mutex`](Mutex.md)
+> **new TimedMutex**(): [`TimedMutex`](TimedMutex.md)
 
 #### Returns
 
-[`Mutex`](Mutex.md)
+[`TimedMutex`](TimedMutex.md)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`constructor`](Mutex.md#constructors)
 
 #### Source
 
 [src/mutexes/mutex.ts:46](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/mutex.ts#L46)
 
-### new Mutex()
+### new TimedMutex()
 
-> **new Mutex**(`sharedBuffer`, `byteOffset`?): [`Mutex`](Mutex.md)
+> **new TimedMutex**(`sharedBuffer`, `byteOffset`?): [`TimedMutex`](TimedMutex.md)
 
 #### Parameters
 
@@ -64,7 +71,11 @@ The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Returns
 
-[`Mutex`](Mutex.md)
+[`TimedMutex`](TimedMutex.md)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`constructor`](Mutex.md#constructors)
 
 #### Source
 
@@ -78,6 +89,10 @@ The byte offset within `sharedBuffer`. Defaults to `0`.
 
 Indicates whether the current agent owns the lock.
 
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`_isOwner`](Mutex.md#_isowner)
+
 #### Source
 
 [src/mutexes/mutex.ts:39](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/mutex.ts#L39)
@@ -89,6 +104,10 @@ Indicates whether the current agent owns the lock.
 > `protected` **\_mem**: `Int32Array`
 
 The shared memory for the mutex.
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`_mem`](Mutex.md#_mem)
 
 #### Source
 
@@ -171,7 +190,11 @@ Indicates whether the current agent owns the lock.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`lock`](../interfaces/Lockable.md#lock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`lock`](../interfaces/TimedLockable.md#lock)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`lock`](Mutex.md#lock)
 
 #### Throws
 
@@ -193,7 +216,11 @@ A [RelockError](RelockError.md) If the lock is already locked by the caller.
 
 #### Implementation of
 
-[`SyncLockable`](../interfaces/SyncLockable.md).[`lockSync`](../interfaces/SyncLockable.md#locksync)
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`lockSync`](../interfaces/SyncTimedLockable.md#locksync)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`lockSync`](Mutex.md#locksync)
 
 #### Throws
 
@@ -221,11 +248,67 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`tryLock`](../interfaces/Lockable.md#trylock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLock`](../interfaces/TimedLockable.md#trylock)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`tryLock`](Mutex.md#trylock)
 
 #### Source
 
 [src/mutexes/mutex.ts:115](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/mutex.ts#L115)
+
+***
+
+### tryLockFor()
+
+> **tryLockFor**(`timeout`): `Promise`\<`boolean`\>
+
+Blocks for the provided duration or until a lock is acquired.
+
+#### Parameters
+
+• **timeout**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
+
+#### Source
+
+[src/mutexes/timedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/timedMutex.ts#L37)
+
+***
+
+### tryLockForSync()
+
+> **tryLockForSync**(`timeout`): `boolean`
+
+Blocks for the provided duration or until a lock is acquired.
+
+#### Parameters
+
+• **timeout**: `number`
+
+#### Returns
+
+`boolean`
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockForSync`](../interfaces/SyncTimedLockable.md#trylockforsync)
+
+#### Source
+
+[src/mutexes/timedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/timedMutex.ts#L41)
 
 ***
 
@@ -245,11 +328,67 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`SyncLockable`](../interfaces/SyncLockable.md).[`tryLockSync`](../interfaces/SyncLockable.md#trylocksync)
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockSync`](../interfaces/SyncTimedLockable.md#trylocksync)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`tryLockSync`](Mutex.md#trylocksync)
 
 #### Source
 
 [src/mutexes/mutex.ts:119](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/mutex.ts#L119)
+
+***
+
+### tryLockUntil()
+
+> **tryLockUntil**(`timestamp`): `Promise`\<`boolean`\>
+
+Blocks until the provided timestamp is reached or a lock is acquired.
+
+#### Parameters
+
+• **timestamp**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
+
+#### Source
+
+[src/mutexes/timedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/timedMutex.ts#L45)
+
+***
+
+### tryLockUntilSync()
+
+> **tryLockUntilSync**(`timestamp`): `boolean`
+
+Blocks until the provided timestamp is reached or a lock is acquired.
+
+#### Parameters
+
+• **timestamp**: `number`
+
+#### Returns
+
+`boolean`
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockUntilSync`](../interfaces/SyncTimedLockable.md#trylockuntilsync)
+
+#### Source
+
+[src/mutexes/timedMutex.ts:63](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/timedMutex.ts#L63)
 
 ***
 
@@ -263,7 +402,11 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`unlock`](../interfaces/Lockable.md#unlock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`unlock`](../interfaces/TimedLockable.md#unlock)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`unlock`](Mutex.md#unlock)
 
 #### Throws
 
@@ -285,7 +428,11 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Implementation of
 
-[`SyncLockable`](../interfaces/SyncLockable.md).[`unlockSync`](../interfaces/SyncLockable.md#unlocksync)
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`unlockSync`](../interfaces/SyncTimedLockable.md#unlocksync)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`unlockSync`](Mutex.md#unlocksync)
 
 #### Throws
 

@@ -2,39 +2,38 @@
 
 ***
 
-[semafy](../globals.md) / TimeoutError
+[semafy](../globals.md) / LockError
 
-# Class: TimeoutError
+# Class: LockError
 
-Represents an error that occurs when a process exceeds a set time.
+Represents a generic error originating from a lock.
 
 ## Extends
 
 - `Error`
 
+## Extended by
+
+- [`MultiLockError`](MultiLockError.md)
+- [`MultiUnlockError`](MultiUnlockError.md)
+- [`OwnershipError`](OwnershipError.md)
+- [`RelockError`](RelockError.md)
+
 ## Constructors
 
-### new TimeoutError()
+### new LockError()
 
-> **new TimeoutError**(`message`?, `timeout`?, `deadline`?): [`TimeoutError`](TimeoutError.md)
+> **new LockError**(`message`?): [`LockError`](LockError.md)
 
 #### Parameters
 
 • **message?**: `string`
 
-A custom error message. Defaults to `undefined`.
-
-• **timeout?**: `number`
-
-The timeout duration in milliseconds. Defaults to `undefined`.
-
-• **deadline?**: `number`
-
-The absolute time in milliseconds. Defaults to `undefined`.
+An optional custom error message.
 
 #### Returns
 
-[`TimeoutError`](TimeoutError.md)
+[`LockError`](LockError.md)
 
 #### Overrides
 
@@ -42,7 +41,7 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 #### Source
 
-[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L24)
+[src/errors/lockError.ts:10](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/lockError.ts#L10)
 
 ## Properties
 
@@ -57,19 +56,6 @@ The absolute time in milliseconds. Defaults to `undefined`.
 #### Source
 
 node\_modules/typescript/lib/lib.es2022.error.d.ts:24
-
-***
-
-### deadline?
-
-> `optional` **deadline**: `number`
-
-Absolute time in milliseconds after which the timeout error was thrown.
-Can be `undefined` if not specified.
-
-#### Source
-
-[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L11)
 
 ***
 
@@ -112,19 +98,6 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 #### Source
 
 node\_modules/typescript/lib/lib.es5.d.ts:1078
-
-***
-
-### timeout?
-
-> `optional` **timeout**: `number`
-
-Duration in milliseconds after which the timeout error was thrown.
-Can be `undefined` if not specified.
-
-#### Source
-
-[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L17)
 
 ***
 

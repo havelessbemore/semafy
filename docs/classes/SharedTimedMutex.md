@@ -2,9 +2,9 @@
 
 ***
 
-[semafy](../globals.md) / SharedMutex
+[semafy](../globals.md) / SharedTimedMutex
 
-# Class: SharedMutex
+# Class: SharedTimedMutex
 
 Provides synchronization across agents (main thread and workers)
 to allow exclusive and shared access to resources / blocks of code.
@@ -23,33 +23,40 @@ Behavior is undefined if:
    - The agent is terminated while owning the mutex.
    - The mutex's shared memory location is modified externally.
 
-## Extended by
+Timeout precision for time-based methods may vary due to system load
+and inherent limitations of JavaScript timing. Developers should
+consider this possible variability in their applications.
 
-- [`SharedTimedMutex`](SharedTimedMutex.md)
+## Extends
+
+- [`SharedMutex`](SharedMutex.md)
 
 ## Implements
 
-- [`Lockable`](../interfaces/Lockable.md)
-- [`SharedLockable`](../interfaces/SharedLockable.md)
-- [`SharedResource`](../interfaces/SharedResource.md)
+- [`TimedLockable`](../interfaces/TimedLockable.md)
+- [`SharedTimedLockable`](../interfaces/SharedTimedLockable.md)
 
 ## Constructors
 
-### new SharedMutex()
+### new SharedTimedMutex()
 
-> **new SharedMutex**(): [`SharedMutex`](SharedMutex.md)
+> **new SharedTimedMutex**(): [`SharedTimedMutex`](SharedTimedMutex.md)
 
 #### Returns
 
-[`SharedMutex`](SharedMutex.md)
+[`SharedTimedMutex`](SharedTimedMutex.md)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructors)
 
 #### Source
 
 [src/mutexes/sharedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L45)
 
-### new SharedMutex()
+### new SharedTimedMutex()
 
-> **new SharedMutex**(`sharedBuffer`, `byteOffset`?): [`SharedMutex`](SharedMutex.md)
+> **new SharedTimedMutex**(`sharedBuffer`, `byteOffset`?): [`SharedTimedMutex`](SharedTimedMutex.md)
 
 #### Parameters
 
@@ -63,7 +70,11 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Returns
 
-[`SharedMutex`](SharedMutex.md)
+[`SharedTimedMutex`](SharedTimedMutex.md)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructors)
 
 #### Source
 
@@ -75,6 +86,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 > `protected` **\_gate1**: [`ConditionVariable`](ConditionVariable.md)
 
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_gate1`](SharedMutex.md#_gate1)
+
 #### Source
 
 [src/mutexes/sharedMutex.ts:38](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L38)
@@ -84,6 +99,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 ### \_gate2
 
 > `protected` **\_gate2**: [`ConditionVariable`](ConditionVariable.md)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_gate2`](SharedMutex.md#_gate2)
 
 #### Source
 
@@ -95,6 +114,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 > `protected` **\_isReader**: `boolean`
 
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_isReader`](SharedMutex.md#_isreader)
+
 #### Source
 
 [src/mutexes/sharedMutex.ts:40](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L40)
@@ -104,6 +127,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 ### \_isWriter
 
 > `protected` **\_isWriter**: `boolean`
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_isWriter`](SharedMutex.md#_iswriter)
 
 #### Source
 
@@ -115,6 +142,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 > `protected` **\_mem**: `Int32Array`
 
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_mem`](SharedMutex.md#_mem)
+
 #### Source
 
 [src/mutexes/sharedMutex.ts:42](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L42)
@@ -124,6 +155,10 @@ The byte offset within the shared buffer. Defaults to `0`.
 ### \_mutex
 
 > `protected` **\_mutex**: [`TimedMutex`](TimedMutex.md)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`_mutex`](SharedMutex.md#_mutex)
 
 #### Source
 
@@ -222,7 +257,11 @@ Indicates whether the current agent owns a shared lock.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`lock`](../interfaces/Lockable.md#lock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`lock`](../interfaces/TimedLockable.md#lock)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`lock`](SharedMutex.md#lock)
 
 #### Throws
 
@@ -244,7 +283,11 @@ A [RelockError](RelockError.md) If the mutex is already locked by the caller.
 
 #### Implementation of
 
-[`SharedLockable`](../interfaces/SharedLockable.md).[`lockShared`](../interfaces/SharedLockable.md#lockshared)
+[`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`lockShared`](../interfaces/SharedTimedLockable.md#lockshared)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`lockShared`](SharedMutex.md#lockshared)
 
 #### Throws
 
@@ -272,11 +315,41 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`tryLock`](../interfaces/Lockable.md#trylock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLock`](../interfaces/TimedLockable.md#trylock)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`tryLock`](SharedMutex.md#trylock)
 
 #### Source
 
 [src/mutexes/sharedMutex.ts:115](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L115)
+
+***
+
+### tryLockFor()
+
+> **tryLockFor**(`timeout`): `Promise`\<`boolean`\>
+
+Blocks for the provided duration or until a lock is acquired.
+
+#### Parameters
+
+• **timeout**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
+
+#### Source
+
+[src/mutexes/sharedTimedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L37)
 
 ***
 
@@ -296,11 +369,93 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`SharedLockable`](../interfaces/SharedLockable.md).[`tryLockShared`](../interfaces/SharedLockable.md#trylockshared)
+[`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`tryLockShared`](../interfaces/SharedTimedLockable.md#trylockshared)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`tryLockShared`](SharedMutex.md#trylockshared)
 
 #### Source
 
 [src/mutexes/sharedMutex.ts:183](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedMutex.ts#L183)
+
+***
+
+### tryLockSharedFor()
+
+> **tryLockSharedFor**(`timeout`): `Promise`\<`boolean`\>
+
+Blocks for the provided duration or until a lock is acquired.
+
+#### Parameters
+
+• **timeout**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`tryLockSharedFor`](../interfaces/SharedTimedLockable.md#trylocksharedfor)
+
+#### Source
+
+[src/mutexes/sharedTimedMutex.ts:92](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L92)
+
+***
+
+### tryLockSharedUntil()
+
+> **tryLockSharedUntil**(`timestamp`): `Promise`\<`boolean`\>
+
+Blocks until the provided timestamp is reached or a lock is acquired.
+
+#### Parameters
+
+• **timestamp**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`tryLockSharedUntil`](../interfaces/SharedTimedLockable.md#trylockshareduntil)
+
+#### Source
+
+[src/mutexes/sharedTimedMutex.ts:96](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L96)
+
+***
+
+### tryLockUntil()
+
+> **tryLockUntil**(`timestamp`): `Promise`\<`boolean`\>
+
+Blocks until the provided timestamp is reached or a lock is acquired.
+
+#### Parameters
+
+• **timestamp**: `number`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the lock was acquired, `false` otherwise.
+
+#### Implementation of
+
+[`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
+
+#### Source
+
+[src/mutexes/sharedTimedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/mutexes/sharedTimedMutex.ts#L41)
 
 ***
 
@@ -314,7 +469,11 @@ is thrown, no lock is obtained.
 
 #### Implementation of
 
-[`Lockable`](../interfaces/Lockable.md).[`unlock`](../interfaces/Lockable.md#unlock)
+[`TimedLockable`](../interfaces/TimedLockable.md).[`unlock`](../interfaces/TimedLockable.md#unlock)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`unlock`](SharedMutex.md#unlock)
 
 #### Throws
 
@@ -336,7 +495,11 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Implementation of
 
-[`SharedLockable`](../interfaces/SharedLockable.md).[`unlockShared`](../interfaces/SharedLockable.md#unlockshared)
+[`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`unlockShared`](../interfaces/SharedTimedLockable.md#unlockshared)
+
+#### Inherited from
+
+[`SharedMutex`](SharedMutex.md).[`unlockShared`](SharedMutex.md#unlockshared)
 
 #### Throws
 

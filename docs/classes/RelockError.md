@@ -2,47 +2,39 @@
 
 ***
 
-[semafy](../globals.md) / TimeoutError
+[semafy](../globals.md) / RelockError
 
-# Class: TimeoutError
+# Class: RelockError
 
-Represents an error that occurs when a process exceeds a set time.
+Represents an error relocking a lock.
 
 ## Extends
 
-- `Error`
+- [`LockError`](LockError.md)
 
 ## Constructors
 
-### new TimeoutError()
+### new RelockError()
 
-> **new TimeoutError**(`message`?, `timeout`?, `deadline`?): [`TimeoutError`](TimeoutError.md)
+> **new RelockError**(`message`?): [`RelockError`](RelockError.md)
 
 #### Parameters
 
 • **message?**: `string`
 
-A custom error message. Defaults to `undefined`.
-
-• **timeout?**: `number`
-
-The timeout duration in milliseconds. Defaults to `undefined`.
-
-• **deadline?**: `number`
-
-The absolute time in milliseconds. Defaults to `undefined`.
+An optional custom error message.
 
 #### Returns
 
-[`TimeoutError`](TimeoutError.md)
+[`RelockError`](RelockError.md)
 
 #### Overrides
 
-`Error.constructor`
+[`LockError`](LockError.md).[`constructor`](LockError.md#constructors)
 
 #### Source
 
-[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L24)
+[src/errors/relockError.ts:11](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/relockError.ts#L11)
 
 ## Properties
 
@@ -52,24 +44,11 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 #### Inherited from
 
-`Error.cause`
+[`LockError`](LockError.md).[`cause`](LockError.md#cause)
 
 #### Source
 
 node\_modules/typescript/lib/lib.es2022.error.d.ts:24
-
-***
-
-### deadline?
-
-> `optional` **deadline**: `number`
-
-Absolute time in milliseconds after which the timeout error was thrown.
-Can be `undefined` if not specified.
-
-#### Source
-
-[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L11)
 
 ***
 
@@ -79,7 +58,7 @@ Can be `undefined` if not specified.
 
 #### Inherited from
 
-`Error.message`
+[`LockError`](LockError.md).[`message`](LockError.md#message)
 
 #### Source
 
@@ -93,7 +72,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 #### Inherited from
 
-`Error.name`
+[`LockError`](LockError.md).[`name`](LockError.md#name)
 
 #### Source
 
@@ -107,24 +86,11 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 #### Inherited from
 
-`Error.stack`
+[`LockError`](LockError.md).[`stack`](LockError.md#stack)
 
 #### Source
 
 node\_modules/typescript/lib/lib.es5.d.ts:1078
-
-***
-
-### timeout?
-
-> `optional` **timeout**: `number`
-
-Duration in milliseconds after which the timeout error was thrown.
-Can be `undefined` if not specified.
-
-#### Source
-
-[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/149e7eb3316334bacba0da85965a5d191883e2fc/src/errors/timeoutError.ts#L17)
 
 ***
 
@@ -150,7 +116,7 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Inherited from
 
-`Error.prepareStackTrace`
+[`LockError`](LockError.md).[`prepareStackTrace`](LockError.md#preparestacktrace)
 
 #### Source
 
@@ -164,7 +130,7 @@ node\_modules/@types/node/globals.d.ts:28
 
 #### Inherited from
 
-`Error.stackTraceLimit`
+[`LockError`](LockError.md).[`stackTraceLimit`](LockError.md#stacktracelimit)
 
 #### Source
 
@@ -190,7 +156,7 @@ Create .stack property on a target object
 
 #### Inherited from
 
-`Error.captureStackTrace`
+[`LockError`](LockError.md).[`captureStackTrace`](LockError.md#capturestacktrace)
 
 #### Source
 
