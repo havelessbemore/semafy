@@ -1,4 +1,5 @@
 import { ATOMICS_TIMED_OUT } from "../types/atomicsStatus";
+import type { SyncTimedLockable } from "../types/sync/syncTimedLockable";
 import type { TimedLockable } from "../types/timedLockable";
 
 import { LOCK_BIT, RecursiveMutex } from "./recursiveMutex";
@@ -34,10 +35,14 @@ import { LOCK_BIT, RecursiveMutex } from "./recursiveMutex";
  */
 export class RecursiveTimedMutex
   extends RecursiveMutex
-  implements TimedLockable
+  implements TimedLockable, SyncTimedLockable
 {
   async tryLockFor(timeout: number): Promise<boolean> {
     return this.tryLockUntil(performance.now() + timeout);
+  }
+
+  tryLockForSync(timeout: number): boolean {
+    return this.tryLockUntilSync(performance.now() + timeout);
   }
 
   async tryLockUntil(timestamp: number): Promise<boolean> {
@@ -52,6 +57,29 @@ export class RecursiveTimedMutex
         const timeout = timestamp - performance.now();
         const res = Atomics.waitAsync(this._mem, 0, LOCK_BIT, timeout);
         const value = res.async ? await res.value : res.value;
+        // If time expired
+        if (value === ATOMICS_TIMED_OUT) {
+          return false;
+        }
+      }
+    }
+
+    // Increment ownership
+    ++this._depth;
+    return true;
+  }
+
+  tryLockUntilSync(timestamp: number): boolean {
+    // If at capacity
+    if (this._depth === RecursiveTimedMutex.Max) {
+      return false;
+    }
+
+    // If not owned, try to acquire lock for a given amount of time
+    if (this._depth === 0) {
+      while (Atomics.or(this._mem, 0, LOCK_BIT)) {
+        const timeout = timestamp - performance.now();
+        const value = Atomics.wait(this._mem, 0, LOCK_BIT, timeout);
         // If time expired
         if (value === ATOMICS_TIMED_OUT) {
           return false;

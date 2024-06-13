@@ -36,9 +36,9 @@ yarn add semafy
 
 ### Generics
 
-- **BasicLockable**: A base interface that provides exclusive blocking for agents.
+- **[Sync]BasicLockable**: A base interface that provides exclusive blocking for agents.
 
-- **Lockable**: Extends `BasicLockable` to include attempted locking.
+- **[Sync]Lockable**: Extends `BasicLockable` to include attempted locking.
 
 - **SharedLockable**: Provides shared blocking semantics for agents.
 
@@ -46,7 +46,7 @@ yarn add semafy
 
 - **SharedTimedLockable**: Extends `SharedLockable` to include timed blocking.
 
-- **TimedLockable**: Extends `Lockable` to include timed blocking.
+- **[Sync]TimedLockable**: Extends `Lockable` to include timed blocking.
 
 ### Mutexes
 
@@ -66,7 +66,7 @@ yarn add semafy
 
 - **lock()**: Sequentially acquires the given locks. If any lock fails, the process is stopped, and any acquired locks are released in reverse order.
 
-- **lockGuard()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.
+- **lockGuard\[Sync\]()**: Locks a mutex before calling a callback function, ensuring the mutex is unlocked afterwards.
 
 - **MultiLock**: Wraps multiple `BasicLockable` objects to create a multi-lock. Calls to `lock`, `unlock`, etc will acquire / release locks on all of the wrapped objects.
 
@@ -108,9 +108,13 @@ yarn add semafy
 
 - **TimeoutError**: Occurs when an operation exceeds a set time, such as when using `tryLockFor` or `tryLockUntil`.
 
-## Browser Usage
+## Browsers
 
 Browser security requirements for using shared memory must be met. Please see [SharedArrayBuffer > Security Requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) for details.
+
+### Sync methods
+
+The use of synchronous methods (e.g. `lockSync`) may not be allowed on the main thread. If not, their async versions (e.g. `lock`) are available.
 
 ## Contributing
 

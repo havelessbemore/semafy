@@ -7,6 +7,6 @@
   },
   "publish": {
     "include": ["LICENSE", "README.md", "src"],
-    "exclude": ["src/**/*.test.ts"]
+    "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
   }
 }

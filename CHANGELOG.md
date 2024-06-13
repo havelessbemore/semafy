@@ -1,5 +1,32 @@
 # Change Log
 
+## [2.1.0](https://github.com/havelessbemore/semafy/compare/v2.0.7...v2.1.0) (2024-06-13)
+
+### What's New
+
+Introduces synchronous versions of methods.
+
+- Sync methods use [Atomics.wait](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics/wait#browser_compatibility), which may not be allowed on the main thread in a browser environment. In these cases, their existing async versions (e.g. `lockSync` -> `lock`) should be used.
+
+- Interfaces:
+
+  - SyncBasicLockable
+  - SyncLockable
+  - SyncTimedLockable
+
+- Classes:
+
+  - `Mutex` extends `SyncLockable`.
+  - `RecursiveMutex` extends `SyncLockable`.
+  - `RecursiveTimedMutex` extends `SyncTimedLockable`.
+  - `TimedMutex` extends `SyncTimedLockable`.
+  - `UniqueLock` extends `SyncTimedLockable`.
+
+- Utilities:
+
+  - lockGuardSync
+
+
 ## [2.0.7](https://github.com/havelessbemore/semafy/compare/v2.0.6...v2.0.7) (2024-05-15)
 
 ### What's New
