@@ -83,6 +83,21 @@ describe(Mutex.name, () => {
     });
   });
 
+  describe(`${Mutex.prototype.lockSync.name}()`, () => {
+    test("locks if unlocked", async () => {
+      const inst = new Mutex();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("throws if locked twice", async () => {
+      const inst = new Mutex();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(() => inst.lockSync()).toThrow(RelockError);
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
   describe(`${Mutex.prototype.tryLock.name}()`, () => {
     test("locks if unlocked", async () => {
       const inst = new Mutex();
@@ -94,6 +109,21 @@ describe(Mutex.name, () => {
       const inst = new Mutex();
       expect(inst.tryLock()).toBe(true);
       expect(inst.tryLock()).toBe(false);
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
+  describe(`${Mutex.prototype.tryLockSync.name}()`, () => {
+    test("locks if unlocked", async () => {
+      const inst = new Mutex();
+      expect(inst.tryLockSync()).toBe(true);
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("Does not allow relock", async () => {
+      const inst = new Mutex();
+      expect(inst.tryLockSync()).toBe(true);
+      expect(inst.tryLockSync()).toBe(false);
       expect(inst.ownsLock).toBe(true);
     });
   });
@@ -126,6 +156,38 @@ describe(Mutex.name, () => {
       await inst.lock();
       inst.unlock();
       expect(() => inst.tryLock()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
+  describe(`${Mutex.prototype.unlockSync.name}()`, () => {
+    test("unlocks if locked", async () => {
+      const inst = new Mutex();
+      inst.lockSync();
+      expect(inst.ownsLock).toBe(true);
+      expect(() => inst.unlockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(false);
+    });
+
+    test("throws if not locked", async () => {
+      const inst = new Mutex();
+      expect(() => inst.unlockSync()).toThrow(OwnershipError);
+      expect(inst.ownsLock).toBe(false);
+    });
+
+    test("allows relock via lockSync", async () => {
+      const inst = new Mutex();
+      inst.lockSync();
+      inst.unlockSync();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("allows relock via tryLockSync", async () => {
+      const inst = new Mutex();
+      inst.lockSync();
+      inst.unlockSync();
+      expect(() => inst.tryLockSync()).not.toThrow();
       expect(inst.ownsLock).toBe(true);
     });
   });

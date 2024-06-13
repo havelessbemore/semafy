@@ -84,6 +84,21 @@ describe(RecursiveMutex.name, () => {
     });
   });
 
+  describe(`${RecursiveMutex.prototype.lockSync.name}()`, () => {
+    test("locks if unlocked", async () => {
+      const inst = new RecursiveMutex();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("Allows relocking from same agent", async () => {
+      const inst = new RecursiveMutex();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
   describe(`${RecursiveMutex.prototype.tryLock.name}()`, () => {
     test("locks if unlocked", async () => {
       const inst = new RecursiveMutex();
@@ -95,6 +110,21 @@ describe(RecursiveMutex.name, () => {
       const inst = new RecursiveMutex();
       expect(inst.tryLock()).toBe(true);
       expect(inst.tryLock()).toBe(true);
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
+  describe(`${RecursiveMutex.prototype.tryLockSync.name}()`, () => {
+    test("locks if unlocked", async () => {
+      const inst = new RecursiveMutex();
+      expect(inst.tryLockSync()).toBe(true);
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("Allows relocking from same agent", async () => {
+      const inst = new RecursiveMutex();
+      expect(inst.tryLockSync()).toBe(true);
+      expect(inst.tryLockSync()).toBe(true);
       expect(inst.ownsLock).toBe(true);
     });
   });
@@ -127,6 +157,38 @@ describe(RecursiveMutex.name, () => {
       await inst.lock();
       inst.unlock();
       expect(() => inst.tryLock()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+  });
+
+  describe(`${RecursiveMutex.prototype.unlockSync.name}()`, () => {
+    test("unlocks if locked", async () => {
+      const inst = new RecursiveMutex();
+      inst.lockSync();
+      expect(inst.ownsLock).toBe(true);
+      expect(() => inst.unlockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(false);
+    });
+
+    test("throws if not locked", async () => {
+      const inst = new RecursiveMutex();
+      expect(() => inst.unlockSync()).toThrow(OwnershipError);
+      expect(inst.ownsLock).toBe(false);
+    });
+
+    test("allows relock via lock", async () => {
+      const inst = new RecursiveMutex();
+      inst.lockSync();
+      inst.unlockSync();
+      expect(() => inst.lockSync()).not.toThrow();
+      expect(inst.ownsLock).toBe(true);
+    });
+
+    test("allows relock via tryLock", async () => {
+      const inst = new RecursiveMutex();
+      inst.lockSync();
+      inst.unlockSync();
+      expect(() => inst.tryLockSync()).not.toThrow();
       expect(inst.ownsLock).toBe(true);
     });
   });
