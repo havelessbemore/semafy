@@ -22,6 +22,11 @@ import { MAX_INT32_VALUE } from "../utils/constants";
  */
 export class CountingSemaphore implements SharedResource {
   /**
+   * The size in bytes of the semaphore.
+   */
+  static readonly ByteLength = 3 * Int32Array.BYTES_PER_ELEMENT;
+
+  /**
    * The maximum possible value of the internal counter
    */
   static readonly Max = MAX_INT32_VALUE;
@@ -38,8 +43,13 @@ export class CountingSemaphore implements SharedResource {
    */
   constructor(desired: number);
   /**
-   * @param sharedBuffer The shared buffer that backs the semaphore.
-   * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+   * @param sharedBuffer The {@link SharedArrayBuffer} that backs the semaphore.
+   * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer: number | SharedArrayBuffer, byteOffset = 0) {
@@ -69,7 +79,7 @@ export class CountingSemaphore implements SharedResource {
       });
     }
 
-    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    sharedBuffer = new SharedArrayBuffer(CountingSemaphore.ByteLength);
     this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new TimedMutex(sharedBuffer, byteOffset);
