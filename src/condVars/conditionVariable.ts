@@ -19,6 +19,11 @@ import { OwnershipError } from "../errors/ownershipError";
  */
 export class ConditionVariable implements SharedResource {
   /**
+   * The size in bytes of the condition variable.
+   */
+  static readonly ByteLength = Int32Array.BYTES_PER_ELEMENT;
+
+  /**
    * The shared atomic memory where the condition variable stores its state.
    */
   private _mem: Int32Array;
@@ -27,11 +32,16 @@ export class ConditionVariable implements SharedResource {
   /**
    * @param sharedBuffer The {@link SharedArrayBuffer} that backs the condition variable.
    * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
     // Sanitize input
-    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+    sharedBuffer ??= new SharedArrayBuffer(ConditionVariable.ByteLength);
 
     // Initialize properties
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
