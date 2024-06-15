@@ -5,6 +5,11 @@ import type { SharedResource } from "../types/sharedResource";
  */
 export class OnceFlag implements SharedResource {
   /**
+   * The size in bytes of the flag.
+   */
+  static readonly ByteLength = Int32Array.BYTES_PER_ELEMENT;
+
+  /**
    * The bit within the shared memory used to set the flag.
    */
   protected _bit: number;
@@ -22,7 +27,13 @@ export class OnceFlag implements SharedResource {
    * @param sharedBuffer The {@link SharedArrayBuffer} that backs the flag.
    * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
    * @param bitOffset The bit offset within the shared memory location. Defaults to `0`.
-   * This allows for different bits of a single integer to be used by different flags.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
+   *  - `bitOffset` is negative.
+   *  - `bitOffset` is greater than or equal to `4`.
    */
   constructor(
     sharedBuffer: SharedArrayBuffer,
@@ -31,7 +42,19 @@ export class OnceFlag implements SharedResource {
   );
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0, bitOffset = 0) {
     // Sanitize input
-    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+    sharedBuffer ??= new SharedArrayBuffer(OnceFlag.ByteLength);
+
+    // Check bit offset
+    if (bitOffset < 0) {
+      throw new RangeError("Invalid bit offset", {
+        cause: `${bitOffset} < 0`,
+      });
+    }
+    if (bitOffset >= Int32Array.BYTES_PER_ELEMENT) {
+      throw new RangeError("Invalid bit offset", {
+        cause: `${bitOffset} >= ${Int32Array.BYTES_PER_ELEMENT}`,
+      });
+    }
 
     // Initialize properties
     this._bit = 1 << bitOffset;
