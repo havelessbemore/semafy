@@ -20,6 +20,11 @@ import { MAX_INT32_VALUE } from "../utils/constants";
  */
 export class Latch {
   /**
+   * The size in bytes of the latch.
+   */
+  static readonly ByteLength = 3 * Int32Array.BYTES_PER_ELEMENT;
+
+  /**
    * The maximum possible value of the internal counter.
    */
   static readonly Max = MAX_INT32_VALUE;
@@ -47,8 +52,13 @@ export class Latch {
    */
   constructor(expected: number);
   /**
-   * @param sharedBuffer The shared buffer that backs the latch.
-   * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+   * @param sharedBuffer The {@link SharedArrayBuffer} that backs the latch.
+   * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer: number | SharedArrayBuffer, byteOffset = 0) {
@@ -78,7 +88,7 @@ export class Latch {
       });
     }
 
-    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    sharedBuffer = new SharedArrayBuffer(Latch.ByteLength);
     this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new Mutex(sharedBuffer, byteOffset);
