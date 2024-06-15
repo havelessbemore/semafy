@@ -35,6 +35,11 @@ export const READ_BITS = ~WRITE_BIT;
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 export class SharedMutex implements Lockable, SharedLockable, SharedResource {
+  /**
+   * The size in bytes of the mutex.
+   */
+  static readonly ByteLength = 4 * Int32Array.BYTES_PER_ELEMENT;
+
   protected _gate1: ConditionVariable;
   protected _gate2: ConditionVariable;
   protected _isReader: boolean;
@@ -44,15 +49,20 @@ export class SharedMutex implements Lockable, SharedLockable, SharedResource {
 
   constructor();
   /**
-   * @param sharedBuffer The shared buffer that backs the mutex.
-   * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+   * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
+   * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
 
     // Sanitize input
-    sharedBuffer ??= new SharedArrayBuffer(4 * bInt32);
+    sharedBuffer ??= new SharedArrayBuffer(SharedMutex.ByteLength);
 
     // Initialize properties
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);

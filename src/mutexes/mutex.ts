@@ -34,6 +34,11 @@ export const LOCK_BIT = 1;
  */
 export class Mutex implements Lockable, SyncLockable, SharedResource {
   /**
+   * The size in bytes of the mutex.
+   */
+  static readonly ByteLength = Int32Array.BYTES_PER_ELEMENT;
+
+  /**
    * Indicates whether the current agent owns the lock.
    */
   protected _isOwner: boolean;
@@ -47,11 +52,16 @@ export class Mutex implements Lockable, SyncLockable, SharedResource {
   /**
    * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
    * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+   *
+   * @throws A {@link RangeError} for any of the following:
+   *  - `byteOffset` is negative or not a multiple of `4`.
+   *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+   *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    */
   constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
   constructor(sharedBuffer?: SharedArrayBuffer, byteOffset = 0) {
     // Sanitize input
-    sharedBuffer ??= new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT);
+    sharedBuffer ??= new SharedArrayBuffer(Mutex.ByteLength);
 
     // Initialize properties
     this._isOwner = false;
