@@ -50,9 +50,9 @@ export class MultiLock implements Lockable {
     this._isOwner = other._isOwner;
     other._isOwner = tIsOwner;
     // Swap mutexes
-    const tMutex = this.mutexes;
+    const tMutexes = this.mutexes;
     this.mutexes = other.mutexes;
-    other.mutexes = tMutex;
+    other.mutexes = tMutexes;
   }
 
   async tryLock(): Promise<boolean> {
