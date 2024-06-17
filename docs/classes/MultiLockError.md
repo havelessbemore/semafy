@@ -57,7 +57,7 @@ An optional custom error message that describes the error.
 
 #### Source
 
-[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/multiLockError.ts#L24)
+[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/multiLockError.ts#L24)
 
 ## Properties
 
@@ -85,7 +85,7 @@ understanding why lock acquisition failed.
 
 #### Source
 
-[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/multiLockError.ts#L27)
+[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/multiLockError.ts#L27)
 
 ***
 
@@ -97,7 +97,7 @@ The array of all lockable objects that were part of the operation.
 
 #### Source
 
-[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/multiLockError.ts#L25)
+[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/multiLockError.ts#L25)
 
 ***
 
@@ -137,7 +137,7 @@ The number of locks successfully updated before failure.
 
 #### Source
 
-[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/multiLockError.ts#L26)
+[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/multiLockError.ts#L26)
 
 ***
 
@@ -165,7 +165,7 @@ debugging unexpected issues during unlocking.
 
 #### Source
 
-[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/multiLockError.ts#L28)
+[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/multiLockError.ts#L28)
 
 ***
 

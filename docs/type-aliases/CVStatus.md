@@ -13,4 +13,4 @@ returned by [ConditionVariable](../classes/ConditionVariable.md) operations.
 
 ## Source
 
-[src/types/cvStatus.ts:5](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/cvStatus.ts#L5)
+[src/types/cvStatus.ts:5](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/cvStatus.ts#L5)

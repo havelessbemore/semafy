@@ -42,7 +42,7 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 #### Source
 
-[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/timeoutError.ts#L24)
+[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L24)
 
 ## Properties
 
@@ -69,7 +69,7 @@ Can be `undefined` if not specified.
 
 #### Source
 
-[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/timeoutError.ts#L11)
+[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L11)
 
 ***
 
@@ -124,7 +124,7 @@ Can be `undefined` if not specified.
 
 #### Source
 
-[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/timeoutError.ts#L17)
+[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L17)
 
 ***
 

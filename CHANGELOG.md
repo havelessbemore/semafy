@@ -4,23 +4,24 @@
 
 ### What's New
 
-1.  Adds the static `ByteLength` class property, which represents the amount of memory in bytes
-    required by the class.
+1.  Adds the static `ByteLength` class property, which represents
+    the amount of memory in bytes required by the class.
 
-        ```javascript
-        new Mutex(new SharedArrayBuffer(Mutex.ByteLength));
-        ```
+    ```javascript
+    new Mutex(new SharedArrayBuffer(Mutex.ByteLength));
+    ```
 
-        Updated classes include:
-        - ConditionVariable
-        - CountingSemaphore
-        - Latch
-        - Mutex
-        - OnceFlag
-        - RecursiveMutex
-        - SharedMutex
-        - SharedTimedMutex
-        - TimedMutex
+    Updated classes include:
+
+    - ConditionVariable
+    - CountingSemaphore
+    - Latch
+    - Mutex
+    - OnceFlag
+    - RecursiveMutex
+    - SharedMutex
+    - SharedTimedMutex
+    - TimedMutex
 
 1.  Adds `bitOffset` validation to `OnceFlag`. Invalid values
     now throw a `RangeError` (e.g. when < 0 or >= 32).

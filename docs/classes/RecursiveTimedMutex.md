@@ -56,7 +56,7 @@ consider this possible variability in their applications.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:60](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L60)
+[src/mutexes/recursiveMutex.ts:60](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L60)
 
 ### new RecursiveTimedMutex()
 
@@ -89,7 +89,7 @@ A RangeError for any of the following:
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:70](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L70)
+[src/mutexes/recursiveMutex.ts:70](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L70)
 
 ## Properties
 
@@ -105,7 +105,7 @@ The number of locks acquired by the agent.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:53](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L53)
+[src/mutexes/recursiveMutex.ts:53](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L53)
 
 ***
 
@@ -121,7 +121,7 @@ The shared atomic memory for the mutex.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:58](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L58)
+[src/mutexes/recursiveMutex.ts:58](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L58)
 
 ***
 
@@ -137,7 +137,7 @@ The size in bytes of the mutex.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:43](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L43)
+[src/mutexes/recursiveMutex.ts:43](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L43)
 
 ***
 
@@ -153,7 +153,7 @@ The maximum levels of recursive ownership.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:48](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L48)
+[src/mutexes/recursiveMutex.ts:48](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L48)
 
 ## Accessors
 
@@ -170,7 +170,7 @@ and primary storage for shared data.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:83](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L83)
+[src/mutexes/recursiveMutex.ts:83](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L83)
 
 ***
 
@@ -186,7 +186,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:87](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L87)
+[src/mutexes/recursiveMutex.ts:87](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L87)
 
 ***
 
@@ -202,7 +202,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:91](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L91)
+[src/mutexes/recursiveMutex.ts:91](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L91)
 
 ***
 
@@ -218,7 +218,7 @@ Indicates whether the current agent owns the lock.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:95](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L95)
+[src/mutexes/recursiveMutex.ts:95](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L95)
 
 ## Methods
 
@@ -244,7 +244,7 @@ A RangeError If the mutex is already locked the maximum amount of times.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:102](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L102)
+[src/mutexes/recursiveMutex.ts:102](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L102)
 
 ***
 
@@ -270,7 +270,7 @@ A RangeError If the mutex is already locked the maximum amount of times.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:122](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L122)
+[src/mutexes/recursiveMutex.ts:122](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L122)
 
 ***
 
@@ -298,7 +298,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:139](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L139)
+[src/mutexes/recursiveMutex.ts:139](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L139)
 
 ***
 
@@ -324,7 +324,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/mutexes/recursiveTimedMutex.ts:40](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveTimedMutex.ts#L40)
+[src/mutexes/recursiveTimedMutex.ts:40](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveTimedMutex.ts#L40)
 
 ***
 
@@ -350,7 +350,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/mutexes/recursiveTimedMutex.ts:44](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveTimedMutex.ts#L44)
+[src/mutexes/recursiveTimedMutex.ts:44](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveTimedMutex.ts#L44)
 
 ***
 
@@ -378,7 +378,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:143](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L143)
+[src/mutexes/recursiveMutex.ts:143](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L143)
 
 ***
 
@@ -404,7 +404,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/mutexes/recursiveTimedMutex.ts:48](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveTimedMutex.ts#L48)
+[src/mutexes/recursiveTimedMutex.ts:48](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveTimedMutex.ts#L48)
 
 ***
 
@@ -430,7 +430,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/mutexes/recursiveTimedMutex.ts:72](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveTimedMutex.ts#L72)
+[src/mutexes/recursiveTimedMutex.ts:72](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveTimedMutex.ts#L72)
 
 ***
 
@@ -456,7 +456,7 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:162](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L162)
+[src/mutexes/recursiveMutex.ts:162](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L162)
 
 ***
 
@@ -482,4 +482,4 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 #### Source
 
-[src/mutexes/recursiveMutex.ts:169](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/mutexes/recursiveMutex.ts#L169)
+[src/mutexes/recursiveMutex.ts:169](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/recursiveMutex.ts#L169)
