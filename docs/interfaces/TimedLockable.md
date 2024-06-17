@@ -26,7 +26,7 @@ Indicates whether the current agent owns the lock.
 
 #### Source
 
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/basicLockable.ts#L9)
+[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/basicLockable.ts#L9)
 
 ## Methods
 
@@ -47,7 +47,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Source
 
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/basicLockable.ts#L15)
+[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/basicLockable.ts#L15)
 
 ***
 
@@ -71,7 +71,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/lockable.ts#L14)
+[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/lockable.ts#L14)
 
 ***
 
@@ -93,7 +93,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Source
 
-[src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/timedLockable.ts#L12)
+[src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/timedLockable.ts#L12)
 
 ***
 
@@ -115,7 +115,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Source
 
-[src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/timedLockable.ts#L19)
+[src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/timedLockable.ts#L19)
 
 ***
 
@@ -135,4 +135,4 @@ Releases the lock held by the current agent.
 
 #### Source
 
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/basicLockable.ts#L20)
+[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/basicLockable.ts#L20)

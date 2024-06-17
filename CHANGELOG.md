@@ -4,27 +4,26 @@
 
 ### What's New
 
-1. Adds the static `ByteLength` class property, which represents the amount of memory in bytes
-required by the class.
-    
-    ```javascript
-    new Mutex(new SharedArrayBuffer(Mutex.ByteLength));
-    ```
+1.  Adds the static `ByteLength` class property, which represents the amount of memory in bytes
+    required by the class.
 
-    Updated classes include:
-    - ConditionVariable
-    - CountingSemaphore
-    - Latch
-    - Mutex
-    - OnceFlag
-    - RecursiveMutex
-    - SharedMutex
-    - SharedTimedMutex
-    - TimedMutex
+        ```javascript
+        new Mutex(new SharedArrayBuffer(Mutex.ByteLength));
+        ```
 
+        Updated classes include:
+        - ConditionVariable
+        - CountingSemaphore
+        - Latch
+        - Mutex
+        - OnceFlag
+        - RecursiveMutex
+        - SharedMutex
+        - SharedTimedMutex
+        - TimedMutex
 
-1. Adds `bitOffset` validation to `OnceFlag`. Invalid values 
-now throw a `RangeError` (e.g. when < 0 or >= 32).
+1.  Adds `bitOffset` validation to `OnceFlag`. Invalid values
+    now throw a `RangeError` (e.g. when < 0 or >= 32).
 
 ## [2.1.0](https://github.com/havelessbemore/semafy/compare/v2.0.7...v2.1.0) (2024-06-13)
 

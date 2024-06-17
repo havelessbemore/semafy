@@ -36,7 +36,7 @@ A RangeError if `desired` is negative or exceeds [CountingSemaphore.Max](Countin
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:39](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L39)
+[src/semaphores/countingSemaphore.ts:44](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L44)
 
 ### new CountingSemaphore()
 
@@ -46,19 +46,26 @@ A RangeError if `desired` is negative or exceeds [CountingSemaphore.Max](Countin
 
 • **sharedBuffer**: `SharedArrayBuffer`
 
-The shared buffer that backs the semaphore.
+The SharedArrayBuffer that backs the semaphore.
 
 • **byteOffset?**: `number`
 
-The byte offset within the shared buffer. Defaults to `0`.
+The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Returns
 
 [`CountingSemaphore`](CountingSemaphore.md)
 
+#### Throws
+
+A RangeError for any of the following:
+ - `byteOffset` is negative or not a multiple of `4`.
+ - The byte length of `sharedBuffer` is less than [ByteLength](CountingSemaphore.md#bytelength).
+ - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](CountingSemaphore.md#bytelength).
+
 #### Source
 
-[src/semaphores/countingSemaphore.ts:44](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L44)
+[src/semaphores/countingSemaphore.ts:54](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L54)
 
 ## Properties
 
@@ -68,7 +75,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:29](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L29)
+[src/semaphores/countingSemaphore.ts:34](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L34)
 
 ***
 
@@ -78,7 +85,7 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:30](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L30)
+[src/semaphores/countingSemaphore.ts:35](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L35)
 
 ***
 
@@ -88,7 +95,19 @@ The byte offset within the shared buffer. Defaults to `0`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:31](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L31)
+[src/semaphores/countingSemaphore.ts:36](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L36)
+
+***
+
+### ByteLength
+
+> `static` `readonly` **ByteLength**: `number`
+
+The size in bytes of the semaphore.
+
+#### Source
+
+[src/semaphores/countingSemaphore.ts:27](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L27)
 
 ***
 
@@ -100,7 +119,7 @@ The maximum possible value of the internal counter
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:27](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L27)
+[src/semaphores/countingSemaphore.ts:32](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L32)
 
 ## Accessors
 
@@ -117,7 +136,7 @@ and primary storage for shared data.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:81](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L81)
+[src/semaphores/countingSemaphore.ts:91](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L91)
 
 ***
 
@@ -133,7 +152,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:85](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L85)
+[src/semaphores/countingSemaphore.ts:95](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L95)
 
 ***
 
@@ -149,7 +168,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:89](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L89)
+[src/semaphores/countingSemaphore.ts:99](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L99)
 
 ## Methods
 
@@ -167,7 +186,7 @@ A promise that resolves when acquisition is successful.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:98](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L98)
+[src/semaphores/countingSemaphore.ts:108](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L108)
 
 ***
 
@@ -193,7 +212,7 @@ If `count` is negative or would cause the semaphore to overflow.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:184](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L184)
+[src/semaphores/countingSemaphore.ts:194](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L194)
 
 ***
 
@@ -211,7 +230,7 @@ A promise resolving to `true` if successful, otherwise `false`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:115](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L115)
+[src/semaphores/countingSemaphore.ts:125](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L125)
 
 ***
 
@@ -236,7 +255,7 @@ A promise resolving to `true` if successful, otherwise `false`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:137](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L137)
+[src/semaphores/countingSemaphore.ts:147](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L147)
 
 ***
 
@@ -261,4 +280,4 @@ A promise resolved to `true` if succesful, otherwise `false`.
 
 #### Source
 
-[src/semaphores/countingSemaphore.ts:149](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/semaphores/countingSemaphore.ts#L149)
+[src/semaphores/countingSemaphore.ts:159](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/semaphores/countingSemaphore.ts#L159)

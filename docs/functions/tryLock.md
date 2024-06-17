@@ -44,4 +44,4 @@ while trying to roll back acquired locks. Details include:
 
 ## Source
 
-[src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/locks/tryLock.ts#L29)
+[src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/locks/tryLock.ts#L29)

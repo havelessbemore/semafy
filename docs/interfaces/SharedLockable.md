@@ -22,7 +22,7 @@ Indicates whether the current agent owns a shared lock.
 
 #### Source
 
-[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/sharedLockable.ts#L8)
+[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/sharedLockable.ts#L8)
 
 ## Methods
 
@@ -39,7 +39,7 @@ agent. If an exception is thrown, no lock is acquired.
 
 #### Source
 
-[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/sharedLockable.ts#L14)
+[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/sharedLockable.ts#L14)
 
 ***
 
@@ -59,7 +59,7 @@ is thrown, no lock is obtained.
 
 #### Source
 
-[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/sharedLockable.ts#L23)
+[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/sharedLockable.ts#L23)
 
 ***
 
@@ -75,4 +75,4 @@ Releases the shared lock held by the current agent.
 
 #### Source
 
-[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/types/sharedLockable.ts#L28)
+[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/types/sharedLockable.ts#L28)

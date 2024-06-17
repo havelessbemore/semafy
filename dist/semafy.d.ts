@@ -305,6 +305,10 @@ declare class TimeoutError extends Error {
  */
 declare class Mutex implements Lockable, SyncLockable, SharedResource {
     /**
+     * The size in bytes of the mutex.
+     */
+    static readonly ByteLength: number;
+    /**
      * Indicates whether the current agent owns the lock.
      */
     protected _isOwner: boolean;
@@ -316,6 +320,11 @@ declare class Mutex implements Lockable, SyncLockable, SharedResource {
     /**
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
      * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -369,6 +378,10 @@ declare class Mutex implements Lockable, SyncLockable, SharedResource {
  */
 declare class RecursiveMutex implements Lockable, SyncLockable, SharedResource {
     /**
+     * The size in bytes of the mutex.
+     */
+    static readonly ByteLength: number;
+    /**
      * The maximum levels of recursive ownership.
      */
     static readonly Max = 2147483647;
@@ -384,6 +397,11 @@ declare class RecursiveMutex implements Lockable, SyncLockable, SharedResource {
     /**
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
      * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -459,6 +477,10 @@ declare class RecursiveTimedMutex extends RecursiveMutex implements TimedLockabl
  */
 declare class ConditionVariable implements SharedResource {
     /**
+     * The size in bytes of the condition variable.
+     */
+    static readonly ByteLength: number;
+    /**
      * The shared atomic memory where the condition variable stores its state.
      */
     private _mem;
@@ -466,6 +488,11 @@ declare class ConditionVariable implements SharedResource {
     /**
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the condition variable.
      * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -588,6 +615,10 @@ declare class TimedMutex extends Mutex implements TimedLockable, SyncTimedLockab
  * 1. {@link https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2406.html | Alexander Terekhov, Howard Hinnant. (2007-09-09). Mutex, Lock, Condition Variable Rationale}
  */
 declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
+    /**
+     * The size in bytes of the mutex.
+     */
+    static readonly ByteLength: number;
     protected _gate1: ConditionVariable;
     protected _gate2: ConditionVariable;
     protected _isReader: boolean;
@@ -596,8 +627,13 @@ declare class SharedMutex implements Lockable, SharedLockable, SharedResource {
     protected _mutex: TimedMutex;
     constructor();
     /**
-     * @param sharedBuffer The shared buffer that backs the mutex.
-     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+     * @param sharedBuffer The {@link SharedArrayBuffer} that backs the mutex.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -823,6 +859,10 @@ declare class UniqueLock implements TimedLockable, SyncTimedLockable {
  */
 declare class OnceFlag implements SharedResource {
     /**
+     * The size in bytes of the flag.
+     */
+    static readonly ByteLength: number;
+    /**
      * The bit within the shared memory used to set the flag.
      */
     protected _bit: number;
@@ -839,7 +879,13 @@ declare class OnceFlag implements SharedResource {
      * @param sharedBuffer The {@link SharedArrayBuffer} that backs the flag.
      * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
      * @param bitOffset The bit offset within the shared memory location. Defaults to `0`.
-     * This allows for different bits of a single integer to be used by different flags.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
+     *  - `bitOffset` is negative.
+     *  - `bitOffset` is greater than or equal to `32`.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number, bitOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -897,6 +943,10 @@ declare function callOnce<T>(flag: OnceFlag, callbackfn: () => T): T | undefined
  */
 declare class CountingSemaphore implements SharedResource {
     /**
+     * The size in bytes of the semaphore.
+     */
+    static readonly ByteLength: number;
+    /**
      * The maximum possible value of the internal counter
      */
     static readonly Max = 2147483647;
@@ -911,8 +961,13 @@ declare class CountingSemaphore implements SharedResource {
      */
     constructor(desired: number);
     /**
-     * @param sharedBuffer The shared buffer that backs the semaphore.
-     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+     * @param sharedBuffer The {@link SharedArrayBuffer} that backs the semaphore.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     get buffer(): SharedArrayBuffer;
@@ -967,6 +1022,10 @@ declare class CountingSemaphore implements SharedResource {
  */
 declare class Latch {
     /**
+     * The size in bytes of the latch.
+     */
+    static readonly ByteLength: number;
+    /**
      * The maximum possible value of the internal counter.
      */
     static readonly Max = 2147483647;
@@ -990,8 +1049,13 @@ declare class Latch {
      */
     constructor(expected: number);
     /**
-     * @param sharedBuffer The shared buffer that backs the latch.
-     * @param byteOffset The byte offset within the shared buffer. Defaults to `0`.
+     * @param sharedBuffer The {@link SharedArrayBuffer} that backs the latch.
+     * @param byteOffset The byte offset within `sharedBuffer`. Defaults to `0`.
+     *
+     * @throws A {@link RangeError} for any of the following:
+     *  - `byteOffset` is negative or not a multiple of `4`.
+     *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
+     *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
      */
     constructor(sharedBuffer: SharedArrayBuffer, byteOffset?: number);
     /**

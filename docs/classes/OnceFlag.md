@@ -24,7 +24,7 @@ Represents a flag that can be set exactly once across different execution agents
 
 #### Source
 
-[src/callOnce/onceFlag.ts:20](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L20)
+[src/callOnce/onceFlag.ts:25](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L25)
 
 ### new OnceFlag()
 
@@ -43,15 +43,23 @@ The byte offset within `sharedBuffer`. Defaults to `0`.
 • **bitOffset?**: `number`
 
 The bit offset within the shared memory location. Defaults to `0`.
-This allows for different bits of a single integer to be used by different flags.
 
 #### Returns
 
 [`OnceFlag`](OnceFlag.md)
 
+#### Throws
+
+A RangeError for any of the following:
+ - `byteOffset` is negative or not a multiple of `4`.
+ - The byte length of `sharedBuffer` is less than [ByteLength](OnceFlag.md#bytelength).
+ - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](OnceFlag.md#bytelength).
+ - `bitOffset` is negative.
+ - `bitOffset` is greater than or equal to `32`.
+
 #### Source
 
-[src/callOnce/onceFlag.ts:27](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L27)
+[src/callOnce/onceFlag.ts:38](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L38)
 
 ## Properties
 
@@ -63,7 +71,7 @@ The bit within the shared memory used to set the flag.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:10](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L10)
+[src/callOnce/onceFlag.ts:15](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L15)
 
 ***
 
@@ -75,7 +83,7 @@ The offset for the bit within the 32-bit integer of the shared memory.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:14](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L14)
+[src/callOnce/onceFlag.ts:19](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L19)
 
 ***
 
@@ -87,7 +95,19 @@ The shared memory buffer used for the flag.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:18](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L18)
+[src/callOnce/onceFlag.ts:23](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L23)
+
+***
+
+### ByteLength
+
+> `static` `readonly` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
+
+The size in bytes of the flag.
+
+#### Source
+
+[src/callOnce/onceFlag.ts:10](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L10)
 
 ## Accessors
 
@@ -103,7 +123,7 @@ The bit offset for the flag within shared memory, relative to `byteOffset`.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:57](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L57)
+[src/callOnce/onceFlag.ts:80](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L80)
 
 ***
 
@@ -120,7 +140,7 @@ and primary storage for shared data.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:42](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L42)
+[src/callOnce/onceFlag.ts:65](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L65)
 
 ***
 
@@ -136,7 +156,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:46](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L46)
+[src/callOnce/onceFlag.ts:69](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L69)
 
 ***
 
@@ -152,7 +172,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:50](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L50)
+[src/callOnce/onceFlag.ts:73](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L73)
 
 ## Methods
 
@@ -170,7 +190,7 @@ Resets the flag state to `false`.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:66](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L66)
+[src/callOnce/onceFlag.ts:89](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L89)
 
 ***
 
@@ -188,7 +208,7 @@ Checks if the flag is currently set.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:75](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L75)
+[src/callOnce/onceFlag.ts:98](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L98)
 
 ***
 
@@ -206,4 +226,4 @@ Sets the flag to `true`. This operation is atomic and thread-safe.
 
 #### Source
 
-[src/callOnce/onceFlag.ts:84](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/callOnce/onceFlag.ts#L84)
+[src/callOnce/onceFlag.ts:107](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/callOnce/onceFlag.ts#L107)

@@ -41,7 +41,7 @@ An optional custom error message.
 
 #### Source
 
-[src/errors/lockError.ts:10](https://github.com/havelessbemore/semafy/blob/c1d56be99a331ecbe5fe1625f5e190ff01b04eee/src/errors/lockError.ts#L10)
+[src/errors/lockError.ts:10](https://github.com/havelessbemore/semafy/blob/24a3ea8dcb70f91d58fc18f17dc96fd55aaef829/src/errors/lockError.ts#L10)
 
 ## Properties
 

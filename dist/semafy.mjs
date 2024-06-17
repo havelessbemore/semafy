@@ -28,20 +28,20 @@
 const CV_OK = "ok";
 const CV_TIMED_OUT = "timed-out";
 
-const ERR_TIMEOUT = "Operation timed out.";
+const ERR_TIMEOUT = "Operation timed out";
 const ERR_NEGATIVE_VALUE = "Value cannot be negative";
 const ERR_OVERFLOW = "Cannot exceed maximum value";
 const ERR_LATCH_INPUT_UNDERFLOW = "Operation not permitted. Latch decrement cannot be negative";
 const ERR_LATCH_INPUT_OVERFLOW = "Operation not permitted. Latch decrement cannot exceed current count";
 const ERR_CV_VALUE = "Unexpected value in shared memory location";
-const ERR_LOCK = "A lock has encountered an error.";
-const ERR_LOCK_OWNERSHIP = "Operation not permitted. Lock must be acquired first.";
-const ERR_LOCK_RELOCK = "Attempted relock of already acquired lock. Deadlock would occur.";
-const ERR_REC_MUTEX_OVERFLOW = "Operation not permitted. Additional lock would excee the RecursiveMutex's maximum levels of ownership.";
-const ERR_MULTI_LOCK = "Failed to acquire all locks.";
-const ERR_MULTI_UNLOCK = "Failed to unlock all locks.";
-const ERR_SEM_INPUT_NEG = "Operation not permitted. Semaphore release value cannot be negative.";
-const ERR_SEM_INPUT_OVERFLOW = "Operation not permitted. Semaphore release would cause overflow.";
+const ERR_LOCK = "A lock has encountered an error";
+const ERR_LOCK_OWNERSHIP = "Operation not permitted. Lock must be acquired first";
+const ERR_LOCK_RELOCK = "Attempted relock of already acquired lock. Deadlock would occur";
+const ERR_REC_MUTEX_OVERFLOW = "Operation not permitted. Additional lock would exceed the maximum levels of ownership";
+const ERR_MULTI_LOCK = "Failed to acquire all locks";
+const ERR_MULTI_UNLOCK = "Failed to unlock all locks";
+const ERR_SEM_INPUT_NEG = "Operation not permitted. Semaphore release value cannot be negative";
+const ERR_SEM_INPUT_OVERFLOW = "Operation not permitted. Semaphore release would cause overflow";
 
 class LockError extends Error {
   /**
@@ -146,7 +146,7 @@ var __defProp$9 = Object.defineProperty;
 var __defNormalProp$9 = (obj, key, value) => key in obj ? __defProp$9(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$9 = (obj, key, value) => __defNormalProp$9(obj, typeof key !== "symbol" ? key + "" : key, value);
 const LOCK_BIT$1 = 1;
-class Mutex {
+const _Mutex = class _Mutex {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * Indicates whether the current agent owns the lock.
@@ -156,7 +156,7 @@ class Mutex {
      * The shared memory for the mutex.
      */
     __publicField$9(this, "_mem");
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(_Mutex.ByteLength));
     this._isOwner = false;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.and(this._mem, 0, LOCK_BIT$1);
@@ -226,7 +226,12 @@ class Mutex {
     this._isOwner = false;
     Atomics.notify(this._mem, 0);
   }
-}
+};
+/**
+ * The size in bytes of the mutex.
+ */
+__publicField$9(_Mutex, "ByteLength", Int32Array.BYTES_PER_ELEMENT);
+let Mutex = _Mutex;
 
 const MAX_INT32_VALUE = 2147483647;
 
@@ -244,7 +249,7 @@ const _RecursiveMutex = class _RecursiveMutex {
      * The shared atomic memory for the mutex.
      */
     __publicField$8(this, "_mem");
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(_RecursiveMutex.ByteLength));
     this._depth = 0;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.and(this._mem, 0, LOCK_BIT);
@@ -325,6 +330,10 @@ const _RecursiveMutex = class _RecursiveMutex {
   }
 };
 /**
+ * The size in bytes of the mutex.
+ */
+__publicField$8(_RecursiveMutex, "ByteLength", Int32Array.BYTES_PER_ELEMENT);
+/**
  * The maximum levels of recursive ownership.
  */
 __publicField$8(_RecursiveMutex, "Max", MAX_INT32_VALUE);
@@ -394,14 +403,14 @@ function lockGuardSync(mutex, callbackfn) {
 
 var __defProp$7 = Object.defineProperty;
 var __defNormalProp$7 = (obj, key, value) => key in obj ? __defProp$7(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, key + "" , value);
-class ConditionVariable {
+var __publicField$7 = (obj, key, value) => __defNormalProp$7(obj, typeof key !== "symbol" ? key + "" : key, value);
+const _ConditionVariable = class _ConditionVariable {
   constructor(sharedBuffer, byteOffset = 0) {
     /**
      * The shared atomic memory where the condition variable stores its state.
      */
     __publicField$7(this, "_mem");
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(_ConditionVariable.ByteLength));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
     Atomics.store(this._mem, 0, 0);
   }
@@ -498,7 +507,12 @@ class ConditionVariable {
   async waitUntil(mutex, timestamp) {
     return this.waitFor(mutex, timestamp - performance.now());
   }
-}
+};
+/**
+ * The size in bytes of the condition variable.
+ */
+__publicField$7(_ConditionVariable, "ByteLength", Int32Array.BYTES_PER_ELEMENT);
+let ConditionVariable = _ConditionVariable;
 
 class TimedMutex extends Mutex {
   async tryLockFor(timeout) {
@@ -541,7 +555,7 @@ var __defNormalProp$6 = (obj, key, value) => key in obj ? __defProp$6(obj, key, 
 var __publicField$6 = (obj, key, value) => __defNormalProp$6(obj, typeof key !== "symbol" ? key + "" : key, value);
 const WRITE_BIT = 1 << 31;
 const READ_BITS = ~WRITE_BIT;
-class SharedMutex {
+const _SharedMutex = class _SharedMutex {
   constructor(sharedBuffer, byteOffset = 0) {
     __publicField$6(this, "_gate1");
     __publicField$6(this, "_gate2");
@@ -550,7 +564,7 @@ class SharedMutex {
     __publicField$6(this, "_mem");
     __publicField$6(this, "_mutex");
     const bInt32 = Int32Array.BYTES_PER_ELEMENT;
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(4 * bInt32));
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(_SharedMutex.ByteLength));
     this._mem = new Int32Array(sharedBuffer, byteOffset, 4);
     byteOffset += bInt32;
     this._mutex = new TimedMutex(sharedBuffer, byteOffset);
@@ -674,7 +688,12 @@ class SharedMutex {
       }
     });
   }
-}
+};
+/**
+ * The size in bytes of the mutex.
+ */
+__publicField$6(_SharedMutex, "ByteLength", 4 * Int32Array.BYTES_PER_ELEMENT);
+let SharedMutex = _SharedMutex;
 
 class SharedTimedMutex extends SharedMutex {
   async tryLockFor(timeout) {
@@ -841,9 +860,9 @@ class MultiLock {
     const tIsOwner = this._isOwner;
     this._isOwner = other._isOwner;
     other._isOwner = tIsOwner;
-    const tMutex = this.mutexes;
+    const tMutexes = this.mutexes;
     this.mutexes = other.mutexes;
-    other.mutexes = tMutex;
+    other.mutexes = tMutexes;
   }
   async tryLock() {
     const res = await tryLock(...this.mutexes);
@@ -974,7 +993,7 @@ function callOnce(flag, callbackfn) {
 var __defProp$2 = Object.defineProperty;
 var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$2 = (obj, key, value) => __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
-class OnceFlag {
+const _OnceFlag = class _OnceFlag {
   constructor(sharedBuffer, byteOffset = 0, bitOffset = 0) {
     /**
      * The bit within the shared memory used to set the flag.
@@ -988,7 +1007,17 @@ class OnceFlag {
      * The shared memory buffer used for the flag.
      */
     __publicField$2(this, "_mem");
-    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+    sharedBuffer ?? (sharedBuffer = new SharedArrayBuffer(_OnceFlag.ByteLength));
+    if (bitOffset < 0) {
+      throw new RangeError("Invalid bit offset", {
+        cause: `${bitOffset} < 0`
+      });
+    }
+    if (bitOffset >= 32) {
+      throw new RangeError("Invalid bit offset", {
+        cause: `${bitOffset} >= 32`
+      });
+    }
     this._bit = 1 << bitOffset;
     this._bitOffset = bitOffset;
     this._mem = new Int32Array(sharedBuffer, byteOffset, 1);
@@ -1032,7 +1061,12 @@ class OnceFlag {
   set() {
     return (Atomics.or(this._mem, 0, this._bit) & this._bit) === 0;
   }
-}
+};
+/**
+ * The size in bytes of the flag.
+ */
+__publicField$2(_OnceFlag, "ByteLength", Int32Array.BYTES_PER_ELEMENT);
+let OnceFlag = _OnceFlag;
 
 var __defProp$1 = Object.defineProperty;
 var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -1062,7 +1096,7 @@ const _CountingSemaphore = class _CountingSemaphore {
         cause: `${desired} > ${_CountingSemaphore.Max}`
       });
     }
-    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    sharedBuffer = new SharedArrayBuffer(_CountingSemaphore.ByteLength);
     this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new TimedMutex(sharedBuffer, byteOffset);
@@ -1168,6 +1202,10 @@ const _CountingSemaphore = class _CountingSemaphore {
   }
 };
 /**
+ * The size in bytes of the semaphore.
+ */
+__publicField$1(_CountingSemaphore, "ByteLength", 3 * Int32Array.BYTES_PER_ELEMENT);
+/**
  * The maximum possible value of the internal counter
  */
 __publicField$1(_CountingSemaphore, "Max", MAX_INT32_VALUE);
@@ -1210,7 +1248,7 @@ const _Latch = class _Latch {
         cause: `${expected} > ${_Latch.Max}`
       });
     }
-    sharedBuffer = new SharedArrayBuffer(3 * bInt32);
+    sharedBuffer = new SharedArrayBuffer(_Latch.ByteLength);
     this._mem = new Int32Array(sharedBuffer, 0, 3);
     byteOffset += bInt32;
     this._mutex = new Mutex(sharedBuffer, byteOffset);
@@ -1301,6 +1339,10 @@ const _Latch = class _Latch {
     });
   }
 };
+/**
+ * The size in bytes of the latch.
+ */
+__publicField(_Latch, "ByteLength", 3 * Int32Array.BYTES_PER_ELEMENT);
 /**
  * The maximum possible value of the internal counter.
  */
