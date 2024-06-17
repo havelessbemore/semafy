@@ -7,7 +7,11 @@ import tseslint from "typescript-eslint";
 /** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */
 export default tseslint.config(
   {
-    ignores: ["dist", "docs"],
+    // Define global ignores. Must be used without
+    // any other keys in the configuration object.
+    ignores: ["dist/", "docs/"],
+  },
+  {
     languageOptions: {
       globals: {
         ...globals.browser,
