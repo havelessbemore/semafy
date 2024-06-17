@@ -33,7 +33,7 @@ export class OnceFlag implements SharedResource {
    *  - The byte length of `sharedBuffer` is less than {@link ByteLength}.
    *  - The space in `sharedBuffer` starting from `byteOffset` is less than {@link ByteLength}.
    *  - `bitOffset` is negative.
-   *  - `bitOffset` is greater than or equal to `4`.
+   *  - `bitOffset` is greater than or equal to `32`.
    */
   constructor(
     sharedBuffer: SharedArrayBuffer,
@@ -50,9 +50,9 @@ export class OnceFlag implements SharedResource {
         cause: `${bitOffset} < 0`,
       });
     }
-    if (bitOffset >= Int32Array.BYTES_PER_ELEMENT) {
+    if (bitOffset >= 32) {
       throw new RangeError("Invalid bit offset", {
-        cause: `${bitOffset} >= ${Int32Array.BYTES_PER_ELEMENT}`,
+        cause: `${bitOffset} >= 32`,
       });
     }
 
