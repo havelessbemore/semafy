@@ -36,9 +36,9 @@ The basic lockable to associate.
 
 [`UniqueLock`](UniqueLock.md)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:27](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L27)
+[src/locks/uniqueLock.ts:27](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L27)
 
 ## Properties
 
@@ -48,9 +48,9 @@ The basic lockable to associate.
 
 The associated basic lockable.
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:22](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L22)
+[src/locks/uniqueLock.ts:22](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L22)
 
 ## Accessors
 
@@ -64,9 +64,13 @@ Indicates whether the current agent owns the lock.
 
 `boolean`
 
-#### Source
+#### Implementation of
 
-[src/locks/uniqueLock.ts:31](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L31)
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`ownsLock`](../interfaces/SyncTimedLockable.md#ownslock)
+
+#### Defined in
+
+[src/locks/uniqueLock.ts:31](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L31)
 
 ## Methods
 
@@ -85,9 +89,9 @@ If an exception is thrown, no lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`lock`](../interfaces/TimedLockable.md#lock)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:35](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L35)
+[src/locks/uniqueLock.ts:35](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L35)
 
 ***
 
@@ -106,9 +110,9 @@ If an exception is thrown, no lock is acquired.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`lockSync`](../interfaces/SyncTimedLockable.md#locksync)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:39](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L39)
+[src/locks/uniqueLock.ts:39](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L39)
 
 ***
 
@@ -126,9 +130,9 @@ Exchanges the internal states of the unique locks.
 
 `void`
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:46](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L46)
+[src/locks/uniqueLock.ts:46](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L46)
 
 ***
 
@@ -150,9 +154,9 @@ is thrown, no lock is obtained.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLock`](../interfaces/TimedLockable.md#trylock)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:52](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L52)
+[src/locks/uniqueLock.ts:52](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L52)
 
 ***
 
@@ -176,9 +180,9 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:60](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L60)
+[src/locks/uniqueLock.ts:60](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L60)
 
 ***
 
@@ -202,9 +206,9 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockForSync`](../interfaces/SyncTimedLockable.md#trylockforsync)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:64](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L64)
+[src/locks/uniqueLock.ts:64](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L64)
 
 ***
 
@@ -226,9 +230,9 @@ is thrown, no lock is obtained.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockSync`](../interfaces/SyncTimedLockable.md#trylocksync)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:56](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L56)
+[src/locks/uniqueLock.ts:56](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L56)
 
 ***
 
@@ -252,9 +256,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:68](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L68)
+[src/locks/uniqueLock.ts:68](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L68)
 
 ***
 
@@ -278,9 +282,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockUntilSync`](../interfaces/SyncTimedLockable.md#trylockuntilsync)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:72](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L72)
+[src/locks/uniqueLock.ts:72](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L72)
 
 ***
 
@@ -298,9 +302,9 @@ Releases the lock held by the current agent.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`unlock`](../interfaces/TimedLockable.md#unlock)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:76](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L76)
+[src/locks/uniqueLock.ts:76](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L76)
 
 ***
 
@@ -318,6 +322,6 @@ Releases the lock held by the current agent.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`unlockSync`](../interfaces/SyncTimedLockable.md#unlocksync)
 
-#### Source
+#### Defined in
 
-[src/locks/uniqueLock.ts:80](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/uniqueLock.ts#L80)
+[src/locks/uniqueLock.ts:80](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/uniqueLock.ts#L80)

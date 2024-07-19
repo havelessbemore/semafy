@@ -1,9 +1,11 @@
+import { createRequire } from "node:module";
+
 import { RollupOptions } from "rollup";
 import dts from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
 import license, { Options as LicenseOptions } from "rollup-plugin-license";
 
-import pkg from "./package.json" with { type: "json" };
+const pkg = createRequire(import.meta.url)("./package.json");
 
 function bundle(config: RollupOptions): RollupOptions {
   return {

@@ -1377,4 +1377,4 @@ exports.lock = lock;
 exports.lockGuard = lockGuard;
 exports.lockGuardSync = lockGuardSync;
 exports.tryLock = tryLock;
-//# sourceMappingURL=semafy.js.map
+//# sourceMappingURL=semafy.cjs.map

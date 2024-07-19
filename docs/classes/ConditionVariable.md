@@ -26,9 +26,9 @@ Behavior is undefined if:
 
 [`ConditionVariable`](ConditionVariable.md)
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:31](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L31)
+[src/condVars/conditionVariable.ts:31](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L31)
 
 ### new ConditionVariable()
 
@@ -55,33 +55,21 @@ A RangeError for any of the following:
  - The byte length of `sharedBuffer` is less than [ByteLength](ConditionVariable.md#bytelength).
  - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](ConditionVariable.md#bytelength).
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:41](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L41)
+[src/condVars/conditionVariable.ts:41](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L41)
 
 ## Properties
 
-### \_mem
-
-> `private` **\_mem**: `Int32Array`
-
-The shared atomic memory where the condition variable stores its state.
-
-#### Source
-
-[src/condVars/conditionVariable.ts:29](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L29)
-
-***
-
 ### ByteLength
 
-> `static` `readonly` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
+> `readonly` `static` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
 
 The size in bytes of the condition variable.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:24](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L24)
+[src/condVars/conditionVariable.ts:24](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L24)
 
 ## Accessors
 
@@ -96,9 +84,13 @@ and primary storage for shared data.
 
 `SharedArrayBuffer`
 
-#### Source
+#### Implementation of
 
-[src/condVars/conditionVariable.ts:53](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L53)
+[`SharedResource`](../interfaces/SharedResource.md).[`buffer`](../interfaces/SharedResource.md#buffer)
+
+#### Defined in
+
+[src/condVars/conditionVariable.ts:53](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L53)
 
 ***
 
@@ -112,9 +104,13 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 `number`
 
-#### Source
+#### Implementation of
 
-[src/condVars/conditionVariable.ts:57](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L57)
+[`SharedResource`](../interfaces/SharedResource.md).[`byteLength`](../interfaces/SharedResource.md#bytelength)
+
+#### Defined in
+
+[src/condVars/conditionVariable.ts:57](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L57)
 
 ***
 
@@ -128,9 +124,13 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 `number`
 
-#### Source
+#### Implementation of
 
-[src/condVars/conditionVariable.ts:61](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L61)
+[`SharedResource`](../interfaces/SharedResource.md).[`byteOffset`](../interfaces/SharedResource.md#byteoffset)
+
+#### Defined in
+
+[src/condVars/conditionVariable.ts:61](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L61)
 
 ## Methods
 
@@ -152,9 +152,9 @@ The number of agents to notify.
 
 The number of agents that were notified.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:72](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L72)
+[src/condVars/conditionVariable.ts:72](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L72)
 
 ***
 
@@ -170,9 +170,9 @@ Notify all waiting agents that are blocked on this condition variable.
 
 The number of agents that were notified.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:81](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L81)
+[src/condVars/conditionVariable.ts:81](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L81)
 
 ***
 
@@ -188,9 +188,9 @@ Notify one waiting agent that is blocked on this condition variable.
 
 The number of agents that were notified.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:90](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L90)
+[src/condVars/conditionVariable.ts:90](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L90)
 
 ***
 
@@ -220,9 +220,9 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 A RangeError If the shared memory data is unexpected.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:104](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L104)
+[src/condVars/conditionVariable.ts:104](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L104)
 
 ***
 
@@ -258,9 +258,9 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 A RangeError If the shared memory data is unexpected.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:121](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L121)
+[src/condVars/conditionVariable.ts:121](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L121)
 
 ***
 
@@ -296,6 +296,6 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 A RangeError If the shared memory data is unexpected.
 
-#### Source
+#### Defined in
 
-[src/condVars/conditionVariable.ts:158](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/condVars/conditionVariable.ts#L158)
+[src/condVars/conditionVariable.ts:158](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/condVars/conditionVariable.ts#L158)

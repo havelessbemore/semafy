@@ -18,7 +18,6 @@ This project is governed by the [Code of Conduct](./CODE_OF_CONDUCT.md). By cont
 - `npm run lint`: Check styleguide adherence
 - `npm run format`: Automatically adjust your code to the styleguide.
 - `npm run build`: Build the source
-- `npm run prepublish`: Prepare the library for release
 
 ### Reporting Issues
 

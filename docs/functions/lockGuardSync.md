@@ -11,7 +11,7 @@
 Acquires the mutex and executes the provided callback, automatically
 unlocking afterwards. Blocks until the lock is available.
 
-## Type parameters
+## Type Parameters
 
 • **T**
 
@@ -31,6 +31,6 @@ The callback function.
 
 The return value of `callbackfn`.
 
-## Source
+## Defined in
 
-[src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/locks/lockGuard.ts#L37)
+[src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/locks/lockGuard.ts#L37)

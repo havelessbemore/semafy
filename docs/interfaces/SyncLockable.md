@@ -28,9 +28,9 @@ Indicates whether the current agent owns the lock.
 
 [`SyncBasicLockable`](SyncBasicLockable.md).[`ownsLock`](SyncBasicLockable.md#ownslock)
 
-#### Source
+#### Defined in
 
-[src/types/sync/syncBasicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sync/syncBasicLockable.ts#L9)
+[src/types/sync/syncBasicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sync/syncBasicLockable.ts#L9)
 
 ## Methods
 
@@ -49,9 +49,9 @@ If an exception is thrown, no lock is acquired.
 
 [`SyncBasicLockable`](SyncBasicLockable.md).[`lockSync`](SyncBasicLockable.md#locksync)
 
-#### Source
+#### Defined in
 
-[src/types/sync/syncBasicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sync/syncBasicLockable.ts#L15)
+[src/types/sync/syncBasicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sync/syncBasicLockable.ts#L15)
 
 ***
 
@@ -69,9 +69,9 @@ is thrown, no lock is obtained.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Source
+#### Defined in
 
-[src/types/sync/syncLockable.ts:14](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sync/syncLockable.ts#L14)
+[src/types/sync/syncLockable.ts:14](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sync/syncLockable.ts#L14)
 
 ***
 
@@ -89,6 +89,6 @@ Releases the lock held by the current agent.
 
 [`SyncBasicLockable`](SyncBasicLockable.md).[`unlockSync`](SyncBasicLockable.md#unlocksync)
 
-#### Source
+#### Defined in
 
-[src/types/sync/syncBasicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sync/syncBasicLockable.ts#L20)
+[src/types/sync/syncBasicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sync/syncBasicLockable.ts#L20)

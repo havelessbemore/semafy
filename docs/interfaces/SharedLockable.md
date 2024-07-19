@@ -20,9 +20,9 @@ Provides shared blocking semantics for agents (i.e. main thread, workers).
 
 Indicates whether the current agent owns a shared lock.
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L8)
+[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L8)
 
 ## Methods
 
@@ -37,9 +37,9 @@ agent. If an exception is thrown, no lock is acquired.
 
 `Promise`\<`void`\>
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L14)
+[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L14)
 
 ***
 
@@ -57,9 +57,9 @@ is thrown, no lock is obtained.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L23)
+[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L23)
 
 ***
 
@@ -73,6 +73,6 @@ Releases the shared lock held by the current agent.
 
 `void` \| `Promise`\<`void`\>
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L28)
+[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L28)

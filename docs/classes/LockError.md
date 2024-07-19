@@ -39,9 +39,9 @@ An optional custom error message.
 
 `Error.constructor`
 
-#### Source
+#### Defined in
 
-[src/errors/lockError.ts:10](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/lockError.ts#L10)
+[src/errors/lockError.ts:10](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/lockError.ts#L10)
 
 ## Properties
 
@@ -53,7 +53,7 @@ An optional custom error message.
 
 `Error.cause`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
@@ -67,7 +67,7 @@ node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
 `Error.message`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1077
 
@@ -81,7 +81,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 `Error.name`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1076
 
@@ -95,7 +95,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 `Error.stack`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1078
 
@@ -107,10 +107,6 @@ node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 Optional override for formatting stack traces
 
-#### See
-
-https://v8.dev/docs/stack-trace-api#customizing-stack-traces
-
 #### Parameters
 
 • **err**: `Error`
@@ -121,11 +117,15 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 `any`
 
+#### See
+
+https://v8.dev/docs/stack-trace-api#customizing-stack-traces
+
 #### Inherited from
 
 `Error.prepareStackTrace`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:28
 
@@ -139,7 +139,7 @@ node\_modules/@types/node/globals.d.ts:28
 
 `Error.stackTraceLimit`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:30
 
@@ -165,6 +165,6 @@ Create .stack property on a target object
 
 `Error.captureStackTrace`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:21

@@ -24,9 +24,9 @@ Indicates whether the current agent owns a shared lock.
 
 [`SharedLockable`](SharedLockable.md).[`ownsSharedLock`](SharedLockable.md#ownssharedlock)
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L8)
+[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L8)
 
 ## Methods
 
@@ -45,9 +45,9 @@ agent. If an exception is thrown, no lock is acquired.
 
 [`SharedLockable`](SharedLockable.md).[`lockShared`](SharedLockable.md#lockshared)
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L14)
+[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L14)
 
 ***
 
@@ -69,9 +69,9 @@ is thrown, no lock is obtained.
 
 [`SharedLockable`](SharedLockable.md).[`tryLockShared`](SharedLockable.md#trylockshared)
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L23)
+[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L23)
 
 ***
 
@@ -91,9 +91,9 @@ Blocks for the provided duration or until a lock is acquired.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Source
+#### Defined in
 
-[src/types/sharedTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedTimedLockable.ts#L12)
+[src/types/sharedTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedTimedLockable.ts#L12)
 
 ***
 
@@ -113,9 +113,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Source
+#### Defined in
 
-[src/types/sharedTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedTimedLockable.ts#L19)
+[src/types/sharedTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedTimedLockable.ts#L19)
 
 ***
 
@@ -133,6 +133,6 @@ Releases the shared lock held by the current agent.
 
 [`SharedLockable`](SharedLockable.md).[`unlockShared`](SharedLockable.md#unlockshared)
 
-#### Source
+#### Defined in
 
-[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/sharedLockable.ts#L28)
+[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/sharedLockable.ts#L28)

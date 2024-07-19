@@ -32,9 +32,9 @@ An optional custom error message.
 
 [`LockError`](LockError.md).[`constructor`](LockError.md#constructors)
 
-#### Source
+#### Defined in
 
-[src/errors/ownershipError.ts:11](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/ownershipError.ts#L11)
+[src/errors/ownershipError.ts:11](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/ownershipError.ts#L11)
 
 ## Properties
 
@@ -46,7 +46,7 @@ An optional custom error message.
 
 [`LockError`](LockError.md).[`cause`](LockError.md#cause)
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
@@ -60,7 +60,7 @@ node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
 [`LockError`](LockError.md).[`message`](LockError.md#message)
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1077
 
@@ -74,7 +74,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 [`LockError`](LockError.md).[`name`](LockError.md#name)
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1076
 
@@ -88,7 +88,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 [`LockError`](LockError.md).[`stack`](LockError.md#stack)
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1078
 
@@ -100,10 +100,6 @@ node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 Optional override for formatting stack traces
 
-#### See
-
-https://v8.dev/docs/stack-trace-api#customizing-stack-traces
-
 #### Parameters
 
 • **err**: `Error`
@@ -114,11 +110,15 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 `any`
 
+#### See
+
+https://v8.dev/docs/stack-trace-api#customizing-stack-traces
+
 #### Inherited from
 
 [`LockError`](LockError.md).[`prepareStackTrace`](LockError.md#preparestacktrace)
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:28
 
@@ -132,7 +132,7 @@ node\_modules/@types/node/globals.d.ts:28
 
 [`LockError`](LockError.md).[`stackTraceLimit`](LockError.md#stacktracelimit)
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:30
 
@@ -158,6 +158,6 @@ Create .stack property on a target object
 
 [`LockError`](LockError.md).[`captureStackTrace`](LockError.md#capturestacktrace)
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:21

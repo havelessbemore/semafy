@@ -19,7 +19,7 @@ processes, such as initialization and cleanup routines.
 - If the flag is not set, the flag is set, the callback is executed, and the callback's
 result is returned.
 
-## Type parameters
+## Type Parameters
 
 • **T**
 
@@ -39,6 +39,6 @@ A function that will be called if the flag has not been set.
 
 The result of `callbackfn` if the flag was not previously set, otherwise `undefined`.
 
-## Source
+## Defined in
 
-[src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/callOnce/callOnce.ts#L20)
+[src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/callOnce/callOnce.ts#L20)

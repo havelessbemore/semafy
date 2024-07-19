@@ -40,9 +40,9 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 `Error.constructor`
 
-#### Source
+#### Defined in
 
-[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L24)
+[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/timeoutError.ts#L24)
 
 ## Properties
 
@@ -54,7 +54,7 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 `Error.cause`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
@@ -67,9 +67,9 @@ node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 Absolute time in milliseconds after which the timeout error was thrown.
 Can be `undefined` if not specified.
 
-#### Source
+#### Defined in
 
-[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L11)
+[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/timeoutError.ts#L11)
 
 ***
 
@@ -81,7 +81,7 @@ Can be `undefined` if not specified.
 
 `Error.message`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1077
 
@@ -95,7 +95,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 `Error.name`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1076
 
@@ -109,7 +109,7 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 `Error.stack`
 
-#### Source
+#### Defined in
 
 node\_modules/typescript/lib/lib.es5.d.ts:1078
 
@@ -122,9 +122,9 @@ node\_modules/typescript/lib/lib.es5.d.ts:1078
 Duration in milliseconds after which the timeout error was thrown.
 Can be `undefined` if not specified.
 
-#### Source
+#### Defined in
 
-[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/errors/timeoutError.ts#L17)
+[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/timeoutError.ts#L17)
 
 ***
 
@@ -133,10 +133,6 @@ Can be `undefined` if not specified.
 > `static` `optional` **prepareStackTrace**: (`err`, `stackTraces`) => `any`
 
 Optional override for formatting stack traces
-
-#### See
-
-https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Parameters
 
@@ -148,11 +144,15 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 `any`
 
+#### See
+
+https://v8.dev/docs/stack-trace-api#customizing-stack-traces
+
 #### Inherited from
 
 `Error.prepareStackTrace`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:28
 
@@ -166,7 +166,7 @@ node\_modules/@types/node/globals.d.ts:28
 
 `Error.stackTraceLimit`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:30
 
@@ -192,6 +192,6 @@ Create .stack property on a target object
 
 `Error.captureStackTrace`
 
-#### Source
+#### Defined in
 
 node\_modules/@types/node/globals.d.ts:21

@@ -51,9 +51,9 @@ consider this possible variability in their applications.
 
 [`Mutex`](Mutex.md).[`constructor`](Mutex.md#constructors)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:51](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L51)
+[src/mutexes/mutex.ts:51](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L51)
 
 ### new TimedMutex()
 
@@ -73,10 +73,6 @@ The byte offset within `sharedBuffer`. Defaults to `0`.
 
 [`TimedMutex`](TimedMutex.md)
 
-#### Inherited from
-
-[`Mutex`](Mutex.md).[`constructor`](Mutex.md#constructors)
-
 #### Throws
 
 A RangeError for any of the following:
@@ -84,9 +80,13 @@ A RangeError for any of the following:
  - The byte length of `sharedBuffer` is less than [ByteLength](Mutex.md#bytelength).
  - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](Mutex.md#bytelength).
 
-#### Source
+#### Inherited from
 
-[src/mutexes/mutex.ts:61](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L61)
+[`Mutex`](Mutex.md).[`constructor`](Mutex.md#constructors)
+
+#### Defined in
+
+[src/mutexes/mutex.ts:61](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L61)
 
 ## Properties
 
@@ -100,9 +100,9 @@ Indicates whether the current agent owns the lock.
 
 [`Mutex`](Mutex.md).[`_isOwner`](Mutex.md#_isowner)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:44](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L44)
+[src/mutexes/mutex.ts:44](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L44)
 
 ***
 
@@ -116,15 +116,15 @@ The shared memory for the mutex.
 
 [`Mutex`](Mutex.md).[`_mem`](Mutex.md#_mem)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:49](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L49)
+[src/mutexes/mutex.ts:49](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L49)
 
 ***
 
 ### ByteLength
 
-> `static` `readonly` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
+> `readonly` `static` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
 
 The size in bytes of the mutex.
 
@@ -132,9 +132,9 @@ The size in bytes of the mutex.
 
 [`Mutex`](Mutex.md).[`ByteLength`](Mutex.md#bytelength)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:39](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L39)
+[src/mutexes/mutex.ts:39](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L39)
 
 ## Accessors
 
@@ -149,9 +149,13 @@ and primary storage for shared data.
 
 `SharedArrayBuffer`
 
-#### Source
+#### Inherited from
 
-[src/mutexes/mutex.ts:74](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L74)
+[`Mutex`](Mutex.md).[`buffer`](Mutex.md#buffer)
+
+#### Defined in
+
+[src/mutexes/mutex.ts:74](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L74)
 
 ***
 
@@ -165,9 +169,13 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 `number`
 
-#### Source
+#### Inherited from
 
-[src/mutexes/mutex.ts:78](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L78)
+[`Mutex`](Mutex.md).[`byteLength`](Mutex.md#bytelength-1)
+
+#### Defined in
+
+[src/mutexes/mutex.ts:78](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L78)
 
 ***
 
@@ -181,9 +189,13 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 `number`
 
-#### Source
+#### Inherited from
 
-[src/mutexes/mutex.ts:82](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L82)
+[`Mutex`](Mutex.md).[`byteOffset`](Mutex.md#byteoffset)
+
+#### Defined in
+
+[src/mutexes/mutex.ts:82](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L82)
 
 ***
 
@@ -197,9 +209,17 @@ Indicates whether the current agent owns the lock.
 
 `boolean`
 
-#### Source
+#### Implementation of
 
-[src/mutexes/mutex.ts:86](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L86)
+[`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`ownsLock`](../interfaces/SyncTimedLockable.md#ownslock)
+
+#### Inherited from
+
+[`Mutex`](Mutex.md).[`ownsLock`](Mutex.md#ownslock)
+
+#### Defined in
+
+[src/mutexes/mutex.ts:86](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L86)
 
 ## Methods
 
@@ -211,6 +231,10 @@ Indicates whether the current agent owns the lock.
 
 `Promise`\<`void`\>
 
+#### Throws
+
+A [RelockError](RelockError.md) If the lock is already locked by the caller.
+
 #### Implementation of
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`lock`](../interfaces/TimedLockable.md#lock)
@@ -219,13 +243,9 @@ Indicates whether the current agent owns the lock.
 
 [`Mutex`](Mutex.md).[`lock`](Mutex.md#lock)
 
-#### Throws
+#### Defined in
 
-A [RelockError](RelockError.md) If the lock is already locked by the caller.
-
-#### Source
-
-[src/mutexes/mutex.ts:93](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L93)
+[src/mutexes/mutex.ts:93](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L93)
 
 ***
 
@@ -237,6 +257,10 @@ A [RelockError](RelockError.md) If the lock is already locked by the caller.
 
 `void`
 
+#### Throws
+
+A [RelockError](RelockError.md) If the lock is already locked by the caller.
+
 #### Implementation of
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`lockSync`](../interfaces/SyncTimedLockable.md#locksync)
@@ -245,13 +269,9 @@ A [RelockError](RelockError.md) If the lock is already locked by the caller.
 
 [`Mutex`](Mutex.md).[`lockSync`](Mutex.md#locksync)
 
-#### Throws
+#### Defined in
 
-A [RelockError](RelockError.md) If the lock is already locked by the caller.
-
-#### Source
-
-[src/mutexes/mutex.ts:112](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L112)
+[src/mutexes/mutex.ts:112](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L112)
 
 ***
 
@@ -277,9 +297,9 @@ is thrown, no lock is obtained.
 
 [`Mutex`](Mutex.md).[`tryLock`](Mutex.md#trylock)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:125](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L125)
+[src/mutexes/mutex.ts:125](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L125)
 
 ***
 
@@ -303,9 +323,9 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
 
-#### Source
+#### Defined in
 
-[src/mutexes/timedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/timedMutex.ts#L37)
+[src/mutexes/timedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/timedMutex.ts#L37)
 
 ***
 
@@ -329,9 +349,9 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockForSync`](../interfaces/SyncTimedLockable.md#trylockforsync)
 
-#### Source
+#### Defined in
 
-[src/mutexes/timedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/timedMutex.ts#L41)
+[src/mutexes/timedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/timedMutex.ts#L41)
 
 ***
 
@@ -357,9 +377,9 @@ is thrown, no lock is obtained.
 
 [`Mutex`](Mutex.md).[`tryLockSync`](Mutex.md#trylocksync)
 
-#### Source
+#### Defined in
 
-[src/mutexes/mutex.ts:129](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L129)
+[src/mutexes/mutex.ts:129](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L129)
 
 ***
 
@@ -383,9 +403,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
 
-#### Source
+#### Defined in
 
-[src/mutexes/timedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/timedMutex.ts#L45)
+[src/mutexes/timedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/timedMutex.ts#L45)
 
 ***
 
@@ -409,9 +429,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`tryLockUntilSync`](../interfaces/SyncTimedLockable.md#trylockuntilsync)
 
-#### Source
+#### Defined in
 
-[src/mutexes/timedMutex.ts:63](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/timedMutex.ts#L63)
+[src/mutexes/timedMutex.ts:63](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/timedMutex.ts#L63)
 
 ***
 
@@ -423,6 +443,10 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 `void`
 
+#### Throws
+
+An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
+
 #### Implementation of
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`unlock`](../interfaces/TimedLockable.md#unlock)
@@ -431,13 +455,9 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`Mutex`](Mutex.md).[`unlock`](Mutex.md#unlock)
 
-#### Throws
+#### Defined in
 
-An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
-
-#### Source
-
-[src/mutexes/mutex.ts:141](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L141)
+[src/mutexes/mutex.ts:141](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L141)
 
 ***
 
@@ -449,6 +469,10 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 `void`
 
+#### Throws
+
+An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
+
 #### Implementation of
 
 [`SyncTimedLockable`](../interfaces/SyncTimedLockable.md).[`unlockSync`](../interfaces/SyncTimedLockable.md#unlocksync)
@@ -457,10 +481,6 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 [`Mutex`](Mutex.md).[`unlockSync`](Mutex.md#unlocksync)
 
-#### Throws
+#### Defined in
 
-An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
-
-#### Source
-
-[src/mutexes/mutex.ts:148](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/mutexes/mutex.ts#L148)
+[src/mutexes/mutex.ts:148](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/mutexes/mutex.ts#L148)

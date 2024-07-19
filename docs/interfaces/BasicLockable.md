@@ -21,9 +21,9 @@ blocking for agents (i.e. main thread, workers).
 
 Indicates whether the current agent owns the lock.
 
-#### Source
+#### Defined in
 
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/basicLockable.ts#L9)
+[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/basicLockable.ts#L9)
 
 ## Methods
 
@@ -38,9 +38,9 @@ If an exception is thrown, no lock is acquired.
 
 `Promise`\<`void`\>
 
-#### Source
+#### Defined in
 
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/basicLockable.ts#L15)
+[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/basicLockable.ts#L15)
 
 ***
 
@@ -54,6 +54,6 @@ Releases the lock held by the current agent.
 
 `void` \| `Promise`\<`void`\>
 
-#### Source
+#### Defined in
 
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/51b7924eee2692d3840b3a9f9e7614a75a8ef8d6/src/types/basicLockable.ts#L20)
+[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/types/basicLockable.ts#L20)
