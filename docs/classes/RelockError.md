@@ -34,7 +34,7 @@ An optional custom error message.
 
 #### Defined in
 
-[src/errors/relockError.ts:11](https://github.com/havelessbemore/semafy/blob/8eba5886d3775a63da96eb7c166c6371edbbcfa1/src/errors/relockError.ts#L11)
+[src/errors/relockError.ts:11](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/errors/relockError.ts#L11)
 
 ## Properties
 
