@@ -32,7 +32,7 @@ A RangeError if `expected` is negative or exceeds [Latch.Max](Latch.md#max).
 
 #### Defined in
 
-[src/barriers/latch.ts:53](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L53)
+[src/barriers/latch.ts:53](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L53)
 
 ### new Latch()
 
@@ -61,7 +61,7 @@ A RangeError for any of the following:
 
 #### Defined in
 
-[src/barriers/latch.ts:63](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L63)
+[src/barriers/latch.ts:63](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L63)
 
 ## Properties
 
@@ -73,7 +73,7 @@ Condition variable to manage waiting agents.
 
 #### Defined in
 
-[src/barriers/latch.ts:35](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L35)
+[src/barriers/latch.ts:35](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L35)
 
 ***
 
@@ -85,7 +85,7 @@ The shared atomic memory for the internal counter.
 
 #### Defined in
 
-[src/barriers/latch.ts:40](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L40)
+[src/barriers/latch.ts:40](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L40)
 
 ***
 
@@ -97,7 +97,7 @@ Mutex to protect access to the internal counter.
 
 #### Defined in
 
-[src/barriers/latch.ts:45](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L45)
+[src/barriers/latch.ts:45](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L45)
 
 ***
 
@@ -109,7 +109,7 @@ The size in bytes of the latch.
 
 #### Defined in
 
-[src/barriers/latch.ts:25](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L25)
+[src/barriers/latch.ts:25](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L25)
 
 ***
 
@@ -121,7 +121,7 @@ The maximum possible value of the internal counter.
 
 #### Defined in
 
-[src/barriers/latch.ts:30](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L30)
+[src/barriers/latch.ts:30](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L30)
 
 ## Methods
 
@@ -152,7 +152,7 @@ A RangeError If `n` is negative or exceeds the current count.
 
 #### Defined in
 
-[src/barriers/latch.ts:149](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L149)
+[src/barriers/latch.ts:149](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L149)
 
 ***
 
@@ -180,7 +180,7 @@ A RangeError If `n` is negative or exceeds the current count.
 
 #### Defined in
 
-[src/barriers/latch.ts:109](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L109)
+[src/barriers/latch.ts:109](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L109)
 
 ***
 
@@ -198,7 +198,7 @@ Tests if the counter has reached zero.
 
 #### Defined in
 
-[src/barriers/latch.ts:188](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L188)
+[src/barriers/latch.ts:188](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L188)
 
 ***
 
@@ -217,4 +217,4 @@ allowing the agent to proceed.
 
 #### Defined in
 
-[src/barriers/latch.ts:198](https://github.com/havelessbemore/semafy/blob/243ef563375eae7e1984d5c778f0c8e55910568b/src/barriers/latch.ts#L198)
+[src/barriers/latch.ts:198](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/barriers/latch.ts#L198)
