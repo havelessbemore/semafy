@@ -44,4 +44,4 @@ while trying to roll back acquired locks. Details include:
 
 ## Defined in
 
-[src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/locks/tryLock.ts#L29)
+[src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/locks/tryLock.ts#L29)

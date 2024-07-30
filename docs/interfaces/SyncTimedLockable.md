@@ -26,7 +26,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/types/sync/syncBasicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncBasicLockable.ts#L9)
+[src/types/sync/syncBasicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncBasicLockable.ts#L9)
 
 ## Methods
 
@@ -47,7 +47,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/types/sync/syncBasicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncBasicLockable.ts#L15)
+[src/types/sync/syncBasicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncBasicLockable.ts#L15)
 
 ***
 
@@ -69,7 +69,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Defined in
 
-[src/types/sync/syncTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncTimedLockable.ts#L12)
+[src/types/sync/syncTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncTimedLockable.ts#L12)
 
 ***
 
@@ -93,7 +93,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/types/sync/syncLockable.ts:14](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncLockable.ts#L14)
+[src/types/sync/syncLockable.ts:14](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncLockable.ts#L14)
 
 ***
 
@@ -115,7 +115,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Defined in
 
-[src/types/sync/syncTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncTimedLockable.ts#L19)
+[src/types/sync/syncTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncTimedLockable.ts#L19)
 
 ***
 
@@ -135,4 +135,4 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/types/sync/syncBasicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/sync/syncBasicLockable.ts#L20)
+[src/types/sync/syncBasicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/sync/syncBasicLockable.ts#L20)

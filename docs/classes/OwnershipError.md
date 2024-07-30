@@ -34,7 +34,7 @@ An optional custom error message.
 
 #### Defined in
 
-[src/errors/ownershipError.ts:11](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/errors/ownershipError.ts#L11)
+[src/errors/ownershipError.ts:11](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/ownershipError.ts#L11)
 
 ## Properties
 

@@ -23,7 +23,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/basicLockable.ts#L9)
+[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/basicLockable.ts#L9)
 
 ## Methods
 
@@ -40,7 +40,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/basicLockable.ts#L15)
+[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/basicLockable.ts#L15)
 
 ***
 
@@ -56,4 +56,4 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/b402258eb8c8c3b4f24a474b97d376f26f034cec/src/types/basicLockable.ts#L20)
+[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/types/basicLockable.ts#L20)
