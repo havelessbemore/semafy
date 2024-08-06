@@ -57,7 +57,7 @@ An optional custom error message that describes the error.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/multiLockError.ts#L24)
+[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/multiLockError.ts#L24)
 
 ## Properties
 
@@ -85,7 +85,7 @@ understanding why lock acquisition failed.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/multiLockError.ts#L27)
+[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/multiLockError.ts#L27)
 
 ***
 
@@ -97,7 +97,7 @@ The array of all lockable objects that were part of the operation.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/multiLockError.ts#L25)
+[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/multiLockError.ts#L25)
 
 ***
 
@@ -137,7 +137,7 @@ The number of locks successfully updated before failure.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/multiLockError.ts#L26)
+[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/multiLockError.ts#L26)
 
 ***
 
@@ -165,7 +165,7 @@ debugging unexpected issues during unlocking.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/ed2c4022daf1bce6090ddce7f0fb37904e05ad7c/src/errors/multiLockError.ts#L28)
+[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/multiLockError.ts#L28)
 
 ***
 
@@ -195,7 +195,7 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:28
+node\_modules/@types/node/globals.d.ts:29
 
 ***
 
@@ -209,7 +209,7 @@ node\_modules/@types/node/globals.d.ts:28
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:30
+node\_modules/@types/node/globals.d.ts:31
 
 ## Methods
 
@@ -235,4 +235,4 @@ Create .stack property on a target object
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:21
+node\_modules/@types/node/globals.d.ts:22
