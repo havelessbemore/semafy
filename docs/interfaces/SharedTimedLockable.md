@@ -26,7 +26,7 @@ Indicates whether the current agent owns a shared lock.
 
 #### Defined in
 
-[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedLockable.ts#L8)
+[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedLockable.ts#L8)
 
 ## Methods
 
@@ -47,7 +47,7 @@ agent. If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedLockable.ts#L14)
+[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedLockable.ts#L14)
 
 ***
 
@@ -71,7 +71,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedLockable.ts#L23)
+[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedLockable.ts#L23)
 
 ***
 
@@ -93,7 +93,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Defined in
 
-[src/types/sharedTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedTimedLockable.ts#L12)
+[src/types/sharedTimedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedTimedLockable.ts#L12)
 
 ***
 
@@ -115,7 +115,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Defined in
 
-[src/types/sharedTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedTimedLockable.ts#L19)
+[src/types/sharedTimedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedTimedLockable.ts#L19)
 
 ***
 
@@ -135,4 +135,4 @@ Releases the shared lock held by the current agent.
 
 #### Defined in
 
-[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/types/sharedLockable.ts#L28)
+[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedLockable.ts#L28)

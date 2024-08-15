@@ -38,7 +38,7 @@ The basic lockable to associate.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:27](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L27)
+[src/locks/uniqueLock.ts:27](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L27)
 
 ## Properties
 
@@ -50,7 +50,7 @@ The associated basic lockable.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:22](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L22)
+[src/locks/uniqueLock.ts:22](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L22)
 
 ## Accessors
 
@@ -70,7 +70,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:31](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L31)
+[src/locks/uniqueLock.ts:31](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L31)
 
 ## Methods
 
@@ -91,7 +91,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:35](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L35)
+[src/locks/uniqueLock.ts:35](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L35)
 
 ***
 
@@ -112,7 +112,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:39](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L39)
+[src/locks/uniqueLock.ts:39](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L39)
 
 ***
 
@@ -132,7 +132,7 @@ Exchanges the internal states of the unique locks.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:46](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L46)
+[src/locks/uniqueLock.ts:46](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L46)
 
 ***
 
@@ -156,7 +156,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:52](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L52)
+[src/locks/uniqueLock.ts:52](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L52)
 
 ***
 
@@ -182,7 +182,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:60](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L60)
+[src/locks/uniqueLock.ts:60](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L60)
 
 ***
 
@@ -208,7 +208,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:64](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L64)
+[src/locks/uniqueLock.ts:64](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L64)
 
 ***
 
@@ -232,7 +232,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:56](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L56)
+[src/locks/uniqueLock.ts:56](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L56)
 
 ***
 
@@ -258,7 +258,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:68](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L68)
+[src/locks/uniqueLock.ts:68](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L68)
 
 ***
 
@@ -284,7 +284,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:72](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L72)
+[src/locks/uniqueLock.ts:72](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L72)
 
 ***
 
@@ -304,7 +304,7 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:76](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L76)
+[src/locks/uniqueLock.ts:76](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L76)
 
 ***
 
@@ -324,4 +324,4 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/locks/uniqueLock.ts:80](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/locks/uniqueLock.ts#L80)
+[src/locks/uniqueLock.ts:80](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/uniqueLock.ts#L80)

@@ -34,7 +34,7 @@ An optional custom error message.
 
 #### Defined in
 
-[src/errors/relockError.ts:11](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/errors/relockError.ts#L11)
+[src/errors/relockError.ts:11](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/relockError.ts#L11)
 
 ## Properties
 
@@ -120,7 +120,7 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:29
+node\_modules/@types/node/globals.d.ts:31
 
 ***
 
@@ -134,7 +134,7 @@ node\_modules/@types/node/globals.d.ts:29
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:31
+node\_modules/@types/node/globals.d.ts:33
 
 ## Methods
 
@@ -160,4 +160,4 @@ Create .stack property on a target object
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:22
+node\_modules/@types/node/globals.d.ts:24

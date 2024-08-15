@@ -41,4 +41,4 @@ The result of `callbackfn` if the flag was not previously set, otherwise `undefi
 
 ## Defined in
 
-[src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/571d9f7b8415a099d2913b0d38cb23c994b5c69d/src/callOnce/callOnce.ts#L20)
+[src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/callOnce/callOnce.ts#L20)
