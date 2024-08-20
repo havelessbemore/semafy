@@ -65,7 +65,7 @@
     "@eslint/js": "^9.7.0",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.12",
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.23.1",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
@@ -74,16 +74,16 @@
     "lint-staged": "^15.2.9",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
-    "rollup": "^4.20.0",
+    "rollup": "^4.21.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-license": "^3.5.2",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "typedoc": "^0.26.5",
-    "typedoc-plugin-markdown": "^4.2.4",
+    "typedoc": "^0.26.6",
+    "typedoc-plugin-markdown": "^4.2.5",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.1.0"
+    "typescript-eslint": "^8.2.0"
   }
 }

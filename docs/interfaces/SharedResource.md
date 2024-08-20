@@ -22,7 +22,7 @@ and primary storage for shared data.
 
 #### Defined in
 
-[src/types/sharedResource.ts:12](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedResource.ts#L12)
+[src/types/sharedResource.ts:12](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/sharedResource.ts#L12)
 
 ***
 
@@ -34,7 +34,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Defined in
 
-[src/types/sharedResource.ts:17](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedResource.ts#L17)
+[src/types/sharedResource.ts:17](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/sharedResource.ts#L17)
 
 ***
 
@@ -46,4 +46,4 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Defined in
 
-[src/types/sharedResource.ts:22](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/types/sharedResource.ts#L22)
+[src/types/sharedResource.ts:22](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/sharedResource.ts#L22)

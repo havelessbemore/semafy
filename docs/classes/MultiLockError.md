@@ -57,7 +57,7 @@ An optional custom error message that describes the error.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/multiLockError.ts#L24)
+[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/multiLockError.ts#L24)
 
 ## Properties
 
@@ -85,7 +85,7 @@ understanding why lock acquisition failed.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/multiLockError.ts#L27)
+[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/multiLockError.ts#L27)
 
 ***
 
@@ -97,7 +97,7 @@ The array of all lockable objects that were part of the operation.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/multiLockError.ts#L25)
+[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/multiLockError.ts#L25)
 
 ***
 
@@ -137,7 +137,7 @@ The number of locks successfully updated before failure.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/multiLockError.ts#L26)
+[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/multiLockError.ts#L26)
 
 ***
 
@@ -165,7 +165,7 @@ debugging unexpected issues during unlocking.
 
 #### Defined in
 
-[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/errors/multiLockError.ts#L28)
+[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/multiLockError.ts#L28)
 
 ***
 

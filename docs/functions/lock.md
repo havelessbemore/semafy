@@ -34,4 +34,4 @@ locks. Details include:
 
 ## Defined in
 
-[src/locks/lock.ts:19](https://github.com/havelessbemore/semafy/blob/cdfb44edc28a367e6c7c0367d952ab96ae7d9e6d/src/locks/lock.ts#L19)
+[src/locks/lock.ts:19](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/lock.ts#L19)
