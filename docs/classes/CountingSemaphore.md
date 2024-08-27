@@ -36,7 +36,7 @@ A RangeError if `desired` is negative or exceeds [CountingSemaphore.Max](Countin
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:44](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L44)
+[src/semaphores/countingSemaphore.ts:44](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L44)
 
 ### new CountingSemaphore()
 
@@ -65,7 +65,7 @@ A RangeError for any of the following:
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:54](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L54)
+[src/semaphores/countingSemaphore.ts:54](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L54)
 
 ## Properties
 
@@ -77,7 +77,7 @@ The size in bytes of the semaphore.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:27](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L27)
+[src/semaphores/countingSemaphore.ts:27](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L27)
 
 ***
 
@@ -89,7 +89,7 @@ The maximum possible value of the internal counter
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:32](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L32)
+[src/semaphores/countingSemaphore.ts:32](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L32)
 
 ## Accessors
 
@@ -113,7 +113,7 @@ and primary storage for shared data.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:91](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L91)
+[src/semaphores/countingSemaphore.ts:91](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L91)
 
 ***
 
@@ -135,7 +135,7 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:95](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L95)
+[src/semaphores/countingSemaphore.ts:95](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L95)
 
 ***
 
@@ -157,7 +157,7 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:99](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L99)
+[src/semaphores/countingSemaphore.ts:99](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L99)
 
 ## Methods
 
@@ -175,7 +175,7 @@ A promise that resolves when acquisition is successful.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:108](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L108)
+[src/semaphores/countingSemaphore.ts:108](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L108)
 
 ***
 
@@ -201,7 +201,7 @@ If `count` is negative or would cause the semaphore to overflow.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:194](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L194)
+[src/semaphores/countingSemaphore.ts:194](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L194)
 
 ***
 
@@ -219,7 +219,7 @@ A promise resolving to `true` if successful, otherwise `false`.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:125](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L125)
+[src/semaphores/countingSemaphore.ts:125](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L125)
 
 ***
 
@@ -244,7 +244,7 @@ A promise resolving to `true` if successful, otherwise `false`.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:147](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L147)
+[src/semaphores/countingSemaphore.ts:147](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L147)
 
 ***
 
@@ -269,4 +269,4 @@ A promise resolved to `true` if succesful, otherwise `false`.
 
 #### Defined in
 
-[src/semaphores/countingSemaphore.ts:159](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/semaphores/countingSemaphore.ts#L159)
+[src/semaphores/countingSemaphore.ts:159](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/semaphores/countingSemaphore.ts#L159)

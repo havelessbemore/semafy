@@ -35,7 +35,7 @@ The basic lockables to associate.
 
 #### Defined in
 
-[src/locks/multiLock.ts:30](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L30)
+[src/locks/multiLock.ts:30](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L30)
 
 ## Properties
 
@@ -47,7 +47,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/locks/multiLock.ts:20](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L20)
+[src/locks/multiLock.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L20)
 
 ***
 
@@ -59,7 +59,7 @@ The associated basic lockable.
 
 #### Defined in
 
-[src/locks/multiLock.ts:25](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L25)
+[src/locks/multiLock.ts:25](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L25)
 
 ## Accessors
 
@@ -81,7 +81,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/locks/multiLock.ts:35](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L35)
+[src/locks/multiLock.ts:35](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L35)
 
 ## Methods
 
@@ -102,7 +102,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/locks/multiLock.ts:39](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L39)
+[src/locks/multiLock.ts:39](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L39)
 
 ***
 
@@ -122,7 +122,7 @@ Exchange internal state
 
 #### Defined in
 
-[src/locks/multiLock.ts:47](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L47)
+[src/locks/multiLock.ts:47](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L47)
 
 ***
 
@@ -146,7 +146,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/locks/multiLock.ts:58](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L58)
+[src/locks/multiLock.ts:58](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L58)
 
 ***
 
@@ -166,4 +166,4 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/locks/multiLock.ts:63](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/multiLock.ts#L63)
+[src/locks/multiLock.ts:63](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L63)

@@ -33,4 +33,4 @@ The return value of `callbackfn`.
 
 ## Defined in
 
-[src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/locks/lockGuard.ts#L37)
+[src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/lockGuard.ts#L37)

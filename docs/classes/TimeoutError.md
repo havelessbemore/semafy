@@ -42,7 +42,7 @@ The absolute time in milliseconds. Defaults to `undefined`.
 
 #### Defined in
 
-[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/timeoutError.ts#L24)
+[src/errors/timeoutError.ts:24](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/timeoutError.ts#L24)
 
 ## Properties
 
@@ -69,7 +69,7 @@ Can be `undefined` if not specified.
 
 #### Defined in
 
-[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/timeoutError.ts#L11)
+[src/errors/timeoutError.ts:11](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/timeoutError.ts#L11)
 
 ***
 
@@ -124,7 +124,7 @@ Can be `undefined` if not specified.
 
 #### Defined in
 
-[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/errors/timeoutError.ts#L17)
+[src/errors/timeoutError.ts:17](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/timeoutError.ts#L17)
 
 ***
 
@@ -154,7 +154,7 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:31
+node\_modules/@types/node/globals.d.ts:74
 
 ***
 
@@ -168,7 +168,7 @@ node\_modules/@types/node/globals.d.ts:31
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:33
+node\_modules/@types/node/globals.d.ts:76
 
 ## Methods
 
@@ -194,4 +194,4 @@ Create .stack property on a target object
 
 #### Defined in
 
-node\_modules/@types/node/globals.d.ts:24
+node\_modules/@types/node/globals.d.ts:67

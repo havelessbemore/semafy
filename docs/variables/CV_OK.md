@@ -12,4 +12,4 @@ The [ConditionVariable](../classes/ConditionVariable.md) was awakened via notifi
 
 ## Defined in
 
-[src/types/cvStatus.ts:10](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/cvStatus.ts#L10)
+[src/types/cvStatus.ts:10](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/cvStatus.ts#L10)

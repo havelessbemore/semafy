@@ -26,7 +26,7 @@ Indicates whether the current agent owns the lock.
 
 #### Defined in
 
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/basicLockable.ts#L9)
+[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L9)
 
 ## Methods
 
@@ -47,7 +47,7 @@ If an exception is thrown, no lock is acquired.
 
 #### Defined in
 
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/basicLockable.ts#L15)
+[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L15)
 
 ***
 
@@ -71,7 +71,7 @@ is thrown, no lock is obtained.
 
 #### Defined in
 
-[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/lockable.ts#L14)
+[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/lockable.ts#L14)
 
 ***
 
@@ -93,7 +93,7 @@ Blocks for the provided duration or until a lock is acquired.
 
 #### Defined in
 
-[src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/timedLockable.ts#L12)
+[src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/timedLockable.ts#L12)
 
 ***
 
@@ -115,7 +115,7 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Defined in
 
-[src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/timedLockable.ts#L19)
+[src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/timedLockable.ts#L19)
 
 ***
 
@@ -135,4 +135,4 @@ Releases the lock held by the current agent.
 
 #### Defined in
 
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/bc2afcafa5917c57eff4df5c0126278459b970d5/src/types/basicLockable.ts#L20)
+[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L20)
