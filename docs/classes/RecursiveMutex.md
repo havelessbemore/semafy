@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / RecursiveMutex
 
 # Class: RecursiveMutex
+
+Defined in: [src/mutexes/recursiveMutex.ts:39](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L39)
 
 Provides synchronization across agents (main thread and workers)
 to allow exclusive recursive access to shared resources / blocks of code.
@@ -18,7 +20,7 @@ block (or receive `false` from `tryLock` methods). When unlocked,
 any blocked agent will have the chance to acquire owernship.
 
 The maximum number of times a mutex can be locked recursively
-is defined by [RecursiveMutex.Max](RecursiveMutex.md#max). Once reached, attempts
+is defined by [RecursiveMutex.Max](#max). Once reached, attempts
 for additional locks will throw an error, and calls to `tryLock` methods
 will return `false`.
 
@@ -39,46 +41,46 @@ Behavior is undefined if:
 
 ## Constructors
 
-### new RecursiveMutex()
+### Constructor
 
-> **new RecursiveMutex**(): [`RecursiveMutex`](RecursiveMutex.md)
+> **new RecursiveMutex**(): `RecursiveMutex`
+
+Defined in: [src/mutexes/recursiveMutex.ts:60](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L60)
 
 #### Returns
 
-[`RecursiveMutex`](RecursiveMutex.md)
+`RecursiveMutex`
 
-#### Defined in
+### Constructor
 
-[src/mutexes/recursiveMutex.ts:60](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L60)
+> **new RecursiveMutex**(`sharedBuffer`, `byteOffset?`): `RecursiveMutex`
 
-### new RecursiveMutex()
-
-> **new RecursiveMutex**(`sharedBuffer`, `byteOffset`?): [`RecursiveMutex`](RecursiveMutex.md)
+Defined in: [src/mutexes/recursiveMutex.ts:70](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L70)
 
 #### Parameters
 
-• **sharedBuffer**: `SharedArrayBuffer`
+##### sharedBuffer
+
+`SharedArrayBuffer`
 
 The SharedArrayBuffer that backs the mutex.
 
-• **byteOffset?**: `number`
+##### byteOffset?
+
+`number`
 
 The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Returns
 
-[`RecursiveMutex`](RecursiveMutex.md)
+`RecursiveMutex`
 
 #### Throws
 
 A RangeError for any of the following:
  - `byteOffset` is negative or not a multiple of `4`.
- - The byte length of `sharedBuffer` is less than [ByteLength](RecursiveMutex.md#bytelength).
- - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](RecursiveMutex.md#bytelength).
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:70](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L70)
+ - The byte length of `sharedBuffer` is less than [ByteLength](#bytelength).
+ - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](#bytelength).
 
 ## Properties
 
@@ -86,11 +88,9 @@ A RangeError for any of the following:
 
 > `protected` **\_depth**: `number`
 
+Defined in: [src/mutexes/recursiveMutex.ts:53](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L53)
+
 The number of locks acquired by the agent.
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:53](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L53)
 
 ***
 
@@ -98,11 +98,9 @@ The number of locks acquired by the agent.
 
 > `protected` **\_mem**: `Int32Array`
 
+Defined in: [src/mutexes/recursiveMutex.ts:58](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L58)
+
 The shared atomic memory for the mutex.
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:58](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L58)
 
 ***
 
@@ -110,11 +108,9 @@ The shared atomic memory for the mutex.
 
 > `readonly` `static` **ByteLength**: `number` = `Int32Array.BYTES_PER_ELEMENT`
 
+Defined in: [src/mutexes/recursiveMutex.ts:43](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L43)
+
 The size in bytes of the mutex.
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:43](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L43)
 
 ***
 
@@ -122,22 +118,24 @@ The size in bytes of the mutex.
 
 > `readonly` `static` **Max**: `2147483647` = `MAX_INT32_VALUE`
 
+Defined in: [src/mutexes/recursiveMutex.ts:48](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L48)
+
 The maximum levels of recursive ownership.
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:48](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L48)
 
 ## Accessors
 
 ### buffer
 
-> `get` **buffer**(): `SharedArrayBuffer`
+#### Get Signature
+
+> **get** **buffer**(): `SharedArrayBuffer`
+
+Defined in: [src/mutexes/recursiveMutex.ts:83](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L83)
 
 The underlying SharedArrayBuffer
 and primary storage for shared data.
 
-#### Returns
+##### Returns
 
 `SharedArrayBuffer`
 
@@ -148,19 +146,19 @@ and primary storage for shared data.
 
 [`SharedResource`](../interfaces/SharedResource.md).[`buffer`](../interfaces/SharedResource.md#buffer)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:83](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L83)
-
 ***
 
 ### byteLength
 
-> `get` **byteLength**(): `number`
+#### Get Signature
+
+> **get** **byteLength**(): `number`
+
+Defined in: [src/mutexes/recursiveMutex.ts:87](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L87)
 
 The total length in bytes being used from the SharedArrayBuffer.
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -170,19 +168,19 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 [`SharedResource`](../interfaces/SharedResource.md).[`byteLength`](../interfaces/SharedResource.md#bytelength)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:87](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L87)
-
 ***
 
 ### byteOffset
 
-> `get` **byteOffset**(): `number`
+#### Get Signature
+
+> **get** **byteOffset**(): `number`
+
+Defined in: [src/mutexes/recursiveMutex.ts:91](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L91)
 
 The byte offset within the SharedArrayBuffer where data begins.
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -192,19 +190,19 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 [`SharedResource`](../interfaces/SharedResource.md).[`byteOffset`](../interfaces/SharedResource.md#byteoffset)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:91](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L91)
-
 ***
 
 ### ownsLock
 
-> `get` **ownsLock**(): `boolean`
+#### Get Signature
+
+> **get** **ownsLock**(): `boolean`
+
+Defined in: [src/mutexes/recursiveMutex.ts:95](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L95)
 
 Indicates whether the current agent owns the lock.
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -214,15 +212,13 @@ Indicates whether the current agent owns the lock.
 
 [`SyncLockable`](../interfaces/SyncLockable.md).[`ownsLock`](../interfaces/SyncLockable.md#ownslock)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:95](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L95)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/mutexes/recursiveMutex.ts:102](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L102)
 
 #### Returns
 
@@ -236,15 +232,13 @@ A RangeError If the mutex is already locked the maximum amount of times.
 
 [`Lockable`](../interfaces/Lockable.md).[`lock`](../interfaces/Lockable.md#lock)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:102](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L102)
-
 ***
 
 ### lockSync()
 
 > **lockSync**(): `void`
+
+Defined in: [src/mutexes/recursiveMutex.ts:122](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L122)
 
 #### Returns
 
@@ -258,15 +252,13 @@ A RangeError If the mutex is already locked the maximum amount of times.
 
 [`SyncLockable`](../interfaces/SyncLockable.md).[`lockSync`](../interfaces/SyncLockable.md#locksync)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:122](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L122)
-
 ***
 
 ### tryLock()
 
 > **tryLock**(): `boolean`
+
+Defined in: [src/mutexes/recursiveMutex.ts:139](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L139)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -282,15 +274,13 @@ is thrown, no lock is obtained.
 
 [`Lockable`](../interfaces/Lockable.md).[`tryLock`](../interfaces/Lockable.md#trylock)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:139](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L139)
-
 ***
 
 ### tryLockSync()
 
 > **tryLockSync**(): `boolean`
+
+Defined in: [src/mutexes/recursiveMutex.ts:143](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L143)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -306,15 +296,13 @@ is thrown, no lock is obtained.
 
 [`SyncLockable`](../interfaces/SyncLockable.md).[`tryLockSync`](../interfaces/SyncLockable.md#trylocksync)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:143](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L143)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `void`
+
+Defined in: [src/mutexes/recursiveMutex.ts:162](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L162)
 
 #### Returns
 
@@ -328,15 +316,13 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 [`Lockable`](../interfaces/Lockable.md).[`unlock`](../interfaces/Lockable.md#unlock)
 
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:162](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L162)
-
 ***
 
 ### unlockSync()
 
 > **unlockSync**(): `void`
+
+Defined in: [src/mutexes/recursiveMutex.ts:169](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/recursiveMutex.ts#L169)
 
 #### Returns
 
@@ -349,7 +335,3 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 #### Implementation of
 
 [`SyncLockable`](../interfaces/SyncLockable.md).[`unlockSync`](../interfaces/SyncLockable.md#unlocksync)
-
-#### Defined in
-
-[src/mutexes/recursiveMutex.ts:169](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/recursiveMutex.ts#L169)

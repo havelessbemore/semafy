@@ -1,5 +1,6 @@
-# General
-.DS_Store
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+### Template: https://github.com/github/gitignore/blob/main/Node.gitignore ###
 
 # Logs
 logs
@@ -92,6 +93,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
+# dist
 
 # Gatsby files
 .cache/
@@ -105,6 +107,12 @@ out
 # vuepress v2.x temp and cache directory
 .temp
 .cache
+
+# vitepress build output
+**/.vitepress/dist
+
+# vitepress cache directory
+**/.vitepress/cache
 
 # Docusaurus cache and generated files
 .docusaurus
@@ -130,3 +138,15 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+### CUSTOM ###
+
+# General
+.DS_Store
+*.pem
+
+# Typescript
+next-env.d.ts
+
+# Vercel
+.vercel

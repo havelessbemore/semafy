@@ -1,4 +1,4 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
@@ -6,7 +6,9 @@
 
 # Function: callOnce()
 
-> **callOnce**\<`T`\>(`flag`, `callbackfn`): `T` \| `undefined`
+> **callOnce**\<`T`\>(`flag`, `callbackfn`): `undefined` \| `T`
+
+Defined in: [src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/callOnce/callOnce.ts#L20)
 
 Executes a callback function at most once, based on the state of a provided [OnceFlag](../classes/OnceFlag.md).
 
@@ -21,24 +23,26 @@ result is returned.
 
 ## Type Parameters
 
-• **T**
+### T
+
+`T`
 
 ## Parameters
 
-• **flag**: [`OnceFlag`](../classes/OnceFlag.md)
+### flag
+
+[`OnceFlag`](../classes/OnceFlag.md)
 
 The [OnceFlag](../classes/OnceFlag.md) used to determine whether the callback has been invoked.
 
-• **callbackfn**
+### callbackfn
+
+() => `T`
 
 A function that will be called if the flag has not been set.
 
 ## Returns
 
-`T` \| `undefined`
+`undefined` \| `T`
 
 The result of `callbackfn` if the flag was not previously set, otherwise `undefined`.
-
-## Defined in
-
-[src/callOnce/callOnce.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/callOnce/callOnce.ts#L20)

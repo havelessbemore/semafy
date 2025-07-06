@@ -1,4 +1,4 @@
-[**semafy**](README.md) • **Docs**
+[**semafy**](README.md)
 
 ***
 

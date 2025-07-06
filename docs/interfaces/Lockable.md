@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / Lockable
 
 # Interface: Lockable
+
+Defined in: [src/types/lockable.ts:6](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/lockable.ts#L6)
 
 Extends the [BasicLockable](BasicLockable.md) interface to include attempted locking.
 
@@ -22,21 +24,21 @@ Extends the [BasicLockable](BasicLockable.md) interface to include attempted loc
 
 > **ownsLock**: `Readonly`\<`boolean`\>
 
+Defined in: [src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L9)
+
 Indicates whether the current agent owns the lock.
 
 #### Inherited from
 
 [`BasicLockable`](BasicLockable.md).[`ownsLock`](BasicLockable.md#ownslock)
 
-#### Defined in
-
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L9)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L15)
 
 Blocks until the lock can be acquired for the current agent.
 If an exception is thrown, no lock is acquired.
@@ -49,15 +51,13 @@ If an exception is thrown, no lock is acquired.
 
 [`BasicLockable`](BasicLockable.md).[`lock`](BasicLockable.md#lock)
 
-#### Defined in
-
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L15)
-
 ***
 
 ### tryLock()
 
 > **tryLock**(): `boolean` \| `Promise`\<`boolean`\>
+
+Defined in: [src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/lockable.ts#L14)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -69,15 +69,13 @@ is thrown, no lock is obtained.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Defined in
-
-[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/lockable.ts#L14)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `void` \| `Promise`\<`void`\>
+
+Defined in: [src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L20)
 
 Releases the lock held by the current agent.
 
@@ -88,7 +86,3 @@ Releases the lock held by the current agent.
 #### Inherited from
 
 [`BasicLockable`](BasicLockable.md).[`unlock`](BasicLockable.md#unlock)
-
-#### Defined in
-
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L20)

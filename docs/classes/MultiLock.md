@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / MultiLock
 
 # Class: MultiLock
+
+Defined in: [src/locks/multiLock.ts:16](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L16)
 
 A mutex ownership wrapper.
 
@@ -19,23 +21,23 @@ Otherwise, using attempted locking (`tryLock`) will result in errors.
 
 ## Constructors
 
-### new MultiLock()
+### Constructor
 
-> **new MultiLock**(...`mutexes`): [`MultiLock`](MultiLock.md)
+> **new MultiLock**(...`mutexes`): `MultiLock`
+
+Defined in: [src/locks/multiLock.ts:30](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L30)
 
 #### Parameters
 
-• ...**mutexes**: [`BasicLockable`](../interfaces/BasicLockable.md)[]
+##### mutexes
+
+...[`BasicLockable`](../interfaces/BasicLockable.md)[]
 
 The basic lockables to associate.
 
 #### Returns
 
-[`MultiLock`](MultiLock.md)
-
-#### Defined in
-
-[src/locks/multiLock.ts:30](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L30)
+`MultiLock`
 
 ## Properties
 
@@ -43,11 +45,9 @@ The basic lockables to associate.
 
 > `protected` **\_isOwner**: `boolean`
 
+Defined in: [src/locks/multiLock.ts:20](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L20)
+
 Indicates whether the current agent owns the lock.
-
-#### Defined in
-
-[src/locks/multiLock.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L20)
 
 ***
 
@@ -55,21 +55,23 @@ Indicates whether the current agent owns the lock.
 
 > **mutexes**: [`BasicLockable`](../interfaces/BasicLockable.md)[]
 
+Defined in: [src/locks/multiLock.ts:25](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L25)
+
 The associated basic lockable.
-
-#### Defined in
-
-[src/locks/multiLock.ts:25](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L25)
 
 ## Accessors
 
 ### ownsLock
 
-> `get` **ownsLock**(): `boolean`
+#### Get Signature
+
+> **get** **ownsLock**(): `boolean`
+
+Defined in: [src/locks/multiLock.ts:35](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L35)
 
 Indicates whether the current agent owns the lock.
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -79,15 +81,13 @@ Indicates whether the current agent owns the lock.
 
 [`Lockable`](../interfaces/Lockable.md).[`ownsLock`](../interfaces/Lockable.md#ownslock)
 
-#### Defined in
-
-[src/locks/multiLock.ts:35](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L35)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/locks/multiLock.ts:39](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L39)
 
 Blocks until the lock can be acquired for the current agent.
 If an exception is thrown, no lock is acquired.
@@ -100,35 +100,33 @@ If an exception is thrown, no lock is acquired.
 
 [`Lockable`](../interfaces/Lockable.md).[`lock`](../interfaces/Lockable.md#lock)
 
-#### Defined in
-
-[src/locks/multiLock.ts:39](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L39)
-
 ***
 
 ### swap()
 
 > **swap**(`other`): `void`
 
+Defined in: [src/locks/multiLock.ts:47](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L47)
+
 Exchange internal state
 
 #### Parameters
 
-• **other**: [`MultiLock`](MultiLock.md)
+##### other
+
+`MultiLock`
 
 #### Returns
 
 `void`
-
-#### Defined in
-
-[src/locks/multiLock.ts:47](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L47)
 
 ***
 
 ### tryLock()
 
 > **tryLock**(): `Promise`\<`boolean`\>
+
+Defined in: [src/locks/multiLock.ts:58](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L58)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -144,15 +142,13 @@ is thrown, no lock is obtained.
 
 [`Lockable`](../interfaces/Lockable.md).[`tryLock`](../interfaces/Lockable.md#trylock)
 
-#### Defined in
-
-[src/locks/multiLock.ts:58](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L58)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `Promise`\<`void`\>
+
+Defined in: [src/locks/multiLock.ts:63](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/multiLock.ts#L63)
 
 Releases the lock held by the current agent.
 
@@ -163,7 +159,3 @@ Releases the lock held by the current agent.
 #### Implementation of
 
 [`Lockable`](../interfaces/Lockable.md).[`unlock`](../interfaces/Lockable.md#unlock)
-
-#### Defined in
-
-[src/locks/multiLock.ts:63](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/multiLock.ts#L63)

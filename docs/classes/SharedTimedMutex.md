@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / SharedTimedMutex
 
 # Class: SharedTimedMutex
+
+Defined in: [src/mutexes/sharedTimedMutex.ts:33](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedTimedMutex.ts#L33)
 
 Provides synchronization across agents (main thread and workers)
 to allow exclusive and shared access to resources / blocks of code.
@@ -38,39 +40,43 @@ consider this possible variability in their applications.
 
 ## Constructors
 
-### new SharedTimedMutex()
+### Constructor
 
-> **new SharedTimedMutex**(): [`SharedTimedMutex`](SharedTimedMutex.md)
+> **new SharedTimedMutex**(): `SharedTimedMutex`
+
+Defined in: [src/mutexes/sharedMutex.ts:50](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L50)
 
 #### Returns
 
-[`SharedTimedMutex`](SharedTimedMutex.md)
+`SharedTimedMutex`
 
 #### Inherited from
 
-[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructors)
+[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructor)
 
-#### Defined in
+### Constructor
 
-[src/mutexes/sharedMutex.ts:50](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L50)
+> **new SharedTimedMutex**(`sharedBuffer`, `byteOffset?`): `SharedTimedMutex`
 
-### new SharedTimedMutex()
-
-> **new SharedTimedMutex**(`sharedBuffer`, `byteOffset`?): [`SharedTimedMutex`](SharedTimedMutex.md)
+Defined in: [src/mutexes/sharedMutex.ts:60](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L60)
 
 #### Parameters
 
-• **sharedBuffer**: `SharedArrayBuffer`
+##### sharedBuffer
+
+`SharedArrayBuffer`
 
 The SharedArrayBuffer that backs the mutex.
 
-• **byteOffset?**: `number`
+##### byteOffset?
+
+`number`
 
 The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Returns
 
-[`SharedTimedMutex`](SharedTimedMutex.md)
+`SharedTimedMutex`
 
 #### Throws
 
@@ -81,11 +87,7 @@ A RangeError for any of the following:
 
 #### Inherited from
 
-[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructors)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:60](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L60)
+[`SharedMutex`](SharedMutex.md).[`constructor`](SharedMutex.md#constructor)
 
 ## Properties
 
@@ -93,13 +95,11 @@ A RangeError for any of the following:
 
 > `protected` **\_gate1**: [`ConditionVariable`](ConditionVariable.md)
 
+Defined in: [src/mutexes/sharedMutex.ts:43](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L43)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_gate1`](SharedMutex.md#_gate1)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:43](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L43)
 
 ***
 
@@ -107,13 +107,11 @@ A RangeError for any of the following:
 
 > `protected` **\_gate2**: [`ConditionVariable`](ConditionVariable.md)
 
+Defined in: [src/mutexes/sharedMutex.ts:44](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L44)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_gate2`](SharedMutex.md#_gate2)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:44](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L44)
 
 ***
 
@@ -121,13 +119,11 @@ A RangeError for any of the following:
 
 > `protected` **\_isReader**: `boolean`
 
+Defined in: [src/mutexes/sharedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L45)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_isReader`](SharedMutex.md#_isreader)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:45](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L45)
 
 ***
 
@@ -135,13 +131,11 @@ A RangeError for any of the following:
 
 > `protected` **\_isWriter**: `boolean`
 
+Defined in: [src/mutexes/sharedMutex.ts:46](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L46)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_isWriter`](SharedMutex.md#_iswriter)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:46](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L46)
 
 ***
 
@@ -149,13 +143,11 @@ A RangeError for any of the following:
 
 > `protected` **\_mem**: `Int32Array`
 
+Defined in: [src/mutexes/sharedMutex.ts:47](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L47)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_mem`](SharedMutex.md#_mem)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:47](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L47)
 
 ***
 
@@ -163,13 +155,11 @@ A RangeError for any of the following:
 
 > `protected` **\_mutex**: [`TimedMutex`](TimedMutex.md)
 
+Defined in: [src/mutexes/sharedMutex.ts:48](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L48)
+
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`_mutex`](SharedMutex.md#_mutex)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:48](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L48)
 
 ***
 
@@ -177,26 +167,28 @@ A RangeError for any of the following:
 
 > `readonly` `static` **ByteLength**: `number`
 
+Defined in: [src/mutexes/sharedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L41)
+
 The size in bytes of the mutex.
 
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`ByteLength`](SharedMutex.md#bytelength)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L41)
-
 ## Accessors
 
 ### buffer
 
-> `get` **buffer**(): `SharedArrayBuffer`
+#### Get Signature
+
+> **get** **buffer**(): `SharedArrayBuffer`
+
+Defined in: [src/mutexes/sharedMutex.ts:79](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L79)
 
 The underlying SharedArrayBuffer
 and primary storage for shared data.
 
-#### Returns
+##### Returns
 
 `SharedArrayBuffer`
 
@@ -207,19 +199,19 @@ and primary storage for shared data.
 
 [`SharedMutex`](SharedMutex.md).[`buffer`](SharedMutex.md#buffer)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:79](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L79)
-
 ***
 
 ### byteLength
 
-> `get` **byteLength**(): `number`
+#### Get Signature
+
+> **get** **byteLength**(): `number`
+
+Defined in: [src/mutexes/sharedMutex.ts:83](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L83)
 
 The total length in bytes being used from the SharedArrayBuffer.
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -229,19 +221,19 @@ The total length in bytes being used from the SharedArrayBuffer.
 
 [`SharedMutex`](SharedMutex.md).[`byteLength`](SharedMutex.md#bytelength-1)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:83](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L83)
-
 ***
 
 ### byteOffset
 
-> `get` **byteOffset**(): `number`
+#### Get Signature
+
+> **get** **byteOffset**(): `number`
+
+Defined in: [src/mutexes/sharedMutex.ts:87](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L87)
 
 The byte offset within the SharedArrayBuffer where data begins.
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -251,19 +243,19 @@ The byte offset within the SharedArrayBuffer where data begins.
 
 [`SharedMutex`](SharedMutex.md).[`byteOffset`](SharedMutex.md#byteoffset)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:87](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L87)
-
 ***
 
 ### ownsLock
 
-> `get` **ownsLock**(): `boolean`
+#### Get Signature
+
+> **get** **ownsLock**(): `boolean`
+
+Defined in: [src/mutexes/sharedMutex.ts:91](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L91)
 
 Indicates whether the current agent owns the lock.
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -277,19 +269,19 @@ Indicates whether the current agent owns the lock.
 
 [`SharedMutex`](SharedMutex.md).[`ownsLock`](SharedMutex.md#ownslock)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:91](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L91)
-
 ***
 
 ### ownsSharedLock
 
-> `get` **ownsSharedLock**(): `boolean`
+#### Get Signature
+
+> **get** **ownsSharedLock**(): `boolean`
+
+Defined in: [src/mutexes/sharedMutex.ts:95](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L95)
 
 Indicates whether the current agent owns a shared lock.
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -303,15 +295,13 @@ Indicates whether the current agent owns a shared lock.
 
 [`SharedMutex`](SharedMutex.md).[`ownsSharedLock`](SharedMutex.md#ownssharedlock)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:95](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L95)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/mutexes/sharedMutex.ts:104](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L104)
 
 #### Returns
 
@@ -329,15 +319,13 @@ A [RelockError](RelockError.md) If the mutex is already locked by the caller.
 
 [`SharedMutex`](SharedMutex.md).[`lock`](SharedMutex.md#lock)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:104](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L104)
-
 ***
 
 ### lockShared()
 
 > **lockShared**(): `Promise`\<`void`\>
+
+Defined in: [src/mutexes/sharedMutex.ts:172](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L172)
 
 #### Returns
 
@@ -355,15 +343,13 @@ A [RelockError](RelockError.md) If the lock is already locked by the caller.
 
 [`SharedMutex`](SharedMutex.md).[`lockShared`](SharedMutex.md#lockshared)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:172](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L172)
-
 ***
 
 ### tryLock()
 
 > **tryLock**(): `boolean`
+
+Defined in: [src/mutexes/sharedMutex.ts:125](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L125)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -383,21 +369,21 @@ is thrown, no lock is obtained.
 
 [`SharedMutex`](SharedMutex.md).[`tryLock`](SharedMutex.md#trylock)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:125](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L125)
-
 ***
 
 ### tryLockFor()
 
 > **tryLockFor**(`timeout`): `Promise`\<`boolean`\>
 
+Defined in: [src/mutexes/sharedTimedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedTimedMutex.ts#L37)
+
 Blocks for the provided duration or until a lock is acquired.
 
 #### Parameters
 
-• **timeout**: `number`
+##### timeout
+
+`number`
 
 #### Returns
 
@@ -409,15 +395,13 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
 
-#### Defined in
-
-[src/mutexes/sharedTimedMutex.ts:37](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedTimedMutex.ts#L37)
-
 ***
 
 ### tryLockShared()
 
 > **tryLockShared**(): `boolean`
+
+Defined in: [src/mutexes/sharedMutex.ts:193](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L193)
 
 Attempts to acquire a shared lock for the current agent
 without blocking until acquired. If an exception
@@ -437,21 +421,21 @@ is thrown, no lock is obtained.
 
 [`SharedMutex`](SharedMutex.md).[`tryLockShared`](SharedMutex.md#trylockshared)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:193](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L193)
-
 ***
 
 ### tryLockSharedFor()
 
 > **tryLockSharedFor**(`timeout`): `Promise`\<`boolean`\>
 
+Defined in: [src/mutexes/sharedTimedMutex.ts:92](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedTimedMutex.ts#L92)
+
 Blocks for the provided duration or until a lock is acquired.
 
 #### Parameters
 
-• **timeout**: `number`
+##### timeout
+
+`number`
 
 #### Returns
 
@@ -463,21 +447,21 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`tryLockSharedFor`](../interfaces/SharedTimedLockable.md#trylocksharedfor)
 
-#### Defined in
-
-[src/mutexes/sharedTimedMutex.ts:92](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedTimedMutex.ts#L92)
-
 ***
 
 ### tryLockSharedUntil()
 
 > **tryLockSharedUntil**(`timestamp`): `Promise`\<`boolean`\>
 
+Defined in: [src/mutexes/sharedTimedMutex.ts:96](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedTimedMutex.ts#L96)
+
 Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Parameters
 
-• **timestamp**: `number`
+##### timestamp
+
+`number`
 
 #### Returns
 
@@ -489,21 +473,21 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`SharedTimedLockable`](../interfaces/SharedTimedLockable.md).[`tryLockSharedUntil`](../interfaces/SharedTimedLockable.md#trylockshareduntil)
 
-#### Defined in
-
-[src/mutexes/sharedTimedMutex.ts:96](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedTimedMutex.ts#L96)
-
 ***
 
 ### tryLockUntil()
 
 > **tryLockUntil**(`timestamp`): `Promise`\<`boolean`\>
 
+Defined in: [src/mutexes/sharedTimedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedTimedMutex.ts#L41)
+
 Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Parameters
 
-• **timestamp**: `number`
+##### timestamp
+
+`number`
 
 #### Returns
 
@@ -515,15 +499,13 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
 
-#### Defined in
-
-[src/mutexes/sharedTimedMutex.ts:41](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedTimedMutex.ts#L41)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `Promise`\<`void`\>
+
+Defined in: [src/mutexes/sharedMutex.ts:150](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L150)
 
 #### Returns
 
@@ -541,15 +523,13 @@ A [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 
 [`SharedMutex`](SharedMutex.md).[`unlock`](SharedMutex.md#unlock)
 
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:150](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L150)
-
 ***
 
 ### unlockShared()
 
 > **unlockShared**(): `Promise`\<`void`\>
+
+Defined in: [src/mutexes/sharedMutex.ts:224](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/mutexes/sharedMutex.ts#L224)
 
 #### Returns
 
@@ -566,7 +546,3 @@ An [OwnershipError](OwnershipError.md) If the mutex is not owned by the caller.
 #### Inherited from
 
 [`SharedMutex`](SharedMutex.md).[`unlockShared`](SharedMutex.md#unlockshared)
-
-#### Defined in
-
-[src/mutexes/sharedMutex.ts:224](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/mutexes/sharedMutex.ts#L224)

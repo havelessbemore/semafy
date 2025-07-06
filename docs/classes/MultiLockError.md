@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / MultiLockError
 
 # Class: MultiLockError
+
+Defined in: [src/errors/multiLockError.ts:12](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L12)
 
 Represents an error that occurs when attempting to lock multiple [BasicLockable](../interfaces/BasicLockable.md) objects simultaneously.
 
@@ -17,47 +19,55 @@ about any errors that occurred. It ensures that any partial state due to errors 
 
 ## Constructors
 
-### new MultiLockError()
+### Constructor
 
-> **new MultiLockError**(`locks`, `numLocked`, `lockErrors`, `unlockErrors`, `message`?): [`MultiLockError`](MultiLockError.md)
+> **new MultiLockError**(`locks`, `numLocked`, `lockErrors`, `unlockErrors`, `message?`): `MultiLockError`
+
+Defined in: [src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L24)
 
 #### Parameters
 
-• **locks**: [`BasicLockable`](../interfaces/BasicLockable.md)[]
+##### locks
+
+[`BasicLockable`](../interfaces/BasicLockable.md)[]
 
 The array of all lockable objects that were part of the operation.
 
-• **numLocked**: `number`
+##### numLocked
+
+`number`
 
 The number of locks successfully updated before failure.
 
-• **lockErrors**: [`number`, `unknown`][] = `[]`
+##### lockErrors
+
+\[`number`, `unknown`\][] = `[]`
 
 An array of [index, error] pairs that contain the index of the lock in
 the `locks` array and the error that occurred while attempting to lock it. Useful for
 understanding why lock acquisition failed.
 
-• **unlockErrors**: [`number`, `unknown`][] = `[]`
+##### unlockErrors
+
+\[`number`, `unknown`\][] = `[]`
 
 An array of [index, error] pairs that contain the index of the lock in
 the `locks` array and the error that occurred while attempting rollback. Useful for
 debugging unexpected issues during unlocking.
 
-• **message?**: `string`
+##### message?
+
+`string`
 
 An optional custom error message that describes the error.
 
 #### Returns
 
-[`MultiLockError`](MultiLockError.md)
+`MultiLockError`
 
 #### Overrides
 
-[`LockError`](LockError.md).[`constructor`](LockError.md#constructors)
-
-#### Defined in
-
-[src/errors/multiLockError.ts:24](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/multiLockError.ts#L24)
+[`LockError`](LockError.md).[`constructor`](LockError.md#constructor)
 
 ## Properties
 
@@ -65,27 +75,23 @@ An optional custom error message that describes the error.
 
 > `optional` **cause**: `unknown`
 
+Defined in: node\_modules/typescript/lib/lib.es2022.error.d.ts:26
+
 #### Inherited from
 
 [`LockError`](LockError.md).[`cause`](LockError.md#cause)
-
-#### Defined in
-
-node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
 ***
 
 ### lockErrors
 
-> **lockErrors**: [`number`, `unknown`][] = `[]`
+> **lockErrors**: \[`number`, `unknown`\][] = `[]`
+
+Defined in: [src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L27)
 
 An array of [index, error] pairs that contain the index of the lock in
 the `locks` array and the error that occurred while attempting to lock it. Useful for
 understanding why lock acquisition failed.
-
-#### Defined in
-
-[src/errors/multiLockError.ts:27](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/multiLockError.ts#L27)
 
 ***
 
@@ -93,11 +99,9 @@ understanding why lock acquisition failed.
 
 > **locks**: [`BasicLockable`](../interfaces/BasicLockable.md)[]
 
+Defined in: [src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L25)
+
 The array of all lockable objects that were part of the operation.
-
-#### Defined in
-
-[src/errors/multiLockError.ts:25](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/multiLockError.ts#L25)
 
 ***
 
@@ -105,13 +109,11 @@ The array of all lockable objects that were part of the operation.
 
 > **message**: `string`
 
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1077
+
 #### Inherited from
 
 [`LockError`](LockError.md).[`message`](LockError.md#message)
-
-#### Defined in
-
-node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 ***
 
@@ -119,13 +121,11 @@ node\_modules/typescript/lib/lib.es5.d.ts:1077
 
 > **name**: `string`
 
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1076
+
 #### Inherited from
 
 [`LockError`](LockError.md).[`name`](LockError.md#name)
-
-#### Defined in
-
-node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 ***
 
@@ -133,11 +133,9 @@ node\_modules/typescript/lib/lib.es5.d.ts:1076
 
 > **numLocked**: `number`
 
+Defined in: [src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L26)
+
 The number of locks successfully updated before failure.
-
-#### Defined in
-
-[src/errors/multiLockError.ts:26](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/multiLockError.ts#L26)
 
 ***
 
@@ -145,41 +143,133 @@ The number of locks successfully updated before failure.
 
 > `optional` **stack**: `string`
 
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1078
+
 #### Inherited from
 
 [`LockError`](LockError.md).[`stack`](LockError.md#stack)
-
-#### Defined in
-
-node\_modules/typescript/lib/lib.es5.d.ts:1078
 
 ***
 
 ### unlockErrors
 
-> **unlockErrors**: [`number`, `unknown`][] = `[]`
+> **unlockErrors**: \[`number`, `unknown`\][] = `[]`
+
+Defined in: [src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/errors/multiLockError.ts#L28)
 
 An array of [index, error] pairs that contain the index of the lock in
 the `locks` array and the error that occurred while attempting rollback. Useful for
 debugging unexpected issues during unlocking.
 
-#### Defined in
-
-[src/errors/multiLockError.ts:28](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/errors/multiLockError.ts#L28)
-
 ***
 
-### prepareStackTrace()?
+### stackTraceLimit
 
-> `static` `optional` **prepareStackTrace**: (`err`, `stackTraces`) => `any`
+> `static` **stackTraceLimit**: `number`
 
-Optional override for formatting stack traces
+Defined in: node\_modules/@types/node/globals.d.ts:162
+
+The `Error.stackTraceLimit` property specifies the number of stack frames
+collected by a stack trace (whether generated by `new Error().stack` or
+`Error.captureStackTrace(obj)`).
+
+The default value is `10` but may be set to any valid JavaScript number. Changes
+will affect any stack trace captured _after_ the value has been changed.
+
+If set to a non-number value, or set to a negative number, stack traces will
+not capture any frames.
+
+#### Inherited from
+
+[`LockError`](LockError.md).[`stackTraceLimit`](LockError.md#stacktracelimit)
+
+## Methods
+
+### captureStackTrace()
+
+> `static` **captureStackTrace**(`targetObject`, `constructorOpt?`): `void`
+
+Defined in: node\_modules/@types/node/globals.d.ts:146
+
+Creates a `.stack` property on `targetObject`, which when accessed returns
+a string representing the location in the code at which
+`Error.captureStackTrace()` was called.
+
+```js
+const myObject = {};
+Error.captureStackTrace(myObject);
+myObject.stack;  // Similar to `new Error().stack`
+```
+
+The first line of the trace will be prefixed with
+`${myObject.name}: ${myObject.message}`.
+
+The optional `constructorOpt` argument accepts a function. If given, all frames
+above `constructorOpt`, including `constructorOpt`, will be omitted from the
+generated stack trace.
+
+The `constructorOpt` argument is useful for hiding implementation
+details of error generation from the user. For instance:
+
+```js
+function a() {
+  b();
+}
+
+function b() {
+  c();
+}
+
+function c() {
+  // Create an error without stack trace to avoid calculating the stack trace twice.
+  const { stackTraceLimit } = Error;
+  Error.stackTraceLimit = 0;
+  const error = new Error();
+  Error.stackTraceLimit = stackTraceLimit;
+
+  // Capture the stack trace above function b
+  Error.captureStackTrace(error, b); // Neither function c, nor b is included in the stack trace
+  throw error;
+}
+
+a();
+```
 
 #### Parameters
 
-• **err**: `Error`
+##### targetObject
 
-• **stackTraces**: `CallSite`[]
+`object`
+
+##### constructorOpt?
+
+`Function`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+[`LockError`](LockError.md).[`captureStackTrace`](LockError.md#capturestacktrace)
+
+***
+
+### prepareStackTrace()
+
+> `static` **prepareStackTrace**(`err`, `stackTraces`): `any`
+
+Defined in: node\_modules/@types/node/globals.d.ts:150
+
+#### Parameters
+
+##### err
+
+`Error`
+
+##### stackTraces
+
+`CallSite`[]
 
 #### Returns
 
@@ -192,47 +282,3 @@ https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 #### Inherited from
 
 [`LockError`](LockError.md).[`prepareStackTrace`](LockError.md#preparestacktrace)
-
-#### Defined in
-
-node\_modules/@types/node/globals.d.ts:74
-
-***
-
-### stackTraceLimit
-
-> `static` **stackTraceLimit**: `number`
-
-#### Inherited from
-
-[`LockError`](LockError.md).[`stackTraceLimit`](LockError.md#stacktracelimit)
-
-#### Defined in
-
-node\_modules/@types/node/globals.d.ts:76
-
-## Methods
-
-### captureStackTrace()
-
-> `static` **captureStackTrace**(`targetObject`, `constructorOpt`?): `void`
-
-Create .stack property on a target object
-
-#### Parameters
-
-• **targetObject**: `object`
-
-• **constructorOpt?**: `Function`
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-[`LockError`](LockError.md).[`captureStackTrace`](LockError.md#capturestacktrace)
-
-#### Defined in
-
-node\_modules/@types/node/globals.d.ts:67

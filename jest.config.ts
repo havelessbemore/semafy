@@ -1,15 +1,13 @@
-import presets from "ts-jest/presets/index.js";
+import { Config } from "jest";
+import presets from "ts-jest/presets";
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-export default {
+const config: Config = {
   ...presets.jsWithTsESM,
   coverageDirectory: "<rootDir>/coverage/",
-  collectCoverageFrom: [
-    "src/**/*.{js,jsx,ts,tsx}",
-    "!**/node_modules/**",
-    "!**/vendor/**",
-  ],
+  collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}", "!**/node_modules/**"],
   coveragePathIgnorePatterns: ["<rootDir>/src/index.ts"],
   passWithNoTests: true,
   testEnvironment: "node",
 };
+
+export default config;

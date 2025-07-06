@@ -1,4 +1,4 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
@@ -8,20 +8,28 @@
 
 > **lockGuardSync**\<`T`\>(`mutex`, `callbackfn`): `T`
 
+Defined in: [src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/lockGuard.ts#L37)
+
 Acquires the mutex and executes the provided callback, automatically
 unlocking afterwards. Blocks until the lock is available.
 
 ## Type Parameters
 
-• **T**
+### T
+
+`T`
 
 ## Parameters
 
-• **mutex**: [`SyncBasicLockable`](../interfaces/SyncBasicLockable.md)
+### mutex
+
+[`SyncBasicLockable`](../interfaces/SyncBasicLockable.md)
 
 The mutex to acquire.
 
-• **callbackfn**
+### callbackfn
+
+() => `T`
 
 The callback function.
 
@@ -30,7 +38,3 @@ The callback function.
 `T`
 
 The return value of `callbackfn`.
-
-## Defined in
-
-[src/locks/lockGuard.ts:37](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/lockGuard.ts#L37)

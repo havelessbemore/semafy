@@ -1,4 +1,4 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
@@ -8,6 +8,8 @@
 
 > **lock**(...`locks`): `Promise`\<`void`\>
 
+Defined in: [src/locks/lock.ts:19](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/lock.ts#L19)
+
 Sequentially locks the provided [BasicLockable](../interfaces/BasicLockable.md) objects.
 
 If any lock acquisition fails, the process is halted
@@ -15,7 +17,9 @@ and previously acquired locks are released in reverse order.
 
 ## Parameters
 
-• ...**locks**: [`BasicLockable`](../interfaces/BasicLockable.md)[]
+### locks
+
+...[`BasicLockable`](../interfaces/BasicLockable.md)[]
 
 An array of lockable objects to be locked sequentially.
 
@@ -31,7 +35,3 @@ locks. Details include:
  - `numLocked`: The number of locks successfully acquired before failure.
  - `lockErrors`: Errors encountered while trying to acquire all locks.
  - `unlockErrors`: Errors encountered while trying to roll back acquired locks.
-
-## Defined in
-
-[src/locks/lock.ts:19](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/lock.ts#L19)

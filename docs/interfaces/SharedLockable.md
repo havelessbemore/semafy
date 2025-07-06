@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / SharedLockable
 
 # Interface: SharedLockable
+
+Defined in: [src/types/sharedLockable.ts:4](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/sharedLockable.ts#L4)
 
 Provides shared blocking semantics for agents (i.e. main thread, workers).
 
@@ -18,17 +20,17 @@ Provides shared blocking semantics for agents (i.e. main thread, workers).
 
 > **ownsSharedLock**: `Readonly`\<`boolean`\>
 
+Defined in: [src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/sharedLockable.ts#L8)
+
 Indicates whether the current agent owns a shared lock.
-
-#### Defined in
-
-[src/types/sharedLockable.ts:8](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/sharedLockable.ts#L8)
 
 ## Methods
 
 ### lockShared()
 
 > **lockShared**(): `Promise`\<`void`\>
+
+Defined in: [src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/sharedLockable.ts#L14)
 
 Blocks until a shared lock can be acquired for the current
 agent. If an exception is thrown, no lock is acquired.
@@ -37,15 +39,13 @@ agent. If an exception is thrown, no lock is acquired.
 
 `Promise`\<`void`\>
 
-#### Defined in
-
-[src/types/sharedLockable.ts:14](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/sharedLockable.ts#L14)
-
 ***
 
 ### tryLockShared()
 
 > **tryLockShared**(): `boolean` \| `Promise`\<`boolean`\>
+
+Defined in: [src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/sharedLockable.ts#L23)
 
 Attempts to acquire a shared lock for the current agent
 without blocking until acquired. If an exception
@@ -57,22 +57,16 @@ is thrown, no lock is obtained.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Defined in
-
-[src/types/sharedLockable.ts:23](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/sharedLockable.ts#L23)
-
 ***
 
 ### unlockShared()
 
 > **unlockShared**(): `void` \| `Promise`\<`void`\>
 
+Defined in: [src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/sharedLockable.ts#L28)
+
 Releases the shared lock held by the current agent.
 
 #### Returns
 
 `void` \| `Promise`\<`void`\>
-
-#### Defined in
-
-[src/types/sharedLockable.ts:28](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/sharedLockable.ts#L28)

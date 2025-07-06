@@ -1,4 +1,4 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
@@ -6,62 +6,66 @@
 
 # Class: Latch
 
+Defined in: [src/barriers/latch.ts:21](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L21)
+
 A synchronization primitive that allows one or more agents to wait until
 a set of operations has been completed.
 
 ## Constructors
 
-### new Latch()
+### Constructor
 
-> **new Latch**(`expected`): [`Latch`](Latch.md)
+> **new Latch**(`expected`): `Latch`
+
+Defined in: [src/barriers/latch.ts:53](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L53)
 
 #### Parameters
 
-• **expected**: `number`
+##### expected
+
+`number`
 
 The initial value of the internal counter. Must be non-negative and
-not exceed [Latch.Max](Latch.md#max).
+not exceed [Latch.Max](#max).
 
 #### Returns
 
-[`Latch`](Latch.md)
+`Latch`
 
 #### Throws
 
-A RangeError if `expected` is negative or exceeds [Latch.Max](Latch.md#max).
+A RangeError if `expected` is negative or exceeds [Latch.Max](#max).
 
-#### Defined in
+### Constructor
 
-[src/barriers/latch.ts:53](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L53)
+> **new Latch**(`sharedBuffer`, `byteOffset?`): `Latch`
 
-### new Latch()
-
-> **new Latch**(`sharedBuffer`, `byteOffset`?): [`Latch`](Latch.md)
+Defined in: [src/barriers/latch.ts:63](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L63)
 
 #### Parameters
 
-• **sharedBuffer**: `SharedArrayBuffer`
+##### sharedBuffer
+
+`SharedArrayBuffer`
 
 The SharedArrayBuffer that backs the latch.
 
-• **byteOffset?**: `number`
+##### byteOffset?
+
+`number`
 
 The byte offset within `sharedBuffer`. Defaults to `0`.
 
 #### Returns
 
-[`Latch`](Latch.md)
+`Latch`
 
 #### Throws
 
 A RangeError for any of the following:
  - `byteOffset` is negative or not a multiple of `4`.
- - The byte length of `sharedBuffer` is less than [ByteLength](Latch.md#bytelength).
- - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](Latch.md#bytelength).
-
-#### Defined in
-
-[src/barriers/latch.ts:63](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L63)
+ - The byte length of `sharedBuffer` is less than [ByteLength](#bytelength).
+ - The space in `sharedBuffer` starting from `byteOffset` is less than [ByteLength](#bytelength).
 
 ## Properties
 
@@ -69,11 +73,9 @@ A RangeError for any of the following:
 
 > `protected` **\_gate**: [`ConditionVariable`](ConditionVariable.md)
 
+Defined in: [src/barriers/latch.ts:35](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L35)
+
 Condition variable to manage waiting agents.
-
-#### Defined in
-
-[src/barriers/latch.ts:35](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L35)
 
 ***
 
@@ -81,11 +83,9 @@ Condition variable to manage waiting agents.
 
 > `protected` **\_mem**: `Int32Array`
 
+Defined in: [src/barriers/latch.ts:40](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L40)
+
 The shared atomic memory for the internal counter.
-
-#### Defined in
-
-[src/barriers/latch.ts:40](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L40)
 
 ***
 
@@ -93,11 +93,9 @@ The shared atomic memory for the internal counter.
 
 > `protected` **\_mutex**: [`Lockable`](../interfaces/Lockable.md)
 
+Defined in: [src/barriers/latch.ts:45](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L45)
+
 Mutex to protect access to the internal counter.
-
-#### Defined in
-
-[src/barriers/latch.ts:45](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L45)
 
 ***
 
@@ -105,11 +103,9 @@ Mutex to protect access to the internal counter.
 
 > `readonly` `static` **ByteLength**: `number`
 
+Defined in: [src/barriers/latch.ts:25](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L25)
+
 The size in bytes of the latch.
-
-#### Defined in
-
-[src/barriers/latch.ts:25](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L25)
 
 ***
 
@@ -117,11 +113,9 @@ The size in bytes of the latch.
 
 > `readonly` `static` **Max**: `2147483647` = `MAX_INT32_VALUE`
 
+Defined in: [src/barriers/latch.ts:30](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L30)
+
 The maximum possible value of the internal counter.
-
-#### Defined in
-
-[src/barriers/latch.ts:30](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L30)
 
 ## Methods
 
@@ -129,13 +123,17 @@ The maximum possible value of the internal counter.
 
 > **arriveAndWait**(`n`): `Promise`\<`void`\>
 
+Defined in: [src/barriers/latch.ts:149](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L149)
+
 Decrements the counter by a specified amount, then waits for it to reach zero.
 
 If the counter is decremented to zero, waiting agents are notified.
 
 #### Parameters
 
-• **n**: `number` = `1`
+##### n
+
+`number` = `1`
 
 The amount to decrement the counter.
 
@@ -150,15 +148,13 @@ allowing the agent to proceed.
 
 A RangeError If `n` is negative or exceeds the current count.
 
-#### Defined in
-
-[src/barriers/latch.ts:149](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L149)
-
 ***
 
 ### countDown()
 
 > **countDown**(`n`): `Promise`\<`void`\>
+
+Defined in: [src/barriers/latch.ts:109](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L109)
 
 Decrements the counter by a specified amount.
 
@@ -166,7 +162,9 @@ If the counter reaches zero, waiting agents are notified.
 
 #### Parameters
 
-• **n**: `number` = `1`
+##### n
+
+`number` = `1`
 
 The amount to decrement the counter.
 
@@ -178,15 +176,13 @@ The amount to decrement the counter.
 
 A RangeError If `n` is negative or exceeds the current count.
 
-#### Defined in
-
-[src/barriers/latch.ts:109](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L109)
-
 ***
 
 ### tryWait()
 
 > **tryWait**(): `boolean`
+
+Defined in: [src/barriers/latch.ts:188](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L188)
 
 Tests if the counter has reached zero.
 
@@ -196,15 +192,13 @@ Tests if the counter has reached zero.
 
 `true` if the current count is zero, otherwise `false`.
 
-#### Defined in
-
-[src/barriers/latch.ts:188](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L188)
-
 ***
 
 ### wait()
 
 > **wait**(): `Promise`\<`void`\>
+
+Defined in: [src/barriers/latch.ts:198](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/barriers/latch.ts#L198)
 
 Wait until the counter reaches zero.
 
@@ -214,7 +208,3 @@ Wait until the counter reaches zero.
 
 A promise that resolves once the internal count reaches zero,
 allowing the agent to proceed.
-
-#### Defined in
-
-[src/barriers/latch.ts:198](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/barriers/latch.ts#L198)

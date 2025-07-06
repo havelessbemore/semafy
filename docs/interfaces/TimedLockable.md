@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / TimedLockable
 
 # Interface: TimedLockable
+
+Defined in: [src/types/timedLockable.ts:6](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/timedLockable.ts#L6)
 
 Extends the [Lockable](Lockable.md) interface to include timed blocking.
 
@@ -18,21 +20,21 @@ Extends the [Lockable](Lockable.md) interface to include timed blocking.
 
 > **ownsLock**: `Readonly`\<`boolean`\>
 
+Defined in: [src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L9)
+
 Indicates whether the current agent owns the lock.
 
 #### Inherited from
 
 [`Lockable`](Lockable.md).[`ownsLock`](Lockable.md#ownslock)
 
-#### Defined in
-
-[src/types/basicLockable.ts:9](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L9)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L15)
 
 Blocks until the lock can be acquired for the current agent.
 If an exception is thrown, no lock is acquired.
@@ -45,15 +47,13 @@ If an exception is thrown, no lock is acquired.
 
 [`Lockable`](Lockable.md).[`lock`](Lockable.md#lock)
 
-#### Defined in
-
-[src/types/basicLockable.ts:15](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L15)
-
 ***
 
 ### tryLock()
 
 > **tryLock**(): `boolean` \| `Promise`\<`boolean`\>
+
+Defined in: [src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/lockable.ts#L14)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -69,31 +69,27 @@ is thrown, no lock is obtained.
 
 [`Lockable`](Lockable.md).[`tryLock`](Lockable.md#trylock)
 
-#### Defined in
-
-[src/types/lockable.ts:14](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/lockable.ts#L14)
-
 ***
 
 ### tryLockFor()
 
 > **tryLockFor**(`timeout`): `Promise`\<`boolean`\>
 
+Defined in: [src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/timedLockable.ts#L12)
+
 Blocks for the provided duration or until a lock is acquired.
 
 #### Parameters
 
-• **timeout**: `number`
+##### timeout
+
+`number`
 
 #### Returns
 
 `Promise`\<`boolean`\>
 
 `true` if the lock was acquired, `false` otherwise.
-
-#### Defined in
-
-[src/types/timedLockable.ts:12](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/timedLockable.ts#L12)
 
 ***
 
@@ -101,11 +97,15 @@ Blocks for the provided duration or until a lock is acquired.
 
 > **tryLockUntil**(`timestamp`): `Promise`\<`boolean`\>
 
+Defined in: [src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/timedLockable.ts#L19)
+
 Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Parameters
 
-• **timestamp**: `number`
+##### timestamp
+
+`number`
 
 #### Returns
 
@@ -113,15 +113,13 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 `true` if the lock was acquired, `false` otherwise.
 
-#### Defined in
-
-[src/types/timedLockable.ts:19](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/timedLockable.ts#L19)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `void` \| `Promise`\<`void`\>
+
+Defined in: [src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/types/basicLockable.ts#L20)
 
 Releases the lock held by the current agent.
 
@@ -132,7 +130,3 @@ Releases the lock held by the current agent.
 #### Inherited from
 
 [`Lockable`](Lockable.md).[`unlock`](Lockable.md#unlock)
-
-#### Defined in
-
-[src/types/basicLockable.ts:20](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/types/basicLockable.ts#L20)

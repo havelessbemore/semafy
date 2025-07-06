@@ -1,10 +1,12 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
 [semafy](../globals.md) / SharedLock
 
 # Class: SharedLock
+
+Defined in: [src/locks/sharedLock.ts:14](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L14)
 
 A shared mutex wrapper.
 
@@ -20,23 +22,23 @@ will also implement it. Otherwise, attempts to use timed methods
 
 ## Constructors
 
-### new SharedLock()
+### Constructor
 
-> **new SharedLock**(`mutex`?): [`SharedLock`](SharedLock.md)
+> **new SharedLock**(`mutex?`): `SharedLock`
+
+Defined in: [src/locks/sharedLock.ts:23](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L23)
 
 #### Parameters
 
-• **mutex?**: [`SharedLockable`](../interfaces/SharedLockable.md)
+##### mutex?
+
+[`SharedLockable`](../interfaces/SharedLockable.md)
 
 The shared lockable to associate.
 
 #### Returns
 
-[`SharedLock`](SharedLock.md)
-
-#### Defined in
-
-[src/locks/sharedLock.ts:23](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L23)
+`SharedLock`
 
 ## Properties
 
@@ -44,21 +46,23 @@ The shared lockable to associate.
 
 > **mutex**: `undefined` \| [`SharedLockable`](../interfaces/SharedLockable.md)
 
+Defined in: [src/locks/sharedLock.ts:18](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L18)
+
 The associated mutex.
-
-#### Defined in
-
-[src/locks/sharedLock.ts:18](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L18)
 
 ## Accessors
 
 ### ownsLock
 
-> `get` **ownsLock**(): `boolean`
+#### Get Signature
+
+> **get** **ownsLock**(): `boolean`
+
+Defined in: [src/locks/sharedLock.ts:27](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L27)
 
 Indicates whether the current agent owns the lock.
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -68,15 +72,13 @@ Indicates whether the current agent owns the lock.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`ownsLock`](../interfaces/TimedLockable.md#ownslock)
 
-#### Defined in
-
-[src/locks/sharedLock.ts:27](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L27)
-
 ## Methods
 
 ### lock()
 
 > **lock**(): `Promise`\<`void`\>
+
+Defined in: [src/locks/sharedLock.ts:31](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L31)
 
 Blocks until the lock can be acquired for the current agent.
 If an exception is thrown, no lock is acquired.
@@ -89,35 +91,33 @@ If an exception is thrown, no lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`lock`](../interfaces/TimedLockable.md#lock)
 
-#### Defined in
-
-[src/locks/sharedLock.ts:31](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L31)
-
 ***
 
 ### swap()
 
 > **swap**(`other`): `void`
 
+Defined in: [src/locks/sharedLock.ts:38](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L38)
+
 Exchanges the internal states of the shared locks.
 
 #### Parameters
 
-• **other**: [`SharedLock`](SharedLock.md)
+##### other
+
+`SharedLock`
 
 #### Returns
 
 `void`
-
-#### Defined in
-
-[src/locks/sharedLock.ts:38](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L38)
 
 ***
 
 ### tryLock()
 
 > **tryLock**(): `boolean` \| `Promise`\<`boolean`\>
+
+Defined in: [src/locks/sharedLock.ts:44](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L44)
 
 Attempts to acquire the lock for the current agent
 without blocking until acquired. If an exception
@@ -133,21 +133,21 @@ is thrown, no lock is obtained.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLock`](../interfaces/TimedLockable.md#trylock)
 
-#### Defined in
-
-[src/locks/sharedLock.ts:44](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L44)
-
 ***
 
 ### tryLockFor()
 
 > **tryLockFor**(`timeout`): `Promise`\<`boolean`\>
 
+Defined in: [src/locks/sharedLock.ts:48](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L48)
+
 Blocks for the provided duration or until a lock is acquired.
 
 #### Parameters
 
-• **timeout**: `number`
+##### timeout
+
+`number`
 
 #### Returns
 
@@ -159,21 +159,21 @@ Blocks for the provided duration or until a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockFor`](../interfaces/TimedLockable.md#trylockfor)
 
-#### Defined in
-
-[src/locks/sharedLock.ts:48](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L48)
-
 ***
 
 ### tryLockUntil()
 
 > **tryLockUntil**(`timestamp`): `Promise`\<`boolean`\>
 
+Defined in: [src/locks/sharedLock.ts:52](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L52)
+
 Blocks until the provided timestamp is reached or a lock is acquired.
 
 #### Parameters
 
-• **timestamp**: `number`
+##### timestamp
+
+`number`
 
 #### Returns
 
@@ -185,15 +185,13 @@ Blocks until the provided timestamp is reached or a lock is acquired.
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`tryLockUntil`](../interfaces/TimedLockable.md#trylockuntil)
 
-#### Defined in
-
-[src/locks/sharedLock.ts:52](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L52)
-
 ***
 
 ### unlock()
 
 > **unlock**(): `void` \| `Promise`\<`void`\>
+
+Defined in: [src/locks/sharedLock.ts:56](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/sharedLock.ts#L56)
 
 Releases the lock held by the current agent.
 
@@ -204,7 +202,3 @@ Releases the lock held by the current agent.
 #### Implementation of
 
 [`TimedLockable`](../interfaces/TimedLockable.md).[`unlock`](../interfaces/TimedLockable.md#unlock)
-
-#### Defined in
-
-[src/locks/sharedLock.ts:56](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/sharedLock.ts#L56)

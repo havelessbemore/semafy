@@ -1,4 +1,4 @@
-[**semafy**](../README.md) • **Docs**
+[**semafy**](../README.md)
 
 ***
 
@@ -8,6 +8,8 @@
 
 > **tryLock**(...`locks`): `Promise`\<`number`\>
 
+Defined in: [src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/b127757771d72c42d7cd66798069cb41033064d6/src/locks/tryLock.ts#L29)
+
 Tries to sequentially lock the provided [Lockable](../interfaces/Lockable.md) objects.
 
 If any lock acquisition fails, the process is halted
@@ -15,7 +17,9 @@ and previously acquired locks are released in reverse order.
 
 ## Parameters
 
-• ...**locks**: [`Lockable`](../interfaces/Lockable.md)[]
+### locks
+
+...[`Lockable`](../interfaces/Lockable.md)[]
 
 An array of lockable objects to be locked sequentially.
 
@@ -41,7 +45,3 @@ while trying to roll back acquired locks. Details include:
  - `locks`: The array of all locks.
  - `numUnlocked`: The number of locks successfully unlocked.
  - `unlockErrors`: Errors encountered while trying to roll back acquired locks.
-
-## Defined in
-
-[src/locks/tryLock.ts:29](https://github.com/havelessbemore/semafy/blob/ca2cc9ffc3280184c354e01434b31848132e4954/src/locks/tryLock.ts#L29)

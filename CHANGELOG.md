@@ -12,7 +12,6 @@
     ```
 
     Updated classes include:
-
     - ConditionVariable
     - CountingSemaphore
     - Latch
@@ -35,13 +34,11 @@ Introduces synchronous versions of methods.
 - Sync methods use [Atomics.wait](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Atomics/wait#browser_compatibility), which may not be allowed on the main thread in a browser environment. In these cases, their existing async versions (e.g. `lockSync` -> `lock`) should be used.
 
 - Interfaces:
-
   - SyncBasicLockable
   - SyncLockable
   - SyncTimedLockable
 
 - Classes:
-
   - `Mutex` extends `SyncLockable`.
   - `RecursiveMutex` extends `SyncLockable`.
   - `RecursiveTimedMutex` extends `SyncTimedLockable`.
@@ -49,7 +46,6 @@ Introduces synchronous versions of methods.
   - `UniqueLock` extends `SyncTimedLockable`.
 
 - Utilities:
-
   - lockGuardSync
 
 ### Misc
@@ -65,7 +61,6 @@ Introduces synchronous versions of methods.
 ### What's New
 
 - Classes
-
   - `MultiLock` for managing multiple locks as one.
 
 - Utilities
@@ -80,7 +75,6 @@ Introduces synchronous versions of methods.
 ### What's New
 
 - Classes
-
   - Latch
   - UniqueLock
   - OnceFlag
@@ -104,7 +98,6 @@ Introduces synchronous versions of methods.
 ### What's New
 
 - Utilities
-
   - `tryLock` function for attempted joint locking of multiple locks.
 
 - Errors
@@ -133,7 +126,6 @@ Introduces synchronous versions of methods.
 ### What's New
 
 - Interfaces:
-
   - BasicLockable
   - Lockable
   - SharedLockable
@@ -142,7 +134,6 @@ Introduces synchronous versions of methods.
   - TimedLockable
 
 - Classes
-
   - RecursiveTimedMutex
   - SharedLock
   - TimedMutex
@@ -155,7 +146,6 @@ Introduces synchronous versions of methods.
 Until v2.1.0, breaking changes may be released in patched or minor versions. These will be always be highlighted in the release notes / changelog.
 
 - Remove .request, .requestFor, .requestShared and .requestUntil methods.
-
   - .request should be replaced by lockGuard.
   - .requestShared should be replaced by wrapping the shared mutex in a shared lock and then using lockGuard.
   - There are no replacements for .requestFor and .requestUntil at this time.
@@ -187,11 +177,9 @@ Given the very brief period since the previous version, this will be released as
 ### New
 
 - Types
-
   - CVStatus
 
 - Classes
-
   - ConditionVariable
   - SharedMutex
 

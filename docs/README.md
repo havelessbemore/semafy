@@ -1,4 +1,4 @@
-**semafy** • [**Docs**](globals.md)
+**semafy**
 
 ***
 
